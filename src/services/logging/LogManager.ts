@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogEntry } from './Logger';
 
-export class LogManager {
+export default class LogManager {
   private static instance: LogManager;
   private isInitialized: boolean = false;
   private logBuffer: LogEntry[] = [];

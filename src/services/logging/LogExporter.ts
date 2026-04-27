@@ -1,5 +1,5 @@
 import * as FileSystem from '@dr.pogodin/react-native-fs';
-import { LogManager } from './LogManager';
+import LogManager from './LogManager';
 import { LogEntry } from './Logger';
 
 export class LogExporter {
