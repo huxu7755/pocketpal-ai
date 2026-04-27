@@ -24,17 +24,12 @@ export default class GlobalSetting extends Model {
         // If settings were migrated, log it but don't try to save automatically
         // The repository should handle saving with proper database.write() calls
         if (migratedSettings.version !== parsedSettings.version) {
-          console.log(
-            `Migrated global completion settings from version ${parsedSettings.version} to ${migratedSettings.version} for key ${this.key}`,
-          );
-          console.log(
-            'Global settings need to be saved by the repository with a proper database.write() call',
-          );
+
         }
 
         return migratedSettings as unknown as T;
       } catch (error) {
-        console.error('Error parsing global completion settings:', error);
+
         // Return default settings if parsing fails
         return migrateCompletionSettings({}) as unknown as T;
       }

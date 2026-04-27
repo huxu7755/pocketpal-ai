@@ -264,7 +264,7 @@ export const PalSheet: React.FC<PalSheetProps> = observer(
 
         handleClose();
       } catch (error) {
-        console.error('Error saving pal:', error);
+
         // TODO: Show error message to user
         // For now, we'll just log the error and not close the sheet
         // so the user can try again

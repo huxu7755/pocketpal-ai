@@ -198,7 +198,7 @@ export const useMemoryCheck = (
         setShortMemoryWarning('');
         setMultimodalWarning('');
         setFitStatus('fits');
-        console.error('Memory check failed:', error);
+
       }
     };
 

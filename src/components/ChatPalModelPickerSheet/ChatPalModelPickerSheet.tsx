@@ -45,7 +45,7 @@ const ObservedSkillsDisplay = observer(({model}) => {
         !modelStore.getModelVisionPreference(model),
       );
     } catch (error) {
-      console.error('Failed to toggle vision setting:', error);
+
       // The error is already handled in setModelVisionEnabled (vision state is reverted)
       // We could show a toast/snackbar here if needed
     }
@@ -149,7 +149,7 @@ export const ChatPalModelPickerSheet = observer(
           onClose();
           modelStore.selectModel(model);
         } catch (e) {
-          console.log(`Error: ${e}`);
+
         }
       },
       [onModelSelect, onClose],

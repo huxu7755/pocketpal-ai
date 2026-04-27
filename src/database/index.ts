@@ -19,7 +19,7 @@ const adapter = new SQLiteAdapter({
   dbName: 'pocketpalai',
   jsi: true, // enable JSI for better performance if available
   onSetUpError: error => {
-    console.error('Database setup error:', error);
+
   },
 });
 

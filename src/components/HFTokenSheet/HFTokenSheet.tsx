@@ -65,7 +65,7 @@ export const HFTokenSheet: React.FC<HFTokenSheetProps> = observer(
           setShowError(true);
         }
       } catch (error) {
-        console.error('Error saving token:', error);
+
         setShowError(true);
       } finally {
         setIsSubmitting(false);
@@ -91,7 +91,7 @@ export const HFTokenSheet: React.FC<HFTokenSheetProps> = observer(
           setShowError(true);
         }
       } catch (error) {
-        console.error('Error resetting token:', error);
+
         setShowError(true);
       } finally {
         setIsResetting(false);

@@ -239,7 +239,7 @@ export const VoicePickerView: React.FC = observer(() => {
       .getVoices()
       .then(vs => setSystemVoices(vs))
       .catch(err => {
-        console.warn('[VoicePickerView] system voices failed:', err);
+
       });
   }, []);
 
@@ -267,12 +267,12 @@ export const VoicePickerView: React.FC = observer(() => {
   const handlePreviewToggle = (voice: Voice) => {
     if (ttsStore.isPreviewingVoice(voice)) {
       ttsStore.stop().catch(err => {
-        console.warn('[VoicePickerView] stop failed:', err);
+
       });
       return;
     }
     ttsStore.preview(voice).catch(err => {
-      console.warn('[VoicePickerView] preview failed:', err);
+
     });
   };
 
@@ -291,7 +291,7 @@ export const VoicePickerView: React.FC = observer(() => {
           style: 'destructive',
           onPress: () => {
             triggerDelete(engineId).catch(err => {
-              console.warn(`[VoicePickerView] delete ${engineId} failed:`, err);
+
             });
           },
         },
@@ -352,12 +352,12 @@ export const VoicePickerView: React.FC = observer(() => {
 
     const handleInstall = () => {
       triggerDownload(engineId).catch(err => {
-        console.warn(`[VoicePickerView] install ${engineId} failed:`, err);
+
       });
     };
     const handleRetry = () => {
       triggerRetry(engineId).catch(err => {
-        console.warn(`[VoicePickerView] retry ${engineId} failed:`, err);
+
       });
     };
 

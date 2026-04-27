@@ -51,7 +51,7 @@ export const UsageStats: React.FC<UsageStatsProps> = ({
       setMemoryStats({totalMemory: total, usedMemory: used, percentage});
       setMemoryHistory(prev => [...prev.slice(-9), percentage]);
     } catch (error) {
-      console.error('Failed to fetch memory stats:', error);
+
     }
   }, []);
 

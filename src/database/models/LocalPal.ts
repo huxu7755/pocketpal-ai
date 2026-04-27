@@ -143,7 +143,7 @@ export default class LocalPal extends Model {
       }
       return undefined;
     } catch (error) {
-      console.error('LocalPal: Error parsing completionSettings:', error);
+
       return undefined;
     }
   }

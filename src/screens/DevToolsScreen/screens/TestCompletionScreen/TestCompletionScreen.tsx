@@ -162,7 +162,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
         await modelStore.initContext(model);
         setSelectedModel(model);
       } catch (error) {
-        console.error('Model initialization error:', error);
+
       }
     } else {
       setSelectedModel(model);
@@ -186,7 +186,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
     if (!modelStore.context) {
       return;
     }
-    console.log('------------- runChatCompletionTest -------------');
+
 
     setIsRunning(true);
     setCurrentTest('chatCompletion');
@@ -252,7 +252,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
     if (!modelStore.context) {
       return;
     }
-    console.log('------------- runTextCompletionDirectTest -------------');
+
 
     setIsRunning(true);
     setCurrentTest('textCompletion');
@@ -311,7 +311,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
     if (!modelStore.context) {
       return;
     }
-    console.log('------------- runTextCompletionFormattedTest -------------');
+
 
     setIsRunning(true);
     setCurrentTest('textCompletion');
@@ -393,7 +393,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * Wrapper function to run the appropriate text completion test based on user selection
    */
   const runTextCompletionTest = async () => {
-    console.log('------------- runTextCompletionTest -------------');
+
     if (textCompletionMethod === 'direct') {
       await runTextCompletionDirectTest();
     } else {
@@ -412,7 +412,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Demonstrates how models can generate structured data for API calls
    */
   const runToolCallingTest = async () => {
-    console.log('------------- runToolCallingTest -------------');
+
     if (!modelStore.context) {
       return;
     }
@@ -483,7 +483,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Grammar is applied directly in the completion parameters
    */
   const runGrammarSamplingTest = async () => {
-    console.log('------------- runGrammarSamplingTest -------------');
+
     if (!modelStore.context) {
       return;
     }
@@ -554,7 +554,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Useful for debugging and understanding the chat formatting process
    */
   const runFormattedChatTest = async () => {
-    console.log('------------- runFormattedChatTest -------------');
+
     if (!modelStore.context) {
       return;
     }
@@ -600,7 +600,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
       }> = [];
 
       for (const testCase of testCases) {
-        console.log('testCase', testCase);
+
         try {
           const formattedChat = await modelStore.context.getFormattedChat(
             SAMPLE_CHAT_MESSAGES,
@@ -613,7 +613,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
             result: formattedChat,
           });
         } catch (error) {
-          console.log(`Error in test case "${testCase.name}":`, error);
+
           _results.push({
             name: testCase.name,
             result: `Error: ${
@@ -622,7 +622,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
           });
         }
       }
-      console.log('results', _results);
+
 
       setResults(prev => ({
         ...prev,
@@ -631,7 +631,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
         },
       }));
     } catch (error) {
-      console.log('error', error);
+
       setResults(prev => ({
         ...prev,
         formattedChat: {
@@ -669,7 +669,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Helps understand how the current implementation handles grammar triggers
    */
   const runGrammarTriggersTest = async () => {
-    console.log('------------- runGrammarTriggersTest -------------');
+
     if (!modelStore.context) {
       return;
     }
@@ -758,7 +758,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
 
       for (const testCase of testCases) {
         try {
-          console.log(`Testing: ${testCase.name}`);
+
 
           const completionParams: CompletionParams = {
             messages: [

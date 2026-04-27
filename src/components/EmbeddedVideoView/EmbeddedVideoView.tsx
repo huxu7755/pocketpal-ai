@@ -61,9 +61,9 @@ export const EmbeddedVideoView = observer(
       if (!hasPermission) {
         const requestCameraPermission = async () => {
           try {
-            console.log('Requesting camera permission...');
+
             const result = await requestPermission();
-            console.log('Camera permission result:', result);
+
             if (!result) {
               // Permission was denied
               Alert.alert(
@@ -78,7 +78,7 @@ export const EmbeddedVideoView = observer(
               );
             }
           } catch (error) {
-            console.error('Error requesting camera permission:', error);
+
             Alert.alert(
               l10n.video.permissionTitle,
               l10n.video.permissionMessage,
@@ -123,10 +123,7 @@ export const EmbeddedVideoView = observer(
             try {
               await RNFS.unlink(filePath);
             } catch (deleteError) {
-              console.warn(
-                'Failed to delete temporary image file:',
-                deleteError,
-              );
+
               // Don't throw - continue with the base64 data even if cleanup fails
             }
 
@@ -136,7 +133,7 @@ export const EmbeddedVideoView = observer(
             onCapture(imageBase64);
           } catch (error) {
             // Only log error if camera is still supposed to be active
-            console.error('Error taking photo or converting to base64:', error);
+
           } finally {
             setIsCapturing(false);
           }

@@ -32,7 +32,7 @@ class ChatSessionRepository {
       const migrationComplete = await RNFS.exists(migrationFlagPath);
 
       if (migrationComplete) {
-        console.log('Database migration already completed');
+
         return false;
       }
 
@@ -46,7 +46,7 @@ class ChatSessionRepository {
         return false;
       }
 
-      console.log('Starting migration from JSON to WatermelonDB...');
+
 
       // Read old data
       const jsonData = await RNFS.readFile(oldDataPath);
@@ -109,9 +109,7 @@ class ChatSessionRepository {
             try {
               // Check if createdAt is valid
               if (!msg.createdAt) {
-                console.warn(
-                  'Message has no createdAt timestamp, using current time',
-                );
+
               }
 
               await database.collections
@@ -128,7 +126,7 @@ class ChatSessionRepository {
                   record.createdAt = msg.createdAt || Date.now(); // Use createdAt, not created_at
                 });
             } catch (error) {
-              console.error('Error creating message record:', error);
+
               throw error; // Re-throw to stop the migration
             }
           }
@@ -158,11 +156,11 @@ class ChatSessionRepository {
 
       // Mark migration as complete
       await RNFS.writeFile(migrationFlagPath, 'true');
-      console.log('Migration from JSON to WatermelonDB completed successfully');
+
 
       return true;
     } catch (error) {
-      console.error('Error during migration:', error);
+
       return false;
     }
   }
@@ -368,7 +366,7 @@ class ChatSessionRepository {
           .catch(() => null);
 
         if (!session) {
-          console.warn(`Session ${id} not found during bulk delete, skipping`);
+
           continue;
         }
 
@@ -483,9 +481,7 @@ class ChatSessionRepository {
         .catch(() => null);
 
       if (!message) {
-        console.warn(
-          `Message with ID ${id} not found in database, cannot update`,
-        );
+
         return false;
       }
 
@@ -507,7 +503,7 @@ class ChatSessionRepository {
 
       return true;
     } catch (error) {
-      console.error('Error updating message:', error);
+
       return false;
     }
   }
@@ -660,9 +656,9 @@ class ChatSessionRepository {
       const migrationFlagPath = `${RNFS.DocumentDirectoryPath}/db-migration-complete.flag`;
       if (await RNFS.exists(migrationFlagPath)) {
         await RNFS.unlink(migrationFlagPath);
-        console.log('Migration flag reset successfully');
+
       } else {
-        console.log('Migration flag does not exist');
+
       }
 
       // Clear the database for a clean migration test
@@ -688,9 +684,9 @@ class ChatSessionRepository {
         }
       });
 
-      console.log('Database cleared for migration test');
+
     } catch (error) {
-      console.error('Failed to reset migration:', error);
+
     }
   }
 
@@ -700,7 +696,7 @@ class ChatSessionRepository {
    */
   async migrateAllSettings(): Promise<void> {
     try {
-      console.log('Checking for settings that need migration...');
+
 
       // Get all completion settings
       const completionSettings = (await database.collections
@@ -721,7 +717,7 @@ class ChatSessionRepository {
           const migratedSettings = migrateCompletionSettings(parsedSettings);
           return migratedSettings.version !== parsedSettings.version;
         } catch (error) {
-          console.error('Error checking if settings need migration:', error);
+
           return false;
         }
       });
@@ -737,17 +733,12 @@ class ChatSessionRepository {
           const migratedSettings = migrateCompletionSettings(parsedSettings);
           return migratedSettings.version !== parsedSettings.version;
         } catch (error) {
-          console.error(
-            'Error checking if global settings need migration:',
-            error,
-          );
+
           return false;
         }
       });
 
-      console.log(
-        `Found ${settingsToMigrate.length} session settings and ${globalSettingsToMigrate.length} global settings that need migration`,
-      );
+
 
       // Migrate settings in a single transaction
       if (settingsToMigrate.length > 0 || globalSettingsToMigrate.length > 0) {
@@ -761,9 +752,7 @@ class ChatSessionRepository {
               record.settings = JSON.stringify(migratedSettings);
             });
 
-            console.log(
-              `Migrated settings for session ${setting.sessionId} from version ${parsedSettings.version} to ${migratedSettings.version}`,
-            );
+
           }
 
           // Migrate global settings
@@ -775,18 +764,16 @@ class ChatSessionRepository {
               record.value = JSON.stringify(migratedSettings);
             });
 
-            console.log(
-              `Migrated global settings for key ${setting.key} from version ${parsedSettings.version} to ${migratedSettings.version}`,
-            );
+
           }
         });
 
-        console.log('Settings migration completed successfully');
+
       } else {
-        console.log('No settings need migration');
+
       }
     } catch (error) {
-      console.error('Error migrating settings:', error);
+
     }
   }
 }

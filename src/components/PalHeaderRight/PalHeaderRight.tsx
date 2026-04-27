@@ -35,7 +35,7 @@ export const PalHeaderRight = observer(() => {
     try {
       await exportAllPals();
     } catch (error) {
-      console.error('Error exporting all pals:', error);
+
       Alert.alert('Export Error', 'Failed to export all pals.');
     }
     closeMenu();
@@ -53,7 +53,7 @@ export const PalHeaderRight = observer(() => {
         );
       }
     } catch (error) {
-      console.error('Error importing pals:', error);
+
       Alert.alert('Import Error', l10n.components.palHeaderRight.importError);
     }
     closeMenu();

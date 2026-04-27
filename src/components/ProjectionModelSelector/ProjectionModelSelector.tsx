@@ -145,7 +145,7 @@ export const ProjectionModelSelector = observer(
 
               await modelStore.deleteModel(projectionModel);
             } catch (error) {
-              console.error('Failed to delete projection model:', error);
+
               Alert.alert(
                 l10n.models.multimodal.cannotDeleteTitle,
                 error instanceof Error

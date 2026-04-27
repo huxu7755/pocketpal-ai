@@ -66,7 +66,7 @@ export const HFModelSearch: React.FC<HFModelSearchProps> = observer(
     };
 
     const handleSheetDismiss = () => {
-      console.log('Search sheet dismissed, clearing error state');
+
       // Clear error state when the sheet is closed
       hfStore.clearError();
       onDismiss();

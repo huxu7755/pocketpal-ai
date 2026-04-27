@@ -26,7 +26,7 @@ export const useDeepLinking = () => {
         const pal = palStore.pals.find(p => p.id === palId);
 
         if (!pal) {
-          console.error(`Pal not found: ${palId} (${palName})`);
+
 
           // Show user-friendly error message
           Alert.alert(
@@ -48,7 +48,7 @@ export const useDeepLinking = () => {
         // Navigate to chat screen with proper typing
         (navigation as any).navigate(ROUTES.CHAT);
       } catch (error) {
-        console.error('Error handling chat deep link:', error);
+
 
         // Show user-friendly error message
         Alert.alert(
@@ -63,7 +63,7 @@ export const useDeepLinking = () => {
 
   const handleDeepLink = useCallback(
     async (params: DeepLinkParams) => {
-      console.log('Handling deep link:', params);
+
 
       // Handle memory profiling deep links (E2E only)
       if (params.host === 'memory' && params.queryParams?.cmd) {

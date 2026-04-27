@@ -20,7 +20,7 @@ class PalRepository {
       const migrationComplete = await RNFS.exists(migrationFlagPath);
 
       if (migrationComplete) {
-        console.log('Pal database migration already completed');
+
         return false;
       }
 
@@ -33,9 +33,7 @@ class PalRepository {
         return false;
       }
 
-      console.log(
-        'Starting pal migration from AsyncStorage to WatermelonDB...',
-      );
+
 
       // Parse old data
       const parsedData = JSON.parse(oldData);
@@ -100,12 +98,10 @@ class PalRepository {
       // Optionally remove old data
       await AsyncStorage.removeItem('PalStore');
 
-      console.log(
-        `Successfully migrated ${legacyPals.length} pals to database`,
-      );
+
       return true;
     } catch (error) {
-      console.error('Error migrating pals from AsyncStorage:', error);
+
       return false;
     }
   }
@@ -121,7 +117,7 @@ class PalRepository {
 
       return localPals.map(pal => pal.toPal());
     } catch (error) {
-      console.error('Error fetching all pals:', error);
+
       return [];
     }
   }
@@ -134,7 +130,7 @@ class PalRepository {
 
       return localPal.toPal();
     } catch (error) {
-      console.error('Error fetching pal by id:', error);
+
       return null;
     }
   }
@@ -188,7 +184,7 @@ class PalRepository {
 
       return newPal.toPal();
     } catch (error) {
-      console.error('Error creating pal:', error);
+
       throw error;
     }
   }
@@ -292,7 +288,7 @@ class PalRepository {
 
       return updatedPal.toPal();
     } catch (error) {
-      console.error('PalRepository: Error updating pal:', error);
+
       return null;
     }
   }
@@ -309,7 +305,7 @@ class PalRepository {
 
       return true;
     } catch (error) {
-      console.error('Error deleting pal:', error);
+
       return false;
     }
   }
@@ -324,7 +320,7 @@ class PalRepository {
 
       return localPals.map(pal => pal.toPal());
     } catch (error) {
-      console.error('Error fetching local pals:', error);
+
       return [];
     }
   }
@@ -338,7 +334,7 @@ class PalRepository {
 
       return palshubPals.map(pal => pal.toPal());
     } catch (error) {
-      console.error('Error fetching palshub pals:', error);
+
       return [];
     }
   }
@@ -348,7 +344,7 @@ class PalRepository {
       const allPals = await this.getAllPals();
       return allPals.filter(pal => pal.capabilities?.video === true);
     } catch (error) {
-      console.error('Error fetching video pals:', error);
+
       return [];
     }
   }
@@ -363,7 +359,7 @@ class PalRepository {
 
       if (exists) {
         await RNFS.unlink(migrationFlagPath);
-        console.log('Pal migration flag reset successfully');
+
       }
 
       // Also clear all local pals from database
@@ -378,9 +374,9 @@ class PalRepository {
         }
       });
 
-      console.log('All local pals cleared from database');
+
     } catch (error) {
-      console.error('Error resetting pal migration:', error);
+
       throw error;
     }
   }
@@ -401,7 +397,7 @@ class PalRepository {
       }
       return undefined;
     } catch (error) {
-      console.error('Error getting pal completion settings:', error);
+
       return undefined;
     }
   }
@@ -425,7 +421,7 @@ class PalRepository {
         });
       });
     } catch (error) {
-      console.error('Error updating pal completion settings:', error);
+
       throw error;
     }
   }
@@ -443,7 +439,7 @@ class PalRepository {
         });
       });
     } catch (error) {
-      console.error('Error clearing pal completion settings:', error);
+
       throw error;
     }
   }

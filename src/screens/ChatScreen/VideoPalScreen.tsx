@@ -57,7 +57,7 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
       );
 
       if (palDefaultModel) {
-        console.log('Initializing Video Pal model with projection model');
+
 
         // Check if this model supports multimodal and has a default projection model
         if (
@@ -70,36 +70,26 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
           );
 
           if (projectionModel) {
-            console.log(
-              'Found default projection model:',
-              projectionModel.name,
-            );
+
             // Get the projection model path
             modelStore
               .getModelFullPath(projectionModel)
               .then(projectionModelPath => {
-                console.log(
-                  'Initializing with projection model path:',
-                  projectionModelPath,
-                );
+
                 // Initialize with both the main model and projection model
                 modelStore.initContext(palDefaultModel, projectionModelPath);
               })
               .catch(error => {
-                console.error('Failed to get projection model path:', error);
+
                 // Fall back to initializing without projection model
                 modelStore.initContext(palDefaultModel);
               });
           } else {
-            console.warn(
-              'Default projection model not found, initializing without it',
-            );
+
             modelStore.initContext(palDefaultModel);
           }
         } else {
-          console.log(
-            'Model does not support multimodal or has no default projection model',
-          );
+
           modelStore.initContext(palDefaultModel);
         }
       }
@@ -135,7 +125,7 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
 
       setIsCameraActive(true);
     } catch (error) {
-      console.error('Error checking multimodal capability:', error);
+
       safeAlert('Error', 'Failed to check if model supports images.', [
         {
           text: l10n.common.ok,
@@ -153,7 +143,7 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
       try {
         await modelStore.context?.stopCompletion();
       } catch (error) {
-        console.error('Error stopping completion:', error);
+
       }
     }
 
@@ -230,11 +220,11 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
             // We don't need to set the text again as we've been building it token by token
           },
           onError: error => {
-            console.error('Error processing image:', error);
+
           },
         });
       } catch (error) {
-        console.error('Error processing image:', error);
+
       }
     },
     [

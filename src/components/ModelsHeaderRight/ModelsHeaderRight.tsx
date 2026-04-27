@@ -38,7 +38,7 @@ export const ModelsHeaderRight = observer(() => {
       modelStore.resetModels();
       setTrigger(prev => !prev); // Trigger UI refresh
     } catch (error) {
-      console.error('Error resetting models:', error);
+
     } finally {
       hideResetDialog();
     }

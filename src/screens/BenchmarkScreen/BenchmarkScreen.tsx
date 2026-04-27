@@ -106,7 +106,7 @@ export const BenchmarkScreen: React.FC = observer(() => {
         setSelectedModel(model);
       } catch (error) {
         if (error instanceof Error) {
-          console.error('Model initialization error:', error);
+
         }
       }
     } else {
@@ -121,7 +121,7 @@ export const BenchmarkScreen: React.FC = observer(() => {
       const percentage = (used / total) * 100;
       return {total, used, percentage};
     } catch (error) {
-      console.error('Failed to fetch memory stats:', error);
+
       return null;
     }
   };
@@ -133,7 +133,7 @@ export const BenchmarkScreen: React.FC = observer(() => {
         // TODO: This is not working for bench.
         await modelStore.context.stopCompletion();
       } catch (error) {
-        console.error('Error stopping benchmark:', error);
+
       }
     }
   };
@@ -199,7 +199,7 @@ export const BenchmarkScreen: React.FC = observer(() => {
       benchmarkStore.addResult(result);
     } catch (error) {
       if (error instanceof Error) {
-        console.error('Benchmark error:', error);
+
       }
     } finally {
       clearInterval(memoryCheckInterval);
@@ -246,10 +246,10 @@ export const BenchmarkScreen: React.FC = observer(() => {
     }
     try {
       const response = await submitBenchmark(deviceInfo, result);
-      console.log('Benchmark submitted successfully:', response);
+
       benchmarkStore.markAsSubmitted(result.uuid);
     } catch (error) {
-      console.error('Failed to submit benchmark:', error);
+
       throw error;
     }
   };

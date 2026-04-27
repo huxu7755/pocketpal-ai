@@ -189,7 +189,7 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
                   try {
                     await modelStore.deleteModel(model);
                   } catch (error) {
-                    console.error('Failed to delete projection model:', error);
+
                     Alert.alert(
                       l10n.models.multimodal.cannotDeleteTitle,
                       error instanceof Error
@@ -224,7 +224,7 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
     const openHuggingFaceUrl = useCallback(() => {
       if (model.hfUrl) {
         Linking.openURL(model.hfUrl).catch(err => {
-          console.error('Failed to open URL:', err);
+
           setSnackbarVisible(true);
         });
       }
@@ -262,7 +262,7 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
         try {
           await modelStore.setModelVisionEnabled(model.id, enabled);
         } catch (error) {
-          console.error('Failed to toggle vision setting:', error);
+
           // The error is already handled in setModelVisionEnabled (vision state is reverted)
         }
       },
@@ -570,7 +570,7 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
               navigation.navigate('Chat');
             }
           } catch (e) {
-            console.log(`Error: ${e}`);
+
           }
         }
       };

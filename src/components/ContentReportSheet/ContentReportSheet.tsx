@@ -96,7 +96,7 @@ export const ContentReportSheet: React.FC<ContentReportSheetProps> = ({
         [{text: l10n.common.ok, onPress: handleClose}],
       );
     } catch (error) {
-      console.error('Content report submission error:', error);
+
       Alert.alert(
         l10n.components.contentReportSheet.error.title,
         l10n.components.contentReportSheet.error.message,

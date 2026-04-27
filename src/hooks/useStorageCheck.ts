@@ -78,7 +78,7 @@ export const useStorageCheck = (
         }
       } catch (error) {
         if (!abortController.signal.aborted) {
-          console.error('Storage check failed:', error);
+
           setStorageStatus({isOk: false, message: l10n.storage.checkFailed});
         }
       }

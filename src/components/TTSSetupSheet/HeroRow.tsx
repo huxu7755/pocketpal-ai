@@ -55,11 +55,11 @@ export const HeroRow: React.FC = observer(() => {
   const handlePreviewToggle = () => {
     if (isPreviewing) {
       ttsStore.stop().catch(err => {
-        console.warn('[HeroRow] stop failed:', err);
+
       });
     } else {
       ttsStore.preview(current).catch(err => {
-        console.warn('[HeroRow] preview failed:', err);
+
       });
     }
   };

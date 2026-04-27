@@ -195,14 +195,14 @@ export const SystemPromptSection = observer(
       try {
         const selectedModel = getValues().promptGenerationModel;
         if (!selectedModel) {
-          console.error('Active model not found');
+
           return;
         }
 
         if (modelStore.activeModelId !== selectedModel.id) {
           const context = await modelStore.initContext(selectedModel);
           if (!context) {
-            console.error('Failed to initialize context');
+
             return;
           }
         }
@@ -230,7 +230,7 @@ export const SystemPromptSection = observer(
 
         setValue('isSystemPromptChanged', false);
       } catch (err) {
-        console.error('Generation error:', err);
+
       } finally {
       }
     };

@@ -65,7 +65,7 @@ const DevToolsHomeScreen: React.FC = () => {
         'Migration reset successful. Please restart the app.',
       );
     } catch (error) {
-      console.error('Failed to reset migration:', error);
+
       Alert.alert(
         'Error',
         'Failed to reset migration: ' + (error as Error).message,

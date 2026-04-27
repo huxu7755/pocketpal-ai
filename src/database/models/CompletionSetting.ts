@@ -24,17 +24,12 @@ export default class CompletionSetting extends Model {
       const migratedSettings = migrateCompletionSettings(parsedSettings);
 
       if (migratedSettings.version !== parsedSettings.version) {
-        console.log(
-          `Migrated completion settings from version ${parsedSettings.version} to ${migratedSettings.version} for session ${this.sessionId}`,
-        );
-        console.log(
-          'Settings need to be saved by the repository with a proper database.write() call',
-        );
+
       }
 
       return migratedSettings;
     } catch (error) {
-      console.error('Error parsing completion settings:', error);
+
       // Return default settings if parsing fails
       return migrateCompletionSettings({});
     }
