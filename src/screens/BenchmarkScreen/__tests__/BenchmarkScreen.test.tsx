@@ -168,7 +168,6 @@ describe('BenchmarkScreen', () => {
       // Start benchmark
       fireEvent.press(startButton);
 
-
       await waitFor(() => {
         expect(startButton.props.accessibilityState.disabled).toBe(true);
       });

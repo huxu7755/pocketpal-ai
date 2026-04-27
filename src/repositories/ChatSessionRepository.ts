@@ -32,7 +32,6 @@ class ChatSessionRepository {
       const migrationComplete = await RNFS.exists(migrationFlagPath);
 
       if (migrationComplete) {
-
         return false;
       }
 
@@ -45,8 +44,6 @@ class ChatSessionRepository {
         await RNFS.writeFile(migrationFlagPath, 'true');
         return false;
       }
-
-
 
       // Read old data
       const jsonData = await RNFS.readFile(oldDataPath);
@@ -109,7 +106,6 @@ class ChatSessionRepository {
             try {
               // Check if createdAt is valid
               if (!msg.createdAt) {
-
               }
 
               await database.collections
@@ -126,7 +122,6 @@ class ChatSessionRepository {
                   record.createdAt = msg.createdAt || Date.now(); // Use createdAt, not created_at
                 });
             } catch (error) {
-
               throw error; // Re-throw to stop the migration
             }
           }
@@ -157,10 +152,8 @@ class ChatSessionRepository {
       // Mark migration as complete
       await RNFS.writeFile(migrationFlagPath, 'true');
 
-
       return true;
     } catch (error) {
-
       return false;
     }
   }
@@ -366,7 +359,6 @@ class ChatSessionRepository {
           .catch(() => null);
 
         if (!session) {
-
           continue;
         }
 
@@ -481,7 +473,6 @@ class ChatSessionRepository {
         .catch(() => null);
 
       if (!message) {
-
         return false;
       }
 
@@ -503,7 +494,6 @@ class ChatSessionRepository {
 
       return true;
     } catch (error) {
-
       return false;
     }
   }
@@ -656,9 +646,7 @@ class ChatSessionRepository {
       const migrationFlagPath = `${RNFS.DocumentDirectoryPath}/db-migration-complete.flag`;
       if (await RNFS.exists(migrationFlagPath)) {
         await RNFS.unlink(migrationFlagPath);
-
       } else {
-
       }
 
       // Clear the database for a clean migration test
@@ -683,11 +671,7 @@ class ChatSessionRepository {
           }
         }
       });
-
-
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   /**
@@ -696,8 +680,6 @@ class ChatSessionRepository {
    */
   async migrateAllSettings(): Promise<void> {
     try {
-
-
       // Get all completion settings
       const completionSettings = (await database.collections
         .get('completion_settings')
@@ -717,7 +699,6 @@ class ChatSessionRepository {
           const migratedSettings = migrateCompletionSettings(parsedSettings);
           return migratedSettings.version !== parsedSettings.version;
         } catch (error) {
-
           return false;
         }
       });
@@ -733,12 +714,9 @@ class ChatSessionRepository {
           const migratedSettings = migrateCompletionSettings(parsedSettings);
           return migratedSettings.version !== parsedSettings.version;
         } catch (error) {
-
           return false;
         }
       });
-
-
 
       // Migrate settings in a single transaction
       if (settingsToMigrate.length > 0 || globalSettingsToMigrate.length > 0) {
@@ -751,8 +729,6 @@ class ChatSessionRepository {
             await setting.update((record: any) => {
               record.settings = JSON.stringify(migratedSettings);
             });
-
-
           }
 
           // Migrate global settings
@@ -763,18 +739,11 @@ class ChatSessionRepository {
             await setting.update((record: any) => {
               record.value = JSON.stringify(migratedSettings);
             });
-
-
           }
         });
-
-
       } else {
-
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 }
 

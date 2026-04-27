@@ -57,8 +57,6 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
       );
 
       if (palDefaultModel) {
-
-
         // Check if this model supports multimodal and has a default projection model
         if (
           palDefaultModel.supportsMultimodal &&
@@ -70,26 +68,21 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
           );
 
           if (projectionModel) {
-
             // Get the projection model path
             modelStore
               .getModelFullPath(projectionModel)
               .then(projectionModelPath => {
-
                 // Initialize with both the main model and projection model
                 modelStore.initContext(palDefaultModel, projectionModelPath);
               })
               .catch(error => {
-
                 // Fall back to initializing without projection model
                 modelStore.initContext(palDefaultModel);
               });
           } else {
-
             modelStore.initContext(palDefaultModel);
           }
         } else {
-
           modelStore.initContext(palDefaultModel);
         }
       }
@@ -125,7 +118,6 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
 
       setIsCameraActive(true);
     } catch (error) {
-
       safeAlert('Error', 'Failed to check if model supports images.', [
         {
           text: l10n.common.ok,
@@ -142,9 +134,7 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
     if (modelStore.inferencing || modelStore.isStreaming) {
       try {
         await modelStore.context?.stopCompletion();
-      } catch (error) {
-
-      }
+      } catch (error) {}
     }
 
     // Clear response text and stop camera
@@ -219,13 +209,9 @@ export const VideoPalScreen = observer(({activePal}: VideoPalScreenProps) => {
             // This is called when the entire completion is done
             // We don't need to set the text again as we've been building it token by token
           },
-          onError: error => {
-
-          },
+          onError: error => {},
         });
-      } catch (error) {
-
-      }
+      } catch (error) {}
     },
     [
       promptText,

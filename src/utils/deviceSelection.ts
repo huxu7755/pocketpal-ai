@@ -33,7 +33,6 @@ export async function getAvailableDevices(): Promise<
     const devices = await getBackendDevicesInfo();
     return devices || [];
   } catch (error) {
-
     return [];
   }
 }

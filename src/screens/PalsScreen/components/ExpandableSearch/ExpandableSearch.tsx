@@ -50,7 +50,6 @@ export const ExpandableSearch: React.FC<ExpandableSearchProps> = observer(
         // For now, use cached results since searchPalsHubPals updates the store
         onSearchResults(palStore.cachedPalsHubPals);
       } catch (error) {
-
         onSearchResults([]);
       }
     }, [searchQuery, onSearchResults]);

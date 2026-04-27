@@ -50,9 +50,7 @@ export const UsageStats: React.FC<UsageStatsProps> = ({
       const percentage = (used / total) * 100;
       setMemoryStats({totalMemory: total, usedMemory: used, percentage});
       setMemoryHistory(prev => [...prev.slice(-9), percentage]);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, []);
 
   useEffect(() => {

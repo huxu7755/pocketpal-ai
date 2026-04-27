@@ -51,7 +51,6 @@ const DatabaseInspectorScreen = () => {
           ...record._raw,
         }));
       } catch (error) {
-
         data[collectionName] = [];
       }
     }
@@ -68,7 +67,6 @@ const DatabaseInspectorScreen = () => {
       await chatSessionRepository.resetMigration();
       Alert.alert('Chat migration reset successful', 'Please restart the app.');
     } catch (error) {
-
       Alert.alert(
         'Failed to reset chat migration',
         error instanceof Error ? error.message : 'Unknown error occurred',
@@ -81,7 +79,6 @@ const DatabaseInspectorScreen = () => {
       await palRepository.resetMigration();
       Alert.alert('Pal migration reset successful', 'Please restart the app.');
     } catch (error) {
-
       Alert.alert(
         'Failed to reset pal migration',
         error instanceof Error ? error.message : 'Unknown error occurred',

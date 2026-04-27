@@ -41,7 +41,6 @@ function extractJsonSchema(
     const schemaJson = match[1].trim();
     return JSON.parse(schemaJson);
   } catch (error) {
-
     return null;
   }
 }
@@ -195,7 +194,6 @@ export function generateFinalSystemPrompt(
       },
     );
   } catch (error) {
-
     return template;
   }
 }

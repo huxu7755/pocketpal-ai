@@ -18,9 +18,7 @@ const adapter = new SQLiteAdapter({
   migrations,
   dbName: 'pocketpalai',
   jsi: true, // enable JSI for better performance if available
-  onSetUpError: error => {
-
-  },
+  onSetUpError: error => {},
 });
 
 export const database = new Database({

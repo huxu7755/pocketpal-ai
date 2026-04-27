@@ -8,7 +8,6 @@ export const activateKeepAwake = (): void => {
   try {
     NativeKeepAwake.activate();
   } catch (error) {
-
     throw error;
   }
 };
@@ -21,7 +20,6 @@ export const deactivateKeepAwake = (): void => {
   try {
     NativeKeepAwake.deactivate();
   } catch (error) {
-
     throw error;
   }
 };

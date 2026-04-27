@@ -71,7 +71,6 @@ export function createEngineStreamingHandle(
       });
     })
     .catch(err => {
-
       throw err;
     });
 

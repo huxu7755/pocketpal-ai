@@ -24,12 +24,10 @@ export default class CompletionSetting extends Model {
       const migratedSettings = migrateCompletionSettings(parsedSettings);
 
       if (migratedSettings.version !== parsedSettings.version) {
-
       }
 
       return migratedSettings;
     } catch (error) {
-
       // Return default settings if parsing fails
       return migrateCompletionSettings({});
     }

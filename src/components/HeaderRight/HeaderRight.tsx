@@ -107,7 +107,6 @@ export const HeaderRight: React.FC = observer(() => {
       try {
         await exportChatSession(session.id);
       } catch (error) {
-
         Alert.alert('Export Error', 'Failed to export the current session.');
       }
     }
@@ -118,7 +117,6 @@ export const HeaderRight: React.FC = observer(() => {
     try {
       await exportAllChatSessions();
     } catch (error) {
-
       Alert.alert('Export Error', 'Failed to export all sessions.');
     }
     closeMenu();
@@ -136,7 +134,6 @@ export const HeaderRight: React.FC = observer(() => {
         await chatSessionStore.loadSessionList();
       }
     } catch (error) {
-
       Alert.alert('Import Error', l10n.settings.importError);
     }
     closeMenu();

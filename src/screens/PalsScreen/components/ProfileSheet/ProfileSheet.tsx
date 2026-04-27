@@ -40,7 +40,6 @@ export const ProfileSheet: React.FC<ProfileSheetProps> = observer(
                 await authService.signOut();
                 onClose();
               } catch (error) {
-
                 Alert.alert(
                   l10n.errors.unexpectedError,
                   l10n.palsScreen.signOutError,

@@ -20,7 +20,6 @@ class PalRepository {
       const migrationComplete = await RNFS.exists(migrationFlagPath);
 
       if (migrationComplete) {
-
         return false;
       }
 
@@ -32,8 +31,6 @@ class PalRepository {
         await RNFS.writeFile(migrationFlagPath, 'true');
         return false;
       }
-
-
 
       // Parse old data
       const parsedData = JSON.parse(oldData);
@@ -98,10 +95,8 @@ class PalRepository {
       // Optionally remove old data
       await AsyncStorage.removeItem('PalStore');
 
-
       return true;
     } catch (error) {
-
       return false;
     }
   }
@@ -117,7 +112,6 @@ class PalRepository {
 
       return localPals.map(pal => pal.toPal());
     } catch (error) {
-
       return [];
     }
   }
@@ -130,7 +124,6 @@ class PalRepository {
 
       return localPal.toPal();
     } catch (error) {
-
       return null;
     }
   }
@@ -184,7 +177,6 @@ class PalRepository {
 
       return newPal.toPal();
     } catch (error) {
-
       throw error;
     }
   }
@@ -288,7 +280,6 @@ class PalRepository {
 
       return updatedPal.toPal();
     } catch (error) {
-
       return null;
     }
   }
@@ -305,7 +296,6 @@ class PalRepository {
 
       return true;
     } catch (error) {
-
       return false;
     }
   }
@@ -320,7 +310,6 @@ class PalRepository {
 
       return localPals.map(pal => pal.toPal());
     } catch (error) {
-
       return [];
     }
   }
@@ -334,7 +323,6 @@ class PalRepository {
 
       return palshubPals.map(pal => pal.toPal());
     } catch (error) {
-
       return [];
     }
   }
@@ -344,7 +332,6 @@ class PalRepository {
       const allPals = await this.getAllPals();
       return allPals.filter(pal => pal.capabilities?.video === true);
     } catch (error) {
-
       return [];
     }
   }
@@ -359,7 +346,6 @@ class PalRepository {
 
       if (exists) {
         await RNFS.unlink(migrationFlagPath);
-
       }
 
       // Also clear all local pals from database
@@ -373,10 +359,7 @@ class PalRepository {
           await pal.destroyPermanently();
         }
       });
-
-
     } catch (error) {
-
       throw error;
     }
   }
@@ -397,7 +380,6 @@ class PalRepository {
       }
       return undefined;
     } catch (error) {
-
       return undefined;
     }
   }
@@ -421,7 +403,6 @@ class PalRepository {
         });
       });
     } catch (error) {
-
       throw error;
     }
   }
@@ -439,7 +420,6 @@ class PalRepository {
         });
       });
     } catch (error) {
-
       throw error;
     }
   }

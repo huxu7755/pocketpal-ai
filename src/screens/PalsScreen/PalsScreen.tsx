@@ -82,8 +82,7 @@ export const PalsScreen: React.FC = observer(() => {
             await syncService.syncAll();
           }
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     runInitialSetup();
@@ -125,8 +124,7 @@ export const PalsScreen: React.FC = observer(() => {
           palStore.loadUserCreatedPals(),
         ]);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const onRefresh = useCallback(async () => {

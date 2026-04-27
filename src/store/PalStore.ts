@@ -68,7 +68,6 @@ class PalStore {
   constructor() {
     makeAutoObservable(this);
     this.initialize();
-
   }
 
   async initialize() {
@@ -89,14 +88,11 @@ class PalStore {
       // Check storefront region for buy button gating
       this.checkRegion();
 
-
-
       runInAction(() => {
         this.isMigrating = false;
         this.migrationComplete = true;
       });
     } catch (error) {
-
       runInAction(() => {
         this.isMigrating = false;
         this.migrationComplete = false;
@@ -110,9 +106,7 @@ class PalStore {
       runInAction(() => {
         this.isUSRegion = isUS;
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   /**
@@ -124,9 +118,7 @@ class PalStore {
       runInAction(() => {
         this.pals = pals;
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   // Core unified pal management methods
@@ -173,7 +165,6 @@ class PalStore {
         throw new Error('Failed to update pal - no updated pal returned');
       }
     } catch (error) {
-
       throw error; // Re-throw so calling code can handle it
     }
   };
@@ -195,7 +186,6 @@ class PalStore {
             // deletePalThumbnail now handles all path formats (relative, absolute, file://)
             await deletePalThumbnail(pal.thumbnail_url);
           } catch (imageError) {
-
             // Don't fail the entire deletion if image cleanup fails
           }
         }
@@ -206,9 +196,7 @@ class PalStore {
           }
         });
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   /**
@@ -248,7 +236,6 @@ class PalStore {
       // Download thumbnail image if available
       if (palsHubPal.thumbnail_url) {
         try {
-
           relativeThumbnailPath = await downloadPalThumbnail(
             pal.id,
             palsHubPal.thumbnail_url,
@@ -256,9 +243,7 @@ class PalStore {
 
           // Update the pal with the relative path (no file:// protocol)
           pal.thumbnail_url = relativeThumbnailPath;
-
         } catch (imageError) {
-
           // Keep the original remote URL as fallback
           pal.thumbnail_url = palsHubPal.thumbnail_url;
         }
@@ -272,10 +257,7 @@ class PalStore {
         if (relativeThumbnailPath) {
           try {
             await deletePalThumbnail(relativeThumbnailPath);
-
-          } catch (cleanupError) {
-
-          }
+          } catch (cleanupError) {}
         }
         throw dbError;
       }
@@ -297,11 +279,9 @@ class PalStore {
           repoId: modelRef.repo_id,
           full: true,
         }).catch((error: any) => {
-
           return null;
         }),
         fetchModelFilesDetails(modelRef.repo_id).catch((error: any) => {
-
           return [];
         }),
       ]);
@@ -371,8 +351,6 @@ class PalStore {
       // Use the existing hfAsModel function to create a complete Model object
       return hfAsModel(hfModel, modelFile);
     } catch (error) {
-
-
       // Fallback: create basic model with available data
       return this.createBasicModelFromReference(modelRef);
     }
@@ -505,7 +483,6 @@ class PalStore {
 
       return response;
     } catch (error) {
-
       runInAction(() => {
         this.cachedPalsHubPals = []; // Set empty array instead of failing
         this.isLoadingPalsHub = false;
@@ -540,7 +517,6 @@ class PalStore {
 
       return response;
     } catch (error) {
-
       runInAction(() => {
         this.userLibrary = []; // Set empty array instead of failing
         this.isLoadingPalsHub = false;
@@ -575,7 +551,6 @@ class PalStore {
 
       return response;
     } catch (error) {
-      
       runInAction(() => {
         this.userCreatedPals = []; // Set empty array instead of failing
         this.isLoadingPalsHub = false;
@@ -623,7 +598,6 @@ class PalStore {
     try {
       return await palsHubService.getCategories();
     } catch (error) {
-
       throw error;
     }
   };
@@ -635,7 +609,6 @@ class PalStore {
     try {
       return await palsHubService.getTags(query);
     } catch (error) {
-
       throw error;
     }
   };
@@ -647,7 +620,6 @@ class PalStore {
     try {
       return await palsHubService.getPal(id);
     } catch (error) {
-
       throw error;
     }
   };
@@ -659,7 +631,6 @@ class PalStore {
     try {
       return await palsHubService.checkPalOwnership(palId);
     } catch (error) {
-
       throw error;
     }
   };
@@ -675,8 +646,6 @@ class PalStore {
       );
 
       if (!lookiePal) {
-
-
         // Find the default SmolVLM model directly from defaultModels
         // This avoids timing issues with ModelStore initialization
         const defaultModelId =
@@ -714,11 +683,8 @@ class PalStore {
 
         await this.addPal(palData);
       } else {
-
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 }
 

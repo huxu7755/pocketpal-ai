@@ -27,7 +27,6 @@ export const initializeAppCheck = async () => {
       __DEV__ &&
       (!APPCHECK_DEBUG_TOKEN_ANDROID || !APPCHECK_DEBUG_TOKEN_IOS)
     ) {
-
       return;
     }
 
@@ -51,7 +50,6 @@ export const initializeAppCheck = async () => {
 
     isAppCheckInitialized = true;
   } catch (error) {
-
     throw error;
   }
 };
@@ -62,7 +60,6 @@ export const getAppCheckToken = async () => {
     const {token} = await appCheckInstance.getToken();
     return token;
   } catch (error) {
-
     throw error;
   }
 };

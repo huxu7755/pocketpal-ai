@@ -61,7 +61,6 @@ export const EmbeddedVideoView = observer(
       if (!hasPermission) {
         const requestCameraPermission = async () => {
           try {
-
             const result = await requestPermission();
 
             if (!result) {
@@ -78,7 +77,6 @@ export const EmbeddedVideoView = observer(
               );
             }
           } catch (error) {
-
             Alert.alert(
               l10n.video.permissionTitle,
               l10n.video.permissionMessage,
@@ -123,7 +121,6 @@ export const EmbeddedVideoView = observer(
             try {
               await RNFS.unlink(filePath);
             } catch (deleteError) {
-
               // Don't throw - continue with the base64 data even if cleanup fails
             }
 
@@ -133,7 +130,6 @@ export const EmbeddedVideoView = observer(
             onCapture(imageBase64);
           } catch (error) {
             // Only log error if camera is still supposed to be active
-
           } finally {
             setIsCapturing(false);
           }

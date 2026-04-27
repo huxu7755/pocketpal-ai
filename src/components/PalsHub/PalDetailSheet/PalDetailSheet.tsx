@@ -59,7 +59,6 @@ export const PalDetailSheet: React.FC<PalDetailSheetProps> = observer(
           const detailed = await palsHubService.getPal(pal.id);
           setDetailedPal(detailed);
         } catch (fetchError) {
-
           // Fallback to basic pal information if detailed fetch fails
           setDetailedPal(pal);
           const errorMessage =

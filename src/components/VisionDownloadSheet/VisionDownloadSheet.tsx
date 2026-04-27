@@ -71,7 +71,6 @@ export const VisionDownloadSheet: React.FC<VisionDownloadSheetProps> = ({
       });
       onClose();
     } catch (error) {
-
     } finally {
       setIsDownloading(false);
     }

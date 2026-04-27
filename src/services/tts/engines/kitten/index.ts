@@ -59,7 +59,6 @@ export class KittenEngine implements Engine {
       }
       return RNFS.exists(this.getFilePath(TTS_DICT_FILENAME));
     } catch (err) {
-
       return false;
     }
   }
@@ -126,9 +125,7 @@ export class KittenEngine implements Engine {
         if (await RNFS.exists(modelDir)) {
           await RNFS.unlink(modelDir);
         }
-      } catch (cleanupErr) {
-
-      }
+      } catch (cleanupErr) {}
       throw err;
     }
   }
@@ -138,9 +135,7 @@ export class KittenEngine implements Engine {
       if (await RNFS.exists(this.getModelPath())) {
         await RNFS.unlink(this.getModelPath());
       }
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   async loadInto(): Promise<void> {

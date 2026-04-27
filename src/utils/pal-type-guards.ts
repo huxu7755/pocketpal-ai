@@ -44,6 +44,5 @@ export function handlePalByType(pal: AnyPal, handlers: PalHandlers): void {
   } else if (isPalsHubPal(pal)) {
     handlers.onPalsHubPal(pal);
   } else {
-
   }
 }

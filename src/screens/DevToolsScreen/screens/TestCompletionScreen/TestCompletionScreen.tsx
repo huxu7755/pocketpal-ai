@@ -161,9 +161,7 @@ export const TestCompletionScreen: React.FC = observer(() => {
       try {
         await modelStore.initContext(model);
         setSelectedModel(model);
-      } catch (error) {
-
-      }
+      } catch (error) {}
     } else {
       setSelectedModel(model);
     }
@@ -186,7 +184,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
     if (!modelStore.context) {
       return;
     }
-
 
     setIsRunning(true);
     setCurrentTest('chatCompletion');
@@ -253,7 +250,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
       return;
     }
 
-
     setIsRunning(true);
     setCurrentTest('textCompletion');
     setTokenBuffer('');
@@ -311,7 +307,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
     if (!modelStore.context) {
       return;
     }
-
 
     setIsRunning(true);
     setCurrentTest('textCompletion');
@@ -393,7 +388,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * Wrapper function to run the appropriate text completion test based on user selection
    */
   const runTextCompletionTest = async () => {
-
     if (textCompletionMethod === 'direct') {
       await runTextCompletionDirectTest();
     } else {
@@ -412,7 +406,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Demonstrates how models can generate structured data for API calls
    */
   const runToolCallingTest = async () => {
-
     if (!modelStore.context) {
       return;
     }
@@ -483,7 +476,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Grammar is applied directly in the completion parameters
    */
   const runGrammarSamplingTest = async () => {
-
     if (!modelStore.context) {
       return;
     }
@@ -554,7 +546,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Useful for debugging and understanding the chat formatting process
    */
   const runFormattedChatTest = async () => {
-
     if (!modelStore.context) {
       return;
     }
@@ -600,7 +591,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
       }> = [];
 
       for (const testCase of testCases) {
-
         try {
           const formattedChat = await modelStore.context.getFormattedChat(
             SAMPLE_CHAT_MESSAGES,
@@ -613,7 +603,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
             result: formattedChat,
           });
         } catch (error) {
-
           _results.push({
             name: testCase.name,
             result: `Error: ${
@@ -623,7 +612,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
         }
       }
 
-
       setResults(prev => ({
         ...prev,
         formattedChat: {
@@ -631,7 +619,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
         },
       }));
     } catch (error) {
-
       setResults(prev => ({
         ...prev,
         formattedChat: {
@@ -669,7 +656,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
    * - Helps understand how the current implementation handles grammar triggers
    */
   const runGrammarTriggersTest = async () => {
-
     if (!modelStore.context) {
       return;
     }
@@ -758,8 +744,6 @@ export const TestCompletionScreen: React.FC = observer(() => {
 
       for (const testCase of testCases) {
         try {
-
-
           const completionParams: CompletionParams = {
             messages: [
               {

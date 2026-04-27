@@ -198,7 +198,6 @@ export const useMemoryCheck = (
         setShortMemoryWarning('');
         setMultimodalWarning('');
         setFitStatus('fits');
-
       }
     };
 

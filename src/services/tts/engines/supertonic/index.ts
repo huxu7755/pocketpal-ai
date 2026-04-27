@@ -84,7 +84,6 @@ export class SupertonicEngine implements Engine {
       }
       return RNFS.exists(this.getFilePath(SUPERTONIC_VOICES_MANIFEST_FILENAME));
     } catch (err) {
-
       return false;
     }
   }
@@ -175,11 +174,8 @@ export class SupertonicEngine implements Engine {
             progressInterval: 1000,
           }).promise;
           if (result.statusCode !== 200) {
-
           }
-        } catch (voiceErr) {
-
-        }
+        } catch (voiceErr) {}
         voicesDone++;
         if (onProgress) {
           onProgress(
@@ -213,9 +209,7 @@ export class SupertonicEngine implements Engine {
         if (await RNFS.exists(modelDir)) {
           await RNFS.unlink(modelDir);
         }
-      } catch (cleanupErr) {
-
-      }
+      } catch (cleanupErr) {}
       throw err;
     }
   }
@@ -225,9 +219,7 @@ export class SupertonicEngine implements Engine {
       if (await RNFS.exists(this.getModelPath())) {
         await RNFS.unlink(this.getModelPath());
       }
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   async loadInto(): Promise<void> {

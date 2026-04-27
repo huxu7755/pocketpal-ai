@@ -288,7 +288,6 @@ export class DownloadManager {
       // Store the jobId immediately for cancellation
       downloadJob.jobId = downloadResult.jobId;
 
-
       // Add job to map after setting jobId
       this.downloadJobs.set(model.id, downloadJob);
 
@@ -302,7 +301,6 @@ export class DownloadManager {
         throw new Error(`Download failed with status: ${result.statusCode}`);
       }
     } catch (error) {
-
       const job = this.downloadJobs.get(model.id);
       if (job) {
         job.state.error =
@@ -324,8 +322,6 @@ export class DownloadManager {
     authToken?: string | null,
   ): Promise<void> {
     try {
-
-
       const downloadJob: DownloadJob = {
         model,
         state: {
@@ -356,8 +352,6 @@ export class DownloadManager {
       this.downloadJobs.set(model.id, downloadJob);
       this.callbacks.onStart?.(model.id);
     } catch (error) {
-
-
       const job = this.downloadJobs.get(model.id);
       if (job) {
         job.state.error =
@@ -406,8 +400,7 @@ export class DownloadManager {
         // Update state and remove job
         job.state.isDownloading = false;
         this.downloadJobs.delete(modelId);
-      } catch (err) {
-      }
+      } catch (err) {}
     }
   }
 
@@ -491,10 +484,8 @@ export class DownloadManager {
           if (NativeDownloadModule.reattachDownloadObserver) {
             await NativeDownloadModule.reattachDownloadObserver(download.id);
           }
-        } catch (error) {
-        }
+        } catch (error) {}
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 }

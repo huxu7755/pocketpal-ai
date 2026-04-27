@@ -47,7 +47,6 @@ export async function isRepackableQuantization(
           numericValue,
         );
         if (isRepackable) {
-
         }
         return isRepackable;
       }
@@ -56,7 +55,6 @@ export async function isRepackableQuantization(
         fileType.toUpperCase().includes(quant.toUpperCase()),
       );
       if (isRepackable) {
-
       }
       return isRepackable;
     }
@@ -67,14 +65,12 @@ export async function isRepackableQuantization(
         fileType,
       );
       if (isRepackable) {
-
       }
       return isRepackable;
     }
 
     return false;
   } catch (error) {
-
     return false;
   }
 }

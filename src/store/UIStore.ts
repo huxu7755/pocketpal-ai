@@ -53,7 +53,6 @@ export class UIStore {
 
   showError(message: string) {
     // TODO: Implement error display logic (e.g., toast, alert, etc.)
-
   }
 
   setChatWarning(warning: ErrorState | null) {
@@ -96,7 +95,6 @@ export class UIStore {
       if (this.pageStates[page]) {
         this.pageStates[page][key] = value;
       } else {
-
       }
     });
   }

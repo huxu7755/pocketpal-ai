@@ -148,7 +148,6 @@ export const ModelErrorReportSheet: React.FC<ModelErrorReportSheetProps> = ({
         [{text: l10n.common.ok, onPress: handleClose}],
       );
     } catch (err) {
-
       Alert.alert(
         l10n.components.modelErrorReportSheet.error.title,
         l10n.components.modelErrorReportSheet.error.message,

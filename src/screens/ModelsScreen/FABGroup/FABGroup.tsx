@@ -113,9 +113,7 @@ export const FABGroup: React.FC<FABGroupProps> = ({
       onStateChange={onStateChange}
       onPress={() => {
         if (open) {
-
         } else {
-
         }
       }}
       fabStyle={styles.fab}

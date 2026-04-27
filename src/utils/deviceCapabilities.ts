@@ -115,7 +115,6 @@ export async function checkGpuSupport(): Promise<GpuCapabilities> {
         },
       };
     } catch (error) {
-
       return {
         isSupported: false,
         reason: 'unknown',
@@ -171,7 +170,6 @@ export async function getCpuInfo(): Promise<CpuInfo | null> {
       hasI8mm: info.hasI8mm,
     };
   } catch (error) {
-
     return null;
   }
 }
@@ -214,7 +212,6 @@ export async function isHighEndDevice(): Promise<boolean> {
 
     return ramOK && cpuOK;
   } catch (error) {
-
     return false; // Conservative fallback
   }
 }
@@ -228,7 +225,6 @@ export async function getGpuInfo(): Promise<GPUInfo | null> {
     const info = await NativeHardwareInfo.getGPUInfo();
     return info || null;
   } catch (error) {
-
     return null;
   }
 }
@@ -246,7 +242,6 @@ export async function getChipsetInfo(): Promise<string | null> {
     const chipset = await NativeHardwareInfo.getChipset?.();
     return chipset || null;
   } catch (error) {
-
     return null;
   }
 }

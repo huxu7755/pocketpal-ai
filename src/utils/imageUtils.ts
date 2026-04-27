@@ -56,10 +56,8 @@ const ensurePalImagesDirectory = async (): Promise<void> => {
     const exists = await RNFS.exists(PAL_IMAGES_DIR);
     if (!exists) {
       await RNFS.mkdir(PAL_IMAGES_DIR);
-
     }
   } catch (error) {
-
     throw error;
   }
 };
@@ -115,11 +113,8 @@ export const downloadPalThumbnail = async (
     // Check if file already exists
     const exists = await RNFS.exists(absolutePath);
     if (exists) {
-
       return filename; // Return filename for storage
     }
-
-
 
     // Download the image
     const downloadResult = await RNFS.downloadFile({
@@ -131,7 +126,6 @@ export const downloadPalThumbnail = async (
     }).promise;
 
     if (downloadResult.statusCode === 200) {
-
       return filename; // Return filename for storage
     } else {
       throw new Error(
@@ -139,7 +133,6 @@ export const downloadPalThumbnail = async (
       );
     }
   } catch (error) {
-
     throw error;
   }
 };
@@ -156,10 +149,8 @@ export const deletePalThumbnail = async (filename: string): Promise<void> => {
     const exists = await RNFS.exists(absolutePath);
     if (exists) {
       await RNFS.unlink(absolutePath);
-
     }
   } catch (error) {
-
     // Don't throw error for cleanup operations
   }
 };
@@ -177,7 +168,6 @@ export const localThumbnailExists = async (
     const absolutePath = getAbsoluteThumbnailPath(filename);
     return await RNFS.exists(absolutePath);
   } catch (error) {
-
     return false;
   }
 };
@@ -197,7 +187,6 @@ export const getLocalThumbnailPath = async (
     const exists = await localThumbnailExists(filename);
     return exists ? filename : null;
   } catch (error) {
-
     return null;
   }
 };
@@ -224,13 +213,11 @@ export const cleanupOrphanedThumbnails = async (
         const palId = file.name.split('_thumbnail.')[0];
 
         if (!activeIdSet.has(palId)) {
-
           await RNFS.unlink(file.path);
         }
       }
     }
   } catch (error) {
-
     // Don't throw error for cleanup operations
   }
 };

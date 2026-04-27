@@ -109,7 +109,6 @@ export async function getHexagonInfo(chipset?: string): Promise<HexagonInfo[]> {
 
     return hexagonInfo;
   } catch (error) {
-
     return [];
   }
 }

@@ -17,9 +17,7 @@ export const AppWithMigration: React.FC<{children: React.ReactNode}> = ({
 
         // Migrate all settings to the latest version
         await chatSessionRepository.migrateAllSettings();
-      } catch (error) {
-
-      }
+      } catch (error) {}
     };
 
     migrateSettings();

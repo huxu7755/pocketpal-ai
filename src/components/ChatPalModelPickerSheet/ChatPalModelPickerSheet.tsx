@@ -45,7 +45,6 @@ const ObservedSkillsDisplay = observer(({model}) => {
         !modelStore.getModelVisionPreference(model),
       );
     } catch (error) {
-
       // The error is already handled in setModelVisionEnabled (vision state is reverted)
       // We could show a toast/snackbar here if needed
     }
@@ -148,9 +147,7 @@ export const ChatPalModelPickerSheet = observer(
           onModelSelect?.(model.id);
           onClose();
           modelStore.selectModel(model);
-        } catch (e) {
-
-        }
+        } catch (e) {}
       },
       [onModelSelect, onClose],
     );

@@ -62,7 +62,6 @@ export const SearchView = observer(
 
       // Debounce onEndReached calls to prevent rapid successive calls
       if (timeSinceLastCall < 1000) {
-
         return;
       }
 
@@ -137,7 +136,6 @@ export const SearchView = observer(
     // Renders the appropriate empty state based on loading, error or no results
     const renderEmptyState = observer(() => {
       if (hfStore.isLoading) {
-
         return null;
       }
 

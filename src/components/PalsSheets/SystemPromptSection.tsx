@@ -195,14 +195,12 @@ export const SystemPromptSection = observer(
       try {
         const selectedModel = getValues().promptGenerationModel;
         if (!selectedModel) {
-
           return;
         }
 
         if (modelStore.activeModelId !== selectedModel.id) {
           const context = await modelStore.initContext(selectedModel);
           if (!context) {
-
             return;
           }
         }
@@ -230,7 +228,6 @@ export const SystemPromptSection = observer(
 
         setValue('isSystemPromptChanged', false);
       } catch (err) {
-
       } finally {
       }
     };

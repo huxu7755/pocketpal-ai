@@ -285,7 +285,6 @@ export const SquarePalCard: React.FC<SquarePalCardProps> = observer(
                         await palStore.downloadPalsHubPal(pal);
                       await activatePalAndNavigate(downloadedPal);
                     } catch (error) {
-
                       Alert.alert(
                         'Download Error',
                         'Failed to download pal. Please try again.',
@@ -303,7 +302,6 @@ export const SquarePalCard: React.FC<SquarePalCardProps> = observer(
 
         await activatePalAndNavigate(localPal);
       } catch (error) {
-
         Alert.alert('Error', 'Failed to start chat. Please try again.');
       }
     };
@@ -371,7 +369,6 @@ export const SquarePalCard: React.FC<SquarePalCardProps> = observer(
       try {
         await exportPal(pal.id);
       } catch (error) {
-
         Alert.alert('Share Error', 'Failed to share pal. Please try again.', [
           {text: 'OK'},
         ]);

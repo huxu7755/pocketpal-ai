@@ -35,6 +35,7 @@ PocketPal AI is a pocket-sized AI assistant powered by small language models (SL
   - [Acknowledgements](#acknowledgements)
 
 ## 📰 News & Announcements
+
 - **🔒 HF Token Authentication (v1.9.0, Apr, 2025)**: Access gated models from Hugging Face with your authentication token.
 - **🌐 Localization Support (v1.8.16, Apr, 2025)**: PocketPal AI now supports multiple languages (At the moment Japanese and Chinese).
 - **📱 iPad Support (v1.8.12, Mar, 2025)**: Full support for iPad devices including landscape orientation.
@@ -90,7 +91,7 @@ Get PocketPal AI on Google Play:
 - After downloading, tap **Load** next to the model to load it to memory.
 - You can also load a model directly within the chat page using the chevron icon on the left side of the chat input.
 
-### Chatting with the model 
+### Chatting with the model
 
 1. Ensure a model is loaded.
 2. Navigate to the **Chat** page from the menu.
@@ -105,7 +106,7 @@ Get PocketPal AI on Google Play:
 - **Copy Entire Response**: Tap the copy icon at the bottom of the AI's response bubble.
 - **Copy Specific Paragraph**: Long-press on a paragraph to copy its content.
 
-*Note*: Preserving text formatting while copying is currently limited. We're working on improving this feature.
+_Note_: Preserving text formatting while copying is currently limited. We're working on improving this feature.
 
 ### Message Editing
 
@@ -168,7 +169,7 @@ Access gated models from Hugging Face by setting up your authentication token:
 Share your thoughts directly from the app:
 
 1. Navigate to the App Info page
-2. Tap on "Sharing your thoughts" 
+2. Tap on "Sharing your thoughts"
 3. Type in whatever you'd like to share, from feature requests to suggestions
 4. Hit "Submit Feedback"
 
@@ -210,7 +211,6 @@ Interested in contributing or running the app locally? Follow the steps below.
    ```
 
 4. **Run the App**
-
    - **iOS Simulator**
 
      ```bash
@@ -265,7 +265,6 @@ We welcome all contributions! Please read our [Contributing Guidelines](CONTRIBU
 
 3. **Make Your Changes**
 4. **Test Your Changes**
-
    - **Run on iOS**
 
      ```bash
@@ -286,7 +285,6 @@ We welcome all contributions! Please read our [Contributing Guidelines](CONTRIBU
    ```
 
 6. **Commit Your Changes**
-
    - Follow the Conventional Commits format:
 
      ```bash

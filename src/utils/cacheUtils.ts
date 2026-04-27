@@ -33,7 +33,6 @@ export const sessionCacheDirectoryExists = async (): Promise<boolean> => {
     const cacheDir = getSessionCacheDirectory();
     return await RNFS.exists(cacheDir);
   } catch (error) {
-
     return false;
   }
 };
@@ -69,7 +68,6 @@ export const getSessionCacheInfo = async (): Promise<{
       totalSizeBytes: totalSize,
     };
   } catch (error) {
-
     return {fileCount: 0, totalSizeBytes: 0};
   }
 };
@@ -86,7 +84,6 @@ export const clearAllSessionCaches = async (): Promise<number> => {
     const exists = await RNFS.exists(cacheDir);
 
     if (!exists) {
-
       return 0;
     }
 
@@ -98,17 +95,12 @@ export const clearAllSessionCaches = async (): Promise<number> => {
         try {
           await RNFS.unlink(file.path);
           deletedCount++;
-
-        } catch (error) {
-
-        }
+        } catch (error) {}
       }
     }
 
-
     return deletedCount;
   } catch (error) {
-
     throw error;
   }
 };
@@ -148,7 +140,6 @@ export const clearSessionCacheForPal = async (
 
     return deletedAny;
   } catch (error) {
-    
     throw error;
   }
 };

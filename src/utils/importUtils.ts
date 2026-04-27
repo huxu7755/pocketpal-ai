@@ -74,7 +74,6 @@ export const pickJsonFile = async (): Promise<string | null> => {
           // ignore
           return null;
         default:
-
           throw new Error('unknown error');
       }
     }
@@ -90,7 +89,6 @@ export const readJsonFile = async (fileUri: string): Promise<any> => {
     const fileContent = await RNFS.readFile(fileUri, 'utf8');
     return JSON.parse(fileContent);
   } catch (error) {
-
     throw new Error('Failed to read or parse the selected file');
   }
 };
@@ -200,7 +198,6 @@ export const importChatSessions = async (): Promise<number> => {
       return 1;
     }
   } catch (error) {
-
     throw error;
   }
 };
@@ -233,7 +230,6 @@ const importSingleSession = async (
       session.activePalId,
     );
   } catch (error) {
-
     throw error;
   }
 };
@@ -300,7 +296,6 @@ export const importPals = async (): Promise<number> => {
       return 1;
     }
   } catch (error) {
-
     throw error;
   }
 };
@@ -410,7 +405,6 @@ const transformImportPal = async (
       const newPalId = uuidv4();
       thumbnailUrl = await saveBase64Image(pal.thumbnail_data, newPalId);
     } catch (error) {
-
       thumbnailUrl = undefined; // Fall back to no thumbnail
     }
   }
@@ -458,7 +452,6 @@ const importSinglePal = async (pal: ImportedPal): Promise<void> => {
 
     await palStore.createPal(palData);
   } catch (error) {
-
     throw error;
   }
 };

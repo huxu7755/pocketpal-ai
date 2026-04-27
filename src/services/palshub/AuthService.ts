@@ -56,23 +56,16 @@ class AuthService {
 
       // Check if Supabase is properly configured
       if (this.isSupabaseConfigured()) {
-
         // Listen for auth state changes
         this.initAuthListener();
         // Configure Google Sign-In
         this.configureGoogleSignIn();
         // Check for existing session
-        this.checkExistingSession().then(() => {
-
-        });
+        this.checkExistingSession().then(() => {});
       } else {
-
         this.isAuthenticated = false;
       }
-
-
     } catch (error) {
-
       throw error;
     }
   }
@@ -174,8 +167,7 @@ class AuthService {
       runInAction(() => {
         this.profile = profile;
       });
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   private configureGoogleSignIn() {
@@ -185,8 +177,7 @@ class AuthService {
         iosClientId: GOOGLE_IOS_CLIENT_ID,
         offlineAccess: false,
       });
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   async signInWithGoogle() {
@@ -212,8 +203,7 @@ class AuthService {
         if (currentUser) {
           await GoogleSignin.signOut();
         }
-      } catch (error) {
-      }
+      } catch (error) {}
 
       // Sign in with Google
       const userInfo = await GoogleSignin.signIn();

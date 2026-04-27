@@ -238,9 +238,7 @@ export const VoicePickerView: React.FC = observer(() => {
     sys
       .getVoices()
       .then(vs => setSystemVoices(vs))
-      .catch(err => {
-
-      });
+      .catch(err => {});
   }, []);
 
   const voicesByEngine = useMemo(() => {
@@ -266,14 +264,10 @@ export const VoicePickerView: React.FC = observer(() => {
 
   const handlePreviewToggle = (voice: Voice) => {
     if (ttsStore.isPreviewingVoice(voice)) {
-      ttsStore.stop().catch(err => {
-
-      });
+      ttsStore.stop().catch(err => {});
       return;
     }
-    ttsStore.preview(voice).catch(err => {
-
-    });
+    ttsStore.preview(voice).catch(err => {});
   };
 
   const handleDelete = (engineId: NeuralEngineId) => {
@@ -290,9 +284,7 @@ export const VoicePickerView: React.FC = observer(() => {
           text: l10n.voiceAndSpeech.engineRemoveConfirm,
           style: 'destructive',
           onPress: () => {
-            triggerDelete(engineId).catch(err => {
-
-            });
+            triggerDelete(engineId).catch(err => {});
           },
         },
       ],
@@ -351,14 +343,10 @@ export const VoicePickerView: React.FC = observer(() => {
     const error = neuralErrorFor(engineId);
 
     const handleInstall = () => {
-      triggerDownload(engineId).catch(err => {
-
-      });
+      triggerDownload(engineId).catch(err => {});
     };
     const handleRetry = () => {
-      triggerRetry(engineId).catch(err => {
-
-      });
+      triggerRetry(engineId).catch(err => {});
     };
 
     if (state === 'downloading') {

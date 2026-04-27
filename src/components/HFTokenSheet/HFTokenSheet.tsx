@@ -65,7 +65,6 @@ export const HFTokenSheet: React.FC<HFTokenSheetProps> = observer(
           setShowError(true);
         }
       } catch (error) {
-
         setShowError(true);
       } finally {
         setIsSubmitting(false);
@@ -91,7 +90,6 @@ export const HFTokenSheet: React.FC<HFTokenSheetProps> = observer(
           setShowError(true);
         }
       } catch (error) {
-
         setShowError(true);
       } finally {
         setIsResetting(false);

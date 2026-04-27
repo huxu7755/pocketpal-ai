@@ -141,7 +141,6 @@ export class TTSStore {
     try {
       totalMemory = await DeviceInfo.getTotalMemory();
     } catch (err) {
-
       totalMemory = 0;
     }
 
@@ -161,7 +160,6 @@ export class TTSStore {
         try {
           return {id, installed: await getEngine(id).isInstalled()};
         } catch (err) {
-
           return {id, installed: false};
         }
       }),
@@ -206,9 +204,7 @@ export class TTSStore {
       // tap) that shouldn't tear down a 200+ MB engine.
       this.stop()
         .then(() => ttsRuntime.release())
-        .catch(err => {
-
-        });
+        .catch(err => {});
     }
   };
 
@@ -220,9 +216,7 @@ export class TTSStore {
       // playback. Re-init is lazy on the next preview / message replay.
       this.stop()
         .then(() => ttsRuntime.release())
-        .catch(err => {
-
-        });
+        .catch(err => {});
     }
   }
 
@@ -247,9 +241,7 @@ export class TTSStore {
       runInAction(() => {
         this.freeDiskBytes = bytes;
       });
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   closeSetupSheet() {
@@ -312,17 +304,13 @@ export class TTSStore {
     if (state.mode === 'streaming') {
       try {
         await state.handle.cancel();
-      } catch (err) {
-
-      }
+      } catch (err) {}
       return;
     }
     if (voice) {
       try {
         await getEngine(voice.engine).stop();
-      } catch (err) {
-
-      }
+      } catch (err) {}
     }
   }
 
@@ -366,7 +354,6 @@ export class TTSStore {
         await engine.play(spokenText, voice);
       }
     } catch (err) {
-
     } finally {
       runInAction(() => {
         if (
@@ -409,7 +396,6 @@ export class TTSStore {
         await engine.play(TTS_PREVIEW_SAMPLE, voice);
       }
     } catch (err) {
-
     } finally {
       runInAction(() => {
         if (
@@ -449,9 +435,7 @@ export class TTSStore {
     // promise is passed to the streaming handle so it waits for the old
     // `Speech.stop()` to complete before starting synthesis — prevents
     // the old stop flag from killing the new stream's first sentence.
-    const stopDone = this.stop().catch(err => {
-
-    });
+    const stopDone = this.stop().catch(err => {});
 
     const voice = this.currentVoice;
     this.lastSpokenMessageId = messageId;
@@ -527,9 +511,7 @@ export class TTSStore {
       }
       state.handle
         .finalize()
-        .catch(err => {
-
-        })
+        .catch(err => {})
         .finally(() => {
           runInAction(() => {
             if (
@@ -597,9 +579,7 @@ export class TTSStore {
         });
         return;
       }
-    } catch (err) {
-
-    }
+    } catch (err) {}
 
     const engine = getEngine(id) as
       | SupertonicEngine
@@ -622,7 +602,6 @@ export class TTSStore {
         }
       });
     } catch (err) {
-
       const message = err instanceof Error ? err.message : String(err);
       runInAction(() => {
         this.setDownloadState(id, 'error');
@@ -653,9 +632,7 @@ export class TTSStore {
     }
     try {
       await engine.deleteModel();
-    } catch (err) {
-
-    }
+    } catch (err) {}
     runInAction(() => {
       this.setDownloadState(id, 'not_installed');
       this.setDownloadProgress(id, 0);

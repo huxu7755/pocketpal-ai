@@ -56,7 +56,6 @@ export const exportChatSession = async (sessionId: string): Promise<void> => {
     // Share the file
     await shareJsonData(jsonData, filename);
   } catch (error) {
-
     throw error;
   }
 };
@@ -114,7 +113,6 @@ export const exportAllChatSessions = async (): Promise<void> => {
     // Share the file
     await shareJsonData(jsonData, filename);
   } catch (error) {
-
     throw error;
   }
 };
@@ -140,7 +138,6 @@ export const exportPal = async (palId: string): Promise<void> => {
 
     await shareJsonData(jsonData, filename);
   } catch (error) {
-
     throw error;
   }
 };
@@ -160,7 +157,6 @@ export const exportAllPals = async (): Promise<void> => {
 
     await shareJsonData(jsonData, filename);
   } catch (error) {
-
     throw error;
   }
 };
@@ -186,7 +182,6 @@ const transformExportPal = async (pal: Pal) => {
       thumbnailData = `data:image/${fileExtension};base64,${base64Content}`;
       thumbnailUrl = undefined; // Don't export local file paths
     } catch (error) {
-
       thumbnailUrl = undefined; // Remove invalid local path
     }
   }
@@ -253,7 +248,6 @@ export const exportLegacyChatSessions = async (): Promise<void> => {
     // Share the file
     await shareJsonData(legacyData, filename);
   } catch (error) {
-
     throw error;
   }
 };
@@ -292,7 +286,6 @@ const shareJsonData = async (
         });
         return; // Exit early after sharing
       } catch (error) {
-
         throw error;
       }
     } else {
@@ -309,7 +302,6 @@ const shareJsonData = async (
           });
           return; // Exit early after sharing
         } catch (error) {
-
           throw error;
         }
       }
@@ -348,7 +340,6 @@ const shareJsonData = async (
                 } catch (error) {
                   const shareError = error as any;
 
-
                   // Fallback to sharing content directly if file sharing fails
                   if (shareError.message !== 'User did not share') {
                     try {
@@ -376,8 +367,6 @@ const shareJsonData = async (
           ],
         );
       } catch (error) {
-
-
         // Fallback to just sharing the file content
         Alert.alert(
           currentL10n.components.exportUtils.saveOptions,
@@ -413,8 +402,6 @@ const shareJsonData = async (
       }
     }
   } catch (error: any) {
-
-
     // Show a more user-friendly error message
     Alert.alert(
       currentL10n.components.exportUtils.exportError,

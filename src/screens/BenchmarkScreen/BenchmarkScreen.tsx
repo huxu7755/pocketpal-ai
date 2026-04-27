@@ -106,7 +106,6 @@ export const BenchmarkScreen: React.FC = observer(() => {
         setSelectedModel(model);
       } catch (error) {
         if (error instanceof Error) {
-
         }
       }
     } else {
@@ -121,7 +120,6 @@ export const BenchmarkScreen: React.FC = observer(() => {
       const percentage = (used / total) * 100;
       return {total, used, percentage};
     } catch (error) {
-
       return null;
     }
   };
@@ -132,9 +130,7 @@ export const BenchmarkScreen: React.FC = observer(() => {
       try {
         // TODO: This is not working for bench.
         await modelStore.context.stopCompletion();
-      } catch (error) {
-
-      }
+      } catch (error) {}
     }
   };
 
@@ -199,7 +195,6 @@ export const BenchmarkScreen: React.FC = observer(() => {
       benchmarkStore.addResult(result);
     } catch (error) {
       if (error instanceof Error) {
-
       }
     } finally {
       clearInterval(memoryCheckInterval);
@@ -249,7 +244,6 @@ export const BenchmarkScreen: React.FC = observer(() => {
 
       benchmarkStore.markAsSubmitted(result.uuid);
     } catch (error) {
-
       throw error;
     }
   };

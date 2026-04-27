@@ -35,12 +35,8 @@ export const ModelNotLoadedMessage: React.FC = () => {
     if (lastUsedModel) {
       modelStore
         .initContext(lastUsedModel)
-        .then(() => {
-
-        })
-        .catch(e => {
-
-        });
+        .then(() => {})
+        .catch(e => {});
     }
   };
 

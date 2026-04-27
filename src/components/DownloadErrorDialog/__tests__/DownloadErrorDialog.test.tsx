@@ -113,7 +113,6 @@ describe('DownloadErrorDialog', () => {
       },
     );
 
-
     const {getByText} = render(
       <DownloadErrorDialog
         visible={true}

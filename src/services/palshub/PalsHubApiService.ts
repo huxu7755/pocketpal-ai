@@ -170,15 +170,12 @@ class PalsHubApiService {
         let errorData: any = {};
         try {
           errorData = await response.json();
-        } catch (parseError) {
-
-        }
+        } catch (parseError) {}
 
         const errorMessage =
           errorData.error ||
           errorData.message ||
           `HTTP ${response.status}: ${response.statusText}`;
-
 
         throw new PalsHubError(errorMessage, {
           status: response.status,
@@ -195,7 +192,6 @@ class PalsHubApiService {
 
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown network error';
-
 
       throw new PalsHubError(`Network error: ${errorMessage}`, error);
     }
@@ -308,7 +304,6 @@ class PalsHubApiService {
         has_more: response.pagination.has_more,
       };
     } catch (error) {
-
       if (error instanceof PalsHubError) {
         throw error;
       }

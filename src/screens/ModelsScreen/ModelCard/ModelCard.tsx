@@ -189,7 +189,6 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
                   try {
                     await modelStore.deleteModel(model);
                   } catch (error) {
-
                     Alert.alert(
                       l10n.models.multimodal.cannotDeleteTitle,
                       error instanceof Error
@@ -224,7 +223,6 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
     const openHuggingFaceUrl = useCallback(() => {
       if (model.hfUrl) {
         Linking.openURL(model.hfUrl).catch(err => {
-
           setSnackbarVisible(true);
         });
       }
@@ -262,7 +260,6 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
         try {
           await modelStore.setModelVisionEnabled(model.id, enabled);
         } catch (error) {
-
           // The error is already handled in setModelVisionEnabled (vision state is reverted)
         }
       },
@@ -569,9 +566,7 @@ export const ModelCard: React.FC<ModelCardProps> = observer(
             if (uiStore.autoNavigatetoChat) {
               navigation.navigate('Chat');
             }
-          } catch (e) {
-
-          }
+          } catch (e) {}
         }
       };
 

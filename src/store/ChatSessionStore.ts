@@ -102,7 +102,6 @@ class ChatSessionStore {
       await this.loadSessionList();
       await this.loadGlobalSettings();
     } catch (error) {
-
       runInAction(() => {
         this.isMigrating = false;
         this.migrationComplete = false;
@@ -119,7 +118,6 @@ class ChatSessionStore {
 
       return !migrationComplete;
     } catch (error) {
-
       return false; // Assume no migration needed if we can't check
     }
   }
@@ -167,7 +165,6 @@ class ChatSessionStore {
         if (sessionData.completionSettings) {
           completionSettings = sessionData.completionSettings.getSettings();
         } else {
-
         }
 
         sessionMetadata.push({
@@ -185,9 +182,7 @@ class ChatSessionStore {
       runInAction(() => {
         this.sessions = sessionMetadata;
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async loadGlobalSettings(): Promise<void> {
@@ -198,9 +193,7 @@ class ChatSessionStore {
       runInAction(() => {
         this.newChatCompletionSettings = settings;
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async deleteSession(id: string): Promise<void> {
@@ -215,9 +208,7 @@ class ChatSessionStore {
         this.sessions = this.sessions.filter(session => session.id !== id);
         this.sessionDrafts.delete(id);
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async duplicateSession(id: string) {
@@ -247,7 +238,6 @@ class ChatSessionStore {
     try {
       const sessionData = await chatSessionRepository.getSessionById(sessionId);
       if (!sessionData) {
-
         return;
       }
 
@@ -262,9 +252,7 @@ class ChatSessionStore {
         session.messages = messages;
         session.messagesLoaded = true;
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async setActiveSession(sessionId: string): Promise<void> {
@@ -298,9 +286,7 @@ class ChatSessionStore {
           session.title = newTitle;
         });
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async updateSessionTitle(session: SessionMetaData) {
@@ -413,7 +399,6 @@ class ChatSessionStore {
       if (sessionData.completionSettings) {
         settings = sessionData.completionSettings.getSettings();
       } else {
-
       }
 
       // Create metadata object
@@ -438,9 +423,7 @@ class ChatSessionStore {
         this.sessions.push(metaData);
         this.activeSessionId = newSession.id;
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   private streamingThrottleTimer: NodeJS.Timeout | null = null;
@@ -525,10 +508,7 @@ class ChatSessionStore {
 
     // Also persist to database for crash resilience
     // This is async but we don't await to keep streaming fast
-    chatSessionRepository
-      .updateMessage(id, update)
-      .catch(() => {
-      });
+    chatSessionRepository.updateMessage(id, update).catch(() => {});
   }
 
   async updateMessage(
@@ -571,9 +551,7 @@ class ChatSessionStore {
           }
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async updateSessionCompletionSettings(settings: CompletionParams) {
@@ -596,9 +574,7 @@ class ChatSessionStore {
             session.completionSettings = settings;
             session.settingsSource = 'custom'; // Mark as using custom settings
           });
-        } catch (error) {
-
-        }
+        } catch (error) {}
       }
     }
   }
@@ -907,7 +883,6 @@ class ChatSessionStore {
         this.exitSelectionMode();
       });
     } catch (error) {
-
       throw error;
     }
   }
@@ -921,7 +896,6 @@ class ChatSessionStore {
         this.exitSelectionMode();
       });
     } catch (error) {
-
       throw error;
     }
   }

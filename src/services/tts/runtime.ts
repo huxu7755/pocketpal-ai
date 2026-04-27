@@ -70,9 +70,7 @@ class TTSRuntime {
       }
       try {
         await Speech.stop();
-      } catch (err) {
-
-      }
+      } catch (err) {}
     });
   }
 
@@ -100,9 +98,7 @@ class TTSRuntime {
     if (prev !== 'system') {
       try {
         await Speech.release();
-      } catch (err) {
-
-      }
+      } catch (err) {}
     }
     this.activeEngineId = null;
   }

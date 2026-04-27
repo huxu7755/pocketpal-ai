@@ -100,8 +100,7 @@ class DeepLinkService {
           this.notifyListeners(params);
         }
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   /**
@@ -134,8 +133,7 @@ class DeepLinkService {
     this.listeners.forEach(handler => {
       try {
         handler(params);
-      } catch (error) {
-      }
+      } catch (error) {}
     });
   }
 }

@@ -143,7 +143,6 @@ export default class LocalPal extends Model {
       }
       return undefined;
     } catch (error) {
-
       return undefined;
     }
   }

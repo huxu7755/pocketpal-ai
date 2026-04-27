@@ -318,9 +318,7 @@ describe('Remote Server Features', () => {
 
         if (responseText && responseText.length > 0) {
           const stopButton = browser.$(Selectors.chat.stopButton);
-          const stopVisible = await stopButton
-            .isDisplayed()
-            .catch(() => false);
+          const stopVisible = await stopButton.isDisplayed().catch(() => false);
           if (!stopVisible) {
             break;
           }

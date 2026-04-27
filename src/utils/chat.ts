@@ -157,9 +157,7 @@ export async function applyChatTemplate(
         addGenerationPrompt: chatTemplates.default.addGenerationPrompt,
       }) as string;
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 
   return formattedChat || ' ';
 }
@@ -353,7 +351,6 @@ export function removeThinkingParts(text: string): string {
   result = result.replace(/<thinking>[\s\S]*?<\/thinking>/g, '');
 
   // Log for debugging
-
 
   return result;
 }

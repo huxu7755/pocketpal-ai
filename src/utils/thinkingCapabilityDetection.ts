@@ -41,7 +41,6 @@ export async function detectThinkingCapability(
 
     return {supported: false};
   } catch (error) {
-
     return {supported: false};
   }
 }

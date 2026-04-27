@@ -53,7 +53,6 @@ class SyncService {
 
       // Only sync if user is authenticated
       if (!authService.isAuthenticated) {
-
         return;
       }
 
@@ -253,7 +252,6 @@ class SyncService {
           });
         } catch (error) {
           // Log error but continue with other Pals
-
         }
       }
 

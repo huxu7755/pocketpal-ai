@@ -54,13 +54,9 @@ export const HeroRow: React.FC = observer(() => {
 
   const handlePreviewToggle = () => {
     if (isPreviewing) {
-      ttsStore.stop().catch(err => {
-
-      });
+      ttsStore.stop().catch(err => {});
     } else {
-      ttsStore.preview(current).catch(err => {
-
-      });
+      ttsStore.preview(current).catch(err => {});
     }
   };
 
