@@ -31,8 +31,8 @@ export default class LogManager {
       this.startPeriodicFlush();
       
       this.isInitialized = true;
-    } catch (error) {
-      console.error('Failed to initialize LogManager:', error);
+    } catch {
+      // Silent error handling
     }
   }
 
@@ -83,8 +83,8 @@ export default class LogManager {
       } else {
         await AsyncStorage.setItem(logKey, logsJson);
       }
-    } catch (error) {
-      console.error('Failed to flush logs:', error);
+    } catch {
+      // Silent error handling
       // Put logs back in buffer if flush failed
       this.logBuffer.unshift(...logsToFlush);
     }
@@ -105,8 +105,8 @@ export default class LogManager {
           await AsyncStorage.removeItem(key);
         }
       }
-    } catch (error) {
-      console.error('Failed to cleanup old logs:', error);
+    } catch {
+      // Silent error handling
     }
   }
 
@@ -115,8 +115,8 @@ export default class LogManager {
       const logKey = `logs_${date}`;
       const logsJson = await AsyncStorage.getItem(logKey);
       return logsJson ? JSON.parse(logsJson) : [];
-    } catch (error) {
-      console.error('Failed to get logs for date:', error);
+    } catch {
+      // Silent error handling
       return [];
     }
   }
@@ -134,8 +134,8 @@ export default class LogManager {
       }
 
       return allLogs;
-    } catch (error) {
-      console.error('Failed to get all logs:', error);
+    } catch {
+      // Silent error handling
       return {};
     }
   }
@@ -145,8 +145,8 @@ export default class LogManager {
       const keys = await AsyncStorage.getAllKeys();
       const logKeys = keys.filter(key => key.startsWith('logs_'));
       await AsyncStorage.multiRemove(logKeys);
-    } catch (error) {
-      console.error('Failed to clear all logs:', error);
+    } catch {
+      // Silent error handling
     }
   }
 

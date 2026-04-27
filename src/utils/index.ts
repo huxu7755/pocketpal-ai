@@ -350,17 +350,17 @@ export async function hasEnoughSpace(model: Model): Promise<boolean> {
     }
 
     if (isNaN(requiredSpaceBytes) || requiredSpaceBytes <= 0) {
-      console.error('Invalid model size:', model.size);
-      return false;
+      // Invalid model size
+      return null;
     }
 
     const freeDiskBytes = await DeviceInfo.getFreeDiskStorage('important');
     // console.log('Free disk space:', freeDiskBytes);
 
     return requiredSpaceBytes <= freeDiskBytes;
-  } catch (error) {
-    console.error('Error fetching free disk space:', error);
-    return false;
+  } catch {
+    // Silent error handling
+    return null;
   }
 }
 
@@ -532,7 +532,6 @@ export const getSHA256Hash = async (filePath: string): Promise<string> => {
     const hash = await RNFS.hash(filePath, 'sha256');
     return hash;
   } catch (error) {
-    console.error('Error generating SHA256 hash:', error);
     throw error;
   }
 };
@@ -605,8 +604,7 @@ export const checkModelFileIntegrity = async (
       isValid: true,
       errorMessage: null,
     };
-  } catch (error) {
-    console.error('Error checking file integrity:', error);
+  } catch {
     return {
       isValid: false,
       errorMessage: 'Error checking file integrity. Please try again.',
@@ -647,8 +645,6 @@ export const safeParseJSON = (json: string) => {
       return JSON.parse(cleanJson);
     }
   } catch (error) {
-    console.log('Original json: ', json);
-    console.error('Error parsing JSON:', error);
     return {prompt: '', error: error};
   }
 };

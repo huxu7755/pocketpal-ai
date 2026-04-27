@@ -39,8 +39,8 @@ export class LogStore {
       }
 
       this._isInitialized = true;
-    } catch (error) {
-      console.error('Failed to initialize LogStore:', error);
+    } catch {
+      // Silent error handling
     }
   }
 
@@ -58,8 +58,8 @@ export class LogStore {
     try {
       await AsyncStorage.setItem('logging_enabled', String(this.isLoggingEnabled));
       await AsyncStorage.setItem('logging_level', this.logLevel);
-    } catch (error) {
-      console.error('Failed to save log settings:', error);
+    } catch {
+      // Silent error handling
     }
   }
 

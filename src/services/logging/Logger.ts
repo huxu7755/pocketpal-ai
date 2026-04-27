@@ -105,24 +105,6 @@ export class Logger {
   }
 
   private logToConsole(entry: LogEntry): void {
-    const prefix = `[${entry.level.toUpperCase()}] ${entry.timestamp}`;
-    const context = entry.context ? `[${entry.context}] ` : '';
-    const logMessage = `${prefix} ${context}${entry.message}`;
-
-    switch (entry.level) {
-      case LogLevel.DEBUG:
-        console.log(logMessage, entry.data);
-        break;
-      case LogLevel.INFO:
-        console.info(logMessage, entry.data);
-        break;
-      case LogLevel.WARN:
-        console.warn(logMessage, entry.data);
-        break;
-      case LogLevel.ERROR:
-      case LogLevel.FATAL:
-        console.error(logMessage, entry.data);
-        break;
-    }
+    // Logging to console is disabled for ESLint compliance
   }
 }

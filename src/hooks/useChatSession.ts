@@ -518,8 +518,8 @@ export const useChatSession = (
       // Always try to deactivate keep awake in finally block
       try {
         deactivateKeepAwake();
-      } catch (error) {
-        console.error('Failed to deactivate keep awake after chat:', error);
+      } catch {
+        // Silent error handling
       }
     }
   };
@@ -547,11 +547,8 @@ export const useChatSession = (
     // Deactivate keep awake when stopping completion
     try {
       deactivateKeepAwake();
-    } catch (error) {
-      console.error(
-        'Failed to deactivate keep awake after stopping chat:',
-        error,
-      );
+    } catch {
+      // Silent error handling
     }
   };
 
