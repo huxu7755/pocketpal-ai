@@ -8,19 +8,15 @@ class ApiSharingService {
   // This service will be implemented using a different approach in the future
   
   startServer(): void {
-    console.log('API Sharing server: Service not implemented');
+    // API sharing server: Service not implemented
   }
 
   stopServer(): void {
-    console.log('API Sharing server: Service not implemented');
+    // API sharing server: Service not implemented
   }
 
   updateServerStatus(): void {
-    if (serverStore.apiSharingEnabled) {
-      console.log('API Sharing enabled: Service not implemented');
-    } else {
-      console.log('API Sharing disabled');
-    }
+    // API sharing status updated
   }
 }
 
