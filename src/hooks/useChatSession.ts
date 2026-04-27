@@ -194,7 +194,7 @@ export const useChatSession = (
     if (!engine) {
       // Try to reload the last used model
       if (modelStore.lastUsedModelId) {
-        const model = modelStore.models.find(m => m.id === modelStore.lastUsedModelId && m.isDownloaded);
+        const model = modelStore.models.find((m) => m.id === modelStore.lastUsedModelId && m.isDownloaded);
         if (model) {
           try {
             await modelStore.initContext(model);
@@ -205,7 +205,7 @@ export const useChatSession = (
           }
         } else {
           // Check if last used model is a remote model
-          const remoteModel = modelStore.remoteModels.find(m => m.id === modelStore.lastUsedModelId);
+          const remoteModel = modelStore.remoteModels.find((m) => m.id === modelStore.lastUsedModelId);
           if (remoteModel) {
             try {
               await modelStore.setRemoteModel(remoteModel);

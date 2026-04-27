@@ -13,12 +13,9 @@ import {Menu, RenameModal, Checkbox} from '..';
 import {
   BenchmarkIcon,
   ChatIcon,
-  EditIcon,
   ModelIcon,
   PalIcon,
   SettingsIcon,
-  ShareIcon,
-  TrashIcon,
   AppInfoIcon,
 } from '../../assets/icons';
 import {L10nContext} from '../../utils';

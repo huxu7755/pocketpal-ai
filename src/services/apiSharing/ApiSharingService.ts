@@ -1,4 +1,3 @@
-import {serverStore} from '../../store';
 import {ModelStore} from '../../store/ModelStore';
 
 class ApiSharingService {
@@ -6,7 +5,6 @@ class ApiSharingService {
 
   // API sharing functionality is currently disabled
   // This service will be implemented using a different approach in the future
-  
   startServer(): void {
     // API sharing server: Service not implemented
   }

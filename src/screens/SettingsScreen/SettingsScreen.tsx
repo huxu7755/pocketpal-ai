@@ -1217,7 +1217,7 @@ export const SettingsScreen: React.FC = observer(() => {
                             t('No logs to export'),
                           );
                         }
-                      } catch (error) {
+                      } catch {
                         Alert.alert(
                           t('Export Error'),
                           t('Failed to export logs'),
