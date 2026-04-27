@@ -1,3 +1,3 @@
-import { ApiSharingService } from './ApiSharingService';
+import {ApiSharingService} from './ApiSharingService';
 
 export {ApiSharingService};

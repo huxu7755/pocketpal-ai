@@ -22,7 +22,7 @@ export {
   shutdownLogging,
   reconfigureLogger,
 } from './logging';
-export { default as logExporter } from './logging';
+export {default as logExporter} from './logging';
 
 // Types
 export type {AuthState, Profile} from './palshub/AuthService';
