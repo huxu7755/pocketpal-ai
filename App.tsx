@@ -13,7 +13,7 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 
-import {ttsStore, uiStore, modelStore, serverStore} from './src/store';
+import {ttsStore, uiStore, modelStore} from './src/store';
 import {initializeLogging} from './src/services';
 import {useTheme} from './src/hooks';
 import {useDeepLinking} from './src/hooks/useDeepLinking';
