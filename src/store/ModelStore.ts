@@ -712,7 +712,6 @@ class ModelStore {
   };
 
   handleAppStateChange = async (nextAppState: AppStateStatus) => {
-
     if (
       this.appState.match(/inactive|background/) &&
       nextAppState === 'active'
@@ -813,7 +812,7 @@ class ModelStore {
         if (await RNFS.exists(veryOldPath)) {
           return veryOldPath;
         }
-      } catch (err) {
+      } catch (_err) {
         // Silent error handling
       }
 
@@ -822,7 +821,7 @@ class ModelStore {
         if (await RNFS.exists(oldPath)) {
           return oldPath;
         }
-      } catch (err) {
+      } catch (_err) {
         // Silent error handling
       }
 
@@ -852,7 +851,7 @@ class ModelStore {
         if (await RNFS.exists(oldPath)) {
           return oldPath;
         }
-      } catch (err) {
+      } catch (_err) {
         // Silent error handling
       }
 
@@ -965,7 +964,6 @@ class ModelStore {
       // For vision models, automatically download the projection model
       await this._downloadProjectionModelIfNeeded(model);
     } catch (err) {
-
       // Create proper error state for the snackbar system
       const errorState = createErrorState(err, 'download', 'huggingface', {
         modelId,
@@ -1092,14 +1090,14 @@ class ModelStore {
       try {
         await RNFS.unlink(filePath);
       } catch {
-      // Silent error handling
-    }
-  } else {
-    // Non-local models are not removed from the list, when the file is deleted.
+        // Silent error handling
+      }
+    } else {
+      // Non-local models are not removed from the list, when the file is deleted.
 
-    try {
-      if (filePath) {
-        await RNFS.unlink(filePath);
+      try {
+        if (filePath) {
+          await RNFS.unlink(filePath);
 
           // Check if we need to release context (if this model is currently active)
           const needsContextRelease = this.activeModelId === _model.id;
@@ -1114,8 +1112,6 @@ class ModelStore {
           if (needsContextRelease) {
             await this.releaseContext(true); // Clear active model and all related state
           }
-
-
         } else {
           // File doesn't exist, no action needed
         }
@@ -1514,7 +1510,7 @@ class ModelStore {
           // Silent progress callback
         },
       );
-      
+
       await this.updateModelStopTokens(ctx, model);
 
       // Check and update thinking capabilities
@@ -1607,7 +1603,6 @@ class ModelStore {
   private _releaseContextInternal = async (
     clearActiveModel: boolean = false,
   ) => {
-
     chatSessionStore.exitEditMode();
     if (!this.context) {
       // For remote models or deletion scenarios, clear engine and state
@@ -1644,20 +1639,16 @@ class ModelStore {
         this.isStreaming ||
         this.activeCompletionPromise
       ) {
-
-
         // Step 1: Signal the completion to stop
         try {
           await this.context.stopCompletion();
         } catch (stopError) {
-
           // Continue with release even if stop fails
         }
 
         // Step 2: Wait for the completion promise to actually finish
         // This is critical - stopCompletion() only signals, it doesn't wait
         if (this.activeCompletionPromise) {
-
           try {
             // Wait for promise to settle (ignore errors, just wait for it to complete)
             await this.activeCompletionPromise.catch(() => {});
@@ -1677,7 +1668,6 @@ class ModelStore {
       // Step 3: Now safe to release - First check if multimodal is enabled and release it if needed
       const isMultimodalEnabled = await this.isMultimodalEnabled();
       if (isMultimodalEnabled) {
-
         try {
           await this.context.releaseMultimodal();
           // Immediately clear multimodal state after successful release
@@ -1685,7 +1675,6 @@ class ModelStore {
             this.isMultimodalActive = false;
             this.activeProjectionModelId = undefined;
           });
-
         } catch {
           // Even if release fails, clear the state to prevent blocking deletion
           runInAction(() => {
@@ -1697,7 +1686,6 @@ class ModelStore {
 
       // Then release the main context
       await this.context.release();
-
     } catch {
       // Silent error handling
     } finally {
@@ -2048,9 +2036,7 @@ class ModelStore {
     try {
       const stat = await RNFS.stat(localFilePath);
       fileSize = Number(stat.size) || 0;
-    } catch (e) {
-
-    }
+    } catch (e) {}
 
     const defaultSettings = getLocalModelDefaultSettings();
 
@@ -2320,7 +2306,6 @@ class ModelStore {
         const contextStops = stops.filter(stop => ctxtTemplate.includes(stop));
         stopTokens.push(...contextStops);
       }
-
 
       // Only update if we found stop tokens
       if (stopTokens.length > 0) {
