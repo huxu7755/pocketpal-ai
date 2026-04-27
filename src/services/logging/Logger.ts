@@ -111,7 +111,7 @@ export class Logger {
     }
   }
 
-  private logToConsole(entry: LogEntry): void {
+  private logToConsole(_entry: LogEntry): void {
     // Logging to console is disabled for ESLint compliance
   }
 }
