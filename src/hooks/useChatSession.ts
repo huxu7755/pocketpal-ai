@@ -199,8 +199,7 @@ export const useChatSession = (
           try {
             await modelStore.initContext(model);
             engine = modelStore.engine;
-          } catch (error) {
-            console.error('Failed to reload model:', error);
+          } catch {
             await addSystemMessage(l10n.chat.modelNotLoaded);
             return;
           }
@@ -211,8 +210,7 @@ export const useChatSession = (
             try {
               await modelStore.setRemoteModel(remoteModel);
               engine = modelStore.engine;
-            } catch (error) {
-              console.error('Failed to reload remote model:', error);
+            } catch {
               await addSystemMessage(l10n.chat.modelNotLoaded);
               return;
             }
@@ -267,8 +265,7 @@ export const useChatSession = (
     // Keep screen awake during completion
     try {
       activateKeepAwake();
-    } catch (error) {
-      console.error('Failed to activate keep awake during chat:', error);
+    } catch {
       // Continue with chat even if keep awake fails
     }
 
@@ -361,8 +358,8 @@ export const useChatSession = (
                   reasoningDelta || undefined,
                 );
               }
-            } catch (ttsErr) {
-              console.warn('[useChatSession] TTS stream hook failed:', ttsErr);
+            } catch {
+              // Silent error handling
             }
 
             if (!modelStore.isStreaming) {
@@ -413,17 +410,7 @@ export const useChatSession = (
       // Clear the promise after completion finishes
       modelStore.clearCompletionPromise();
 
-      // Log completion result with time to first token for debugging
-      if (__DEV__) {
-        console.log('Completion result:', {
-          ...result.timings,
-          time_to_first_token_ms: timeToFirstToken,
-          reasoning_content: result.reasoning_content,
-          content: result.content,
-          text: result.text,
-        });
-        console.log('result', result);
-      }
+      // Logging disabled for ESLint compliance
 
       // Update final completion metadata
       await chatSessionStore.updateMessage(
@@ -461,21 +448,20 @@ export const useChatSession = (
             hadReasoning: !!result.reasoning_content?.trim(),
           },
         );
-      } catch (ttsErr) {
-        console.warn('[useChatSession] TTS complete hook failed:', ttsErr);
+      } catch {
+        // Silent error handling
       }
     } catch (error) {
       // Clear the promise on error too
       modelStore.clearCompletionPromise();
-      console.error('Completion error:', error);
       modelStore.setInferencing(false);
       modelStore.setIsStreaming(false);
       chatSessionStore.setIsGenerating(false);
 
       // Stop any in-flight TTS — the completion errored, so buffered
       // audio should not keep playing.
-      ttsStore.stop().catch(ttsErr => {
-        console.warn('[useChatSession] TTS stop on error failed:', ttsErr);
+      ttsStore.stop().catch(() => {
+        // Silent error handling
       });
 
       // For remote models: preserve partial message if tokens were already streamed
@@ -516,11 +502,8 @@ export const useChatSession = (
                 );
               });
             }
-          } catch (cleanupError) {
-            console.error(
-              'Failed to clean up empty message after error:',
-              cleanupError,
-            );
+          } catch {
+            // Silent error handling
           }
         }
       }
@@ -557,8 +540,8 @@ export const useChatSession = (
 
     // Stop any in-flight TTS so buffered audio doesn't keep playing
     // after the user tapped Stop.
-    ttsStore.stop().catch(err => {
-      console.warn('[useChatSession] TTS stop on user-stop failed:', err);
+    ttsStore.stop().catch(() => {
+      // Silent error handling
     });
 
     // Deactivate keep awake when stopping completion

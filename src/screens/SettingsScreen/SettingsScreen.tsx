@@ -119,8 +119,7 @@ export const SettingsScreen: React.FC = observer(() => {
       setGpuSupported(gpuCapabilities.isSupported);
     };
 
-    checkGpuCapabilities().catch(error => {
-      console.warn('Failed to check GPU capabilities:', error);
+    checkGpuCapabilities().catch(() => {
       setGpuSupported(false);
     });
 
@@ -129,8 +128,8 @@ export const SettingsScreen: React.FC = observer(() => {
       try {
         const options = await getDeviceOptions();
         setDeviceOptions(options);
-      } catch (error) {
-        console.warn('Failed to load device options:', error);
+      } catch {
+        // Silent error handling
       }
     };
 
@@ -1141,11 +1140,7 @@ export const SettingsScreen: React.FC = observer(() => {
                                       l10n.settings.clearPalCaches,
                                       successMessage,
                                     );
-                                  } catch (error) {
-                                    console.error(
-                                      'Failed to clear caches:',
-                                      error,
-                                    );
+                                  } catch {
                                     Alert.alert(
                                       l10n.settings.clearPalCaches,
                                       l10n.settings.clearCachesError,
@@ -1155,8 +1150,7 @@ export const SettingsScreen: React.FC = observer(() => {
                               },
                             ],
                           );
-                        } catch (error) {
-                          console.error('Failed to get cache info:', error);
+                        } catch {
                           Alert.alert(
                             l10n.settings.clearPalCaches,
                             l10n.settings.clearCachesError,
