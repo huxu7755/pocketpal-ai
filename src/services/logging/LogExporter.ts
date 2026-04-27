@@ -78,7 +78,7 @@ export class LogExporter {
         if (log.data) {
           try {
             formatted += `  Data: ${JSON.stringify(log.data, null, 2)}\n`;
-          } catch (error) {
+          } catch {
             formatted += `  Data: [Failed to stringify]\n`;
           }
         }
