@@ -335,7 +335,7 @@ export const getModelDescription = (
   return `${l10nData.models.modelDescription.size}${sizeString}${l10nData.models.modelDescription.separator}${l10nData.models.modelDescription.parameters}${paramsString}`;
 };
 
-export async function hasEnoughSpace(model: Model): Promise<boolean> {
+export async function hasEnoughSpace(model: Model): Promise<boolean | null> {
   try {
     let requiredSpaceBytes = model.size;
 

@@ -2,6 +2,8 @@ import * as FileSystem from '@dr.pogodin/react-native-fs';
 import LogManager from './LogManager';
 import {LogEntry} from './Logger';
 
+type MkdirOptionsT = {intermediates?: boolean} | null | undefined;
+
 export default class LogExporter {
   private static instance: LogExporter;
   private logManager: LogManager;
@@ -30,7 +32,7 @@ export default class LogExporter {
       const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
       const dirExists = await FileSystem.exists(exportDir);
       if (!dirExists) {
-        await FileSystem.mkdir(exportDir, {intermediates: true});
+        await FileSystem.mkdir(exportDir, {intermediates: true} as MkdirOptionsT);
       }
 
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -95,7 +97,7 @@ export default class LogExporter {
     const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
     const dirExists = await FileSystem.exists(exportDir);
     if (!dirExists) {
-      await FileSystem.mkdir(exportDir, {intermediates: true});
+      await FileSystem.mkdir(exportDir, {intermediates: true} as MkdirOptionsT);
     }
     return exportDir;
   }
