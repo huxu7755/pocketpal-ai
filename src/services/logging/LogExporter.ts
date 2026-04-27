@@ -30,9 +30,7 @@ export default class LogExporter {
       const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
       const dirExists = await FileSystem.exists(exportDir);
       if (!dirExists) {
-        await FileSystem.mkdir(exportDir, {
-          intermediates: true,
-        } as any);
+        await FileSystem.mkdir(exportDir);
       }
 
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -97,7 +95,7 @@ export default class LogExporter {
     const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
     const dirExists = await FileSystem.exists(exportDir);
     if (!dirExists) {
-      await FileSystem.mkdir(exportDir, {intermediates: true} as any);
+      await FileSystem.mkdir(exportDir);
     }
     return exportDir;
   }
