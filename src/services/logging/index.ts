@@ -1,6 +1,6 @@
 import { Logger, LogLevel } from './Logger';
 import LogManager from './LogManager';
-import { LogExporter } from './LogExporter';
+import LogExporter from './LogExporter';
 import { LogStore } from './LogStore';
 
 // Create instances

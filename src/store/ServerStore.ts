@@ -127,8 +127,8 @@ class ServerStore {
       await Keychain.setGenericPassword('apiKey', apiKey, {
         service: `${KEYCHAIN_SERVICE_PREFIX}${serverId}`,
       });
-    } catch (error) {
-      console.error('Failed to save API key:', error);
+    } catch {
+      // Silent error handling
     }
   }
 
@@ -141,8 +141,8 @@ class ServerStore {
         return credentials.password;
       }
       return undefined;
-    } catch (error) {
-      console.error('Failed to load API key:', error);
+    } catch {
+      // Silent error handling
       return undefined;
     }
   }
@@ -152,8 +152,8 @@ class ServerStore {
       await Keychain.resetGenericPassword({
         service: `${KEYCHAIN_SERVICE_PREFIX}${serverId}`,
       });
-    } catch (error) {
-      console.error('Failed to remove API key:', error);
+    } catch {
+      // Silent error handling
     }
   }
 
