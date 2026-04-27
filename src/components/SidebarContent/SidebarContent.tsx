@@ -120,7 +120,7 @@ const SessionItem = React.memo<SessionItemProps>(
                 onMenuDismiss();
               }}
               label={l10n.common.rename}
-              leadingIcon={() => <EditIcon stroke={theme.colors.primary} />}
+              leadingIcon="pencil"
             />
             <Menu.Item
               onPress={() => {
@@ -128,7 +128,7 @@ const SessionItem = React.memo<SessionItemProps>(
                 onMenuDismiss();
               }}
               label={l10n.common.export}
-              leadingIcon={() => <ShareIcon stroke={theme.colors.primary} />}
+              leadingIcon="share"
             />
             <Menu.Item
               onPress={() => {
@@ -137,7 +137,7 @@ const SessionItem = React.memo<SessionItemProps>(
               }}
               label={l10n.common.delete}
               labelStyle={{color: theme.colors.error}}
-              leadingIcon={() => <TrashIcon stroke={theme.colors.error} />}
+              leadingIcon="trash-can"
             />
             <Divider style={styles.menuDivider} />
             <Menu.Item

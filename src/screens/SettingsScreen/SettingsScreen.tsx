@@ -46,7 +46,7 @@ import {useTheme} from '../../hooks';
 import {createStyles} from './styles';
 
 import {modelStore, uiStore, hfStore, serverStore} from '../../store';
-import {logStore, logExporter, LogLevel, reconfigureLogger} from '../../services';
+import {logStore, logExporter, reconfigureLogger} from '../../services';
 import {languageDisplayNames} from '../../locales';
 
 import {CacheType} from '../../utils/types';
@@ -1028,13 +1028,13 @@ export const SettingsScreen: React.FC = observer(() => {
                       API Sharing
                     </Text>
                     <Text variant="labelSmall" style={styles.textDescription}>
-                      Enable API sharing to allow other applications to access the models
+                      {t('Enable API sharing to allow other applications to access the models')}
                     </Text>
                   </View>
                   <Switch
                     testID="api-sharing-switch"
                     value={serverStore.apiSharingEnabled}
-                    onValueChange={value => serverStore.setApiSharingEnabled(value)}
+                    onValueChange={serverStore.setApiSharingEnabled}
                   />
                 </View>
 
@@ -1191,15 +1191,14 @@ export const SettingsScreen: React.FC = observer(() => {
                   />
                 </View>
                 <Divider style={styles.divider} />
-                
                 {/* Log Export */}
                 <View style={styles.switchContainer}>
                   <View style={styles.textContainer}>
                     <Text variant="titleMedium" style={styles.textLabel}>
-                      Export Logs
+                      {t('Export Logs')}
                     </Text>
                     <Text variant="labelSmall" style={styles.textDescription}>
-                      Export app logs for troubleshooting
+                      {t('Export app logs for troubleshooting')}
                     </Text>
                   </View>
                   <Button
@@ -1209,24 +1208,24 @@ export const SettingsScreen: React.FC = observer(() => {
                         const filePath = await logExporter.exportLogs();
                         if (filePath) {
                           Alert.alert(
-                            'Log Export',
-                            `Logs exported successfully to:\n${filePath}`,
+                            t('Log Export'),
+                            t(`Logs exported successfully to:\n${filePath}`),
                           );
                         } else {
                           Alert.alert(
-                            'Log Export',
-                            'No logs to export',
+                            t('Log Export'),
+                            t('No logs to export'),
                           );
                         }
                       } catch (error) {
                         Alert.alert(
-                          'Export Error',
-                          'Failed to export logs',
+                          t('Export Error'),
+                          t('Failed to export logs'),
                         );
                       }
                     }}
                     style={styles.menuButton}>
-                    Export
+                    {t('Export')}
                   </Button>
                 </View>
               </View>

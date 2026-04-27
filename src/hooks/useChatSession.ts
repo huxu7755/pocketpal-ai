@@ -217,7 +217,7 @@ export const useChatSession = (
           }
         }
       }
-      
+
       // If engine is still undefined, show error
       if (!engine) {
         await addSystemMessage(l10n.chat.modelNotLoaded);
