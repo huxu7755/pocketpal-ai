@@ -158,7 +158,7 @@ export async function applyChatTemplate(
       }) as string;
     }
   } catch (error) {
-    console.error('Error applying chat template:', error); // TODO: handle error
+
   }
 
   return formattedChat || ' ';
@@ -353,7 +353,7 @@ export function removeThinkingParts(text: string): string {
   result = result.replace(/<thinking>[\s\S]*?<\/thinking>/g, '');
 
   // Log for debugging
-  console.log('Removed thinking parts from context');
+
 
   return result;
 }

@@ -265,7 +265,6 @@ export const ChatInput = observer(
         }
         setShowImageUploadMenu(false);
       } catch (error) {
-        console.error('Error taking photo:', error);
         Alert.alert(
           l10n.errors.cameraErrorTitle,
           l10n.errors.cameraErrorMessage,
@@ -301,7 +300,6 @@ export const ChatInput = observer(
         }
         setShowImageUploadMenu(false);
       } catch (error) {
-        console.error('Error selecting images:', error);
         Alert.alert(
           l10n.errors.galleryErrorTitle,
           l10n.errors.galleryErrorMessage,

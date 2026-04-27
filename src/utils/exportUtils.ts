@@ -56,7 +56,7 @@ export const exportChatSession = async (sessionId: string): Promise<void> => {
     // Share the file
     await shareJsonData(jsonData, filename);
   } catch (error) {
-    console.error('Error exporting chat session:', error);
+
     throw error;
   }
 };
@@ -114,7 +114,7 @@ export const exportAllChatSessions = async (): Promise<void> => {
     // Share the file
     await shareJsonData(jsonData, filename);
   } catch (error) {
-    console.error('Error exporting all chat sessions:', error);
+
     throw error;
   }
 };
@@ -140,7 +140,7 @@ export const exportPal = async (palId: string): Promise<void> => {
 
     await shareJsonData(jsonData, filename);
   } catch (error) {
-    console.error('Error exporting pal:', error);
+
     throw error;
   }
 };
@@ -160,7 +160,7 @@ export const exportAllPals = async (): Promise<void> => {
 
     await shareJsonData(jsonData, filename);
   } catch (error) {
-    console.error('Error exporting all pals:', error);
+
     throw error;
   }
 };
@@ -186,7 +186,7 @@ const transformExportPal = async (pal: Pal) => {
       thumbnailData = `data:image/${fileExtension};base64,${base64Content}`;
       thumbnailUrl = undefined; // Don't export local file paths
     } catch (error) {
-      console.warn('Failed to read thumbnail for export:', error);
+
       thumbnailUrl = undefined; // Remove invalid local path
     }
   }
@@ -253,7 +253,7 @@ export const exportLegacyChatSessions = async (): Promise<void> => {
     // Share the file
     await shareJsonData(legacyData, filename);
   } catch (error) {
-    console.error('Error exporting legacy chat sessions:', error);
+
     throw error;
   }
 };
@@ -292,7 +292,7 @@ const shareJsonData = async (
         });
         return; // Exit early after sharing
       } catch (error) {
-        console.error('Error sharing on Android 10:', error);
+
         throw error;
       }
     } else {
@@ -309,7 +309,7 @@ const shareJsonData = async (
           });
           return; // Exit early after sharing
         } catch (error) {
-          console.error('Error sharing after permission denied:', error);
+
           throw error;
         }
       }
@@ -347,7 +347,7 @@ const shareJsonData = async (
                   await Share.open(options);
                 } catch (error) {
                   const shareError = error as any;
-                  console.error('Error sharing file:', shareError);
+
 
                   // Fallback to sharing content directly if file sharing fails
                   if (shareError.message !== 'User did not share') {
@@ -358,10 +358,7 @@ const shareJsonData = async (
                       });
                     } catch (err) {
                       const fallbackError = err as any;
-                      console.error(
-                        'Error with fallback sharing:',
-                        fallbackError,
-                      );
+
                       // Ignore cancellation errors
                       if (fallbackError.message !== 'User did not share') {
                         Alert.alert(
@@ -379,7 +376,7 @@ const shareJsonData = async (
           ],
         );
       } catch (error) {
-        console.error('Error saving to Downloads:', error);
+
 
         // Fallback to just sharing the file content
         Alert.alert(
@@ -397,7 +394,7 @@ const shareJsonData = async (
                   });
                 } catch (err) {
                   const shareError = err as any;
-                  console.error('Error sharing content:', shareError);
+
                   // Ignore cancellation errors
                   if (shareError.message !== 'User did not share') {
                     Alert.alert(
@@ -416,7 +413,7 @@ const shareJsonData = async (
       }
     }
   } catch (error: any) {
-    console.error('Error sharing JSON data:', error);
+
 
     // Show a more user-friendly error message
     Alert.alert(

@@ -79,12 +79,10 @@ export const PalsScreen: React.FC = observer(() => {
         if (authService.isAuthenticated) {
           const needsSync = await syncService.needsSync();
           if (needsSync) {
-            console.log('Syncing with PalsHub...');
             await syncService.syncAll();
           }
         }
       } catch (error) {
-        console.error('Error during initial setup:', error);
       }
     };
 
@@ -128,7 +126,6 @@ export const PalsScreen: React.FC = observer(() => {
         ]);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
     }
   };
 
@@ -137,7 +134,6 @@ export const PalsScreen: React.FC = observer(() => {
     try {
       await loadData();
     } catch (error) {
-      console.error('Error refreshing:', error);
     } finally {
       setRefreshing(false);
     }

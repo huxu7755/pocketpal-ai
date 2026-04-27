@@ -42,8 +42,6 @@ export async function submitBenchmark(
       await initializeAppCheck();
       appCheckToken = await getAppCheckToken();
     } catch (error) {
-      console.error('App Check error:', error);
-
       throw new AppCheckError(errMessage);
     }
 
@@ -92,8 +90,6 @@ export async function submitBenchmark(
       throw error;
     }
   } catch (error) {
-    console.error('Error submitting benchmark:', error);
-
     if (
       error instanceof NetworkError ||
       error instanceof AppCheckError ||

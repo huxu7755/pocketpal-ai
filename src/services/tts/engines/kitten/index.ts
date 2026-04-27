@@ -59,7 +59,7 @@ export class KittenEngine implements Engine {
       }
       return RNFS.exists(this.getFilePath(TTS_DICT_FILENAME));
     } catch (err) {
-      console.warn('[KittenEngine] isInstalled check failed:', err);
+
       return false;
     }
   }
@@ -127,10 +127,7 @@ export class KittenEngine implements Engine {
           await RNFS.unlink(modelDir);
         }
       } catch (cleanupErr) {
-        console.warn(
-          '[KittenEngine] partial-download cleanup failed:',
-          cleanupErr,
-        );
+
       }
       throw err;
     }
@@ -142,7 +139,7 @@ export class KittenEngine implements Engine {
         await RNFS.unlink(this.getModelPath());
       }
     } catch (err) {
-      console.warn('[KittenEngine] deleteModel failed:', err);
+
     }
   }
 

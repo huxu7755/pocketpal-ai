@@ -102,7 +102,7 @@ class ChatSessionStore {
       await this.loadSessionList();
       await this.loadGlobalSettings();
     } catch (error) {
-      console.error('Failed to initialize ChatSessionStore:', error);
+
       runInAction(() => {
         this.isMigrating = false;
         this.migrationComplete = false;
@@ -119,7 +119,7 @@ class ChatSessionStore {
 
       return !migrationComplete;
     } catch (error) {
-      console.error('Error checking migration status:', error);
+
       return false; // Assume no migration needed if we can't check
     }
   }
@@ -167,9 +167,7 @@ class ChatSessionStore {
         if (sessionData.completionSettings) {
           completionSettings = sessionData.completionSettings.getSettings();
         } else {
-          console.warn(
-            `No completion settings found for session ${session.id}, using defaults`,
-          );
+
         }
 
         sessionMetadata.push({
@@ -188,7 +186,7 @@ class ChatSessionStore {
         this.sessions = sessionMetadata;
       });
     } catch (error) {
-      console.error('Failed to load session list:', error);
+
     }
   }
 
@@ -201,7 +199,7 @@ class ChatSessionStore {
         this.newChatCompletionSettings = settings;
       });
     } catch (error) {
-      console.error('Failed to load global settings:', error);
+
     }
   }
 
@@ -218,7 +216,7 @@ class ChatSessionStore {
         this.sessionDrafts.delete(id);
       });
     } catch (error) {
-      console.error('Failed to delete session:', error);
+
     }
   }
 
@@ -249,7 +247,7 @@ class ChatSessionStore {
     try {
       const sessionData = await chatSessionRepository.getSessionById(sessionId);
       if (!sessionData) {
-        console.warn(`Session ${sessionId} not found when loading messages`);
+
         return;
       }
 
@@ -265,7 +263,7 @@ class ChatSessionStore {
         session.messagesLoaded = true;
       });
     } catch (error) {
-      console.error(`Failed to load messages for session ${sessionId}:`, error);
+
     }
   }
 
@@ -301,7 +299,7 @@ class ChatSessionStore {
         });
       }
     } catch (error) {
-      console.error('Failed to update session title:', error);
+
     }
   }
 
@@ -415,9 +413,7 @@ class ChatSessionStore {
       if (sessionData.completionSettings) {
         settings = sessionData.completionSettings.getSettings();
       } else {
-        console.warn(
-          `No completion settings found for new session ${newSession.id}, using provided settings`,
-        );
+
       }
 
       // Create metadata object
@@ -443,7 +439,7 @@ class ChatSessionStore {
         this.activeSessionId = newSession.id;
       });
     } catch (error) {
-      console.error('Failed to create new session:', error);
+
     }
   }
 
@@ -531,9 +527,8 @@ class ChatSessionStore {
     // This is async but we don't await to keep streaming fast
     chatSessionRepository
       .updateMessage(id, update)
-      .catch(error =>
-        console.error('Failed to persist streaming update to DB:', error),
-      );
+      .catch(() => {
+      });
   }
 
   async updateMessage(
@@ -577,7 +572,7 @@ class ChatSessionStore {
         }
       }
     } catch (error) {
-      console.error('Failed to update message:', error);
+
     }
   }
 
@@ -602,7 +597,7 @@ class ChatSessionStore {
             session.settingsSource = 'custom'; // Mark as using custom settings
           });
         } catch (error) {
-          console.error('Failed to update session completion settings:', error);
+
         }
       }
     }
@@ -912,7 +907,7 @@ class ChatSessionStore {
         this.exitSelectionMode();
       });
     } catch (error) {
-      console.error('Failed to bulk delete sessions:', error);
+
       throw error;
     }
   }
@@ -926,7 +921,7 @@ class ChatSessionStore {
         this.exitSelectionMode();
       });
     } catch (error) {
-      console.error('Failed to bulk export sessions:', error);
+
       throw error;
     }
   }

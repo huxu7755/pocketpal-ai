@@ -84,7 +84,7 @@ export class SupertonicEngine implements Engine {
       }
       return RNFS.exists(this.getFilePath(SUPERTONIC_VOICES_MANIFEST_FILENAME));
     } catch (err) {
-      console.warn('[SupertonicEngine] isInstalled check failed:', err);
+
       return false;
     }
   }
@@ -175,15 +175,10 @@ export class SupertonicEngine implements Engine {
             progressInterval: 1000,
           }).promise;
           if (result.statusCode !== 200) {
-            console.warn(
-              `[SupertonicEngine] voice ${voice.id} download failed: HTTP ${result.statusCode}`,
-            );
+
           }
         } catch (voiceErr) {
-          console.warn(
-            `[SupertonicEngine] voice ${voice.id} download failed:`,
-            voiceErr,
-          );
+
         }
         voicesDone++;
         if (onProgress) {
@@ -219,10 +214,7 @@ export class SupertonicEngine implements Engine {
           await RNFS.unlink(modelDir);
         }
       } catch (cleanupErr) {
-        console.warn(
-          '[SupertonicEngine] partial-download cleanup failed:',
-          cleanupErr,
-        );
+
       }
       throw err;
     }
@@ -234,7 +226,7 @@ export class SupertonicEngine implements Engine {
         await RNFS.unlink(this.getModelPath());
       }
     } catch (err) {
-      console.warn('[SupertonicEngine] deleteModel failed:', err);
+
     }
   }
 

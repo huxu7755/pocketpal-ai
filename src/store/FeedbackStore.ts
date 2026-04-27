@@ -34,7 +34,7 @@ class FeedbackStore {
       await AsyncStorage.setItem(FEEDBACK_ID_STORAGE_KEY, newId);
       this._feedbackId = newId;
     } catch (error) {
-      console.error('Error initializing feedback ID:', error);
+
       // Generate a new ID if storage fails
       this._feedbackId = uuidv4();
     }

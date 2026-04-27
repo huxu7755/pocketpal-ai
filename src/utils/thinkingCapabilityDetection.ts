@@ -41,7 +41,7 @@ export async function detectThinkingCapability(
 
     return {supported: false};
   } catch (error) {
-    console.warn('Thinking capability detection failed:', error);
+
     return {supported: false};
   }
 }

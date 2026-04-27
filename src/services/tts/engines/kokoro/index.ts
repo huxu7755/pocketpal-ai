@@ -70,7 +70,7 @@ export class KokoroEngine implements Engine {
       }
       return RNFS.exists(this.getFilePath(KOKORO_VOICES_MANIFEST_FILENAME));
     } catch (err) {
-      console.warn('[KokoroEngine] isInstalled check failed:', err);
+
       return false;
     }
   }
@@ -137,10 +137,6 @@ export class KokoroEngine implements Engine {
           await RNFS.unlink(modelDir);
         }
       } catch (cleanupErr) {
-        console.warn(
-          '[KokoroEngine] partial-download cleanup failed:',
-          cleanupErr,
-        );
       }
       throw err;
     }
@@ -161,15 +157,10 @@ export class KokoroEngine implements Engine {
           progressInterval: 1000,
         }).promise;
         if (result.statusCode !== 200) {
-          console.warn(
-            `[KokoroEngine] voice ${voice.id} download failed: HTTP ${result.statusCode}`,
-          );
+          
         }
       } catch (voiceErr) {
-        console.warn(
-          `[KokoroEngine] voice ${voice.id} download failed:`,
-          voiceErr,
-        );
+
       }
       voicesDone++;
       if (onProgress) {
@@ -204,7 +195,7 @@ export class KokoroEngine implements Engine {
         await RNFS.unlink(this.getModelPath());
       }
     } catch (err) {
-      console.warn('[KokoroEngine] deleteModel failed:', err);
+
     }
   }
 

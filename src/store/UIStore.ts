@@ -53,7 +53,7 @@ export class UIStore {
 
   showError(message: string) {
     // TODO: Implement error display logic (e.g., toast, alert, etc.)
-    console.error(message);
+
   }
 
   setChatWarning(warning: ErrorState | null) {
@@ -96,7 +96,7 @@ export class UIStore {
       if (this.pageStates[page]) {
         this.pageStates[page][key] = value;
       } else {
-        console.error(`Page '${page}' does not exist in pageStates`);
+
       }
     });
   }

@@ -27,9 +27,7 @@ export const initializeAppCheck = async () => {
       __DEV__ &&
       (!APPCHECK_DEBUG_TOKEN_ANDROID || !APPCHECK_DEBUG_TOKEN_IOS)
     ) {
-      console.warn(
-        'Firebase App Check debug tokens not configured - skipping initialization in dev mode',
-      );
+
       return;
     }
 
@@ -53,7 +51,7 @@ export const initializeAppCheck = async () => {
 
     isAppCheckInitialized = true;
   } catch (error) {
-    console.error('Failed to initialize Firebase App Check:', error);
+
     throw error;
   }
 };
@@ -64,7 +62,7 @@ export const getAppCheckToken = async () => {
     const {token} = await appCheckInstance.getToken();
     return token;
   } catch (error) {
-    console.error('Failed to get App Check token:', error);
+
     throw error;
   }
 };

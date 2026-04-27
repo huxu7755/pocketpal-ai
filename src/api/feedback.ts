@@ -85,7 +85,6 @@ export async function submitContentReport(
       await initializeAppCheck();
       appCheckToken = await getAppCheckToken();
     } catch (error) {
-      console.error('App Check error:', error);
       throw new AppCheckError(errMessage);
     }
 
@@ -137,7 +136,6 @@ export async function submitContentReport(
       throw error;
     }
   } catch (error) {
-    console.error('Content report submission error:', error);
     throw error;
   }
 }
@@ -167,7 +165,6 @@ export async function submitFeedback(
       await initializeAppCheck();
       appCheckToken = await getAppCheckToken();
     } catch (error) {
-      console.error('App Check error:', error);
       throw new AppCheckError(errMessage);
     }
 
@@ -219,8 +216,6 @@ export async function submitFeedback(
       throw error;
     }
   } catch (error) {
-    console.error('Error submitting feedback:', error);
-
     if (
       error instanceof NetworkError ||
       error instanceof AppCheckError ||
@@ -262,7 +257,6 @@ export async function submitModelLoadErrorReport(
       await initializeAppCheck();
       appCheckToken = await getAppCheckToken();
     } catch (error) {
-      console.error('App Check error:', error);
       throw new AppCheckError(errMessage);
     }
 
@@ -314,7 +308,6 @@ export async function submitModelLoadErrorReport(
       throw error;
     }
   } catch (error) {
-    console.error('Model load error report submission error:', error);
     throw error;
   }
 }

@@ -53,7 +53,7 @@ class SyncService {
 
       // Only sync if user is authenticated
       if (!authService.isAuthenticated) {
-        console.log('User not authenticated, skipping sync');
+
         return;
       }
 
@@ -253,10 +253,7 @@ class SyncService {
           });
         } catch (error) {
           // Log error but continue with other Pals
-          console.warn(
-            `Failed to update cached Pal ${cachedPal.palshubId}:`,
-            error,
-          );
+
         }
       }
 

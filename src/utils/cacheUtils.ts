@@ -33,7 +33,7 @@ export const sessionCacheDirectoryExists = async (): Promise<boolean> => {
     const cacheDir = getSessionCacheDirectory();
     return await RNFS.exists(cacheDir);
   } catch (error) {
-    console.error('Error checking session cache directory:', error);
+
     return false;
   }
 };
@@ -69,7 +69,7 @@ export const getSessionCacheInfo = async (): Promise<{
       totalSizeBytes: totalSize,
     };
   } catch (error) {
-    console.error('Error getting session cache info:', error);
+
     return {fileCount: 0, totalSizeBytes: 0};
   }
 };
@@ -86,9 +86,7 @@ export const clearAllSessionCaches = async (): Promise<number> => {
     const exists = await RNFS.exists(cacheDir);
 
     if (!exists) {
-      console.log(
-        '[CacheUtils] Session cache directory does not exist, nothing to clear',
-      );
+
       return 0;
     }
 
@@ -100,21 +98,17 @@ export const clearAllSessionCaches = async (): Promise<number> => {
         try {
           await RNFS.unlink(file.path);
           deletedCount++;
-          console.log('[CacheUtils] Deleted cache file:', file.name);
+
         } catch (error) {
-          console.error(
-            '[CacheUtils] Failed to delete cache file:',
-            file.name,
-            error,
-          );
+
         }
       }
     }
 
-    console.log(`[CacheUtils] Cleared ${deletedCount} session cache files`);
+
     return deletedCount;
   } catch (error) {
-    console.error('[CacheUtils] Error clearing session caches:', error);
+
     throw error;
   }
 };
@@ -140,7 +134,7 @@ export const clearSessionCacheForPal = async (
     const sessionExists = await RNFS.exists(sessionFile);
     if (sessionExists) {
       await RNFS.unlink(sessionFile);
-      console.log('[CacheUtils] Deleted session file for pal:', palId);
+
       deletedAny = true;
     }
 
@@ -148,17 +142,13 @@ export const clearSessionCacheForPal = async (
     const metadataExists = await RNFS.exists(metadataFile);
     if (metadataExists) {
       await RNFS.unlink(metadataFile);
-      console.log('[CacheUtils] Deleted metadata file for pal:', palId);
+
       deletedAny = true;
     }
 
     return deletedAny;
   } catch (error) {
-    console.error(
-      '[CacheUtils] Error clearing session cache for pal:',
-      palId,
-      error,
-    );
+    
     throw error;
   }
 };

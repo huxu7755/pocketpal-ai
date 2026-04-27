@@ -83,7 +83,6 @@ export async function fetchModels({
       nextLink,
     };
   } catch (error) {
-    console.error('Error fetching models:', error);
     throw error;
   }
 }
@@ -115,7 +114,6 @@ export const fetchModelFilesDetails = async (
     const data: ModelFileDetails[] = await response.json();
     return data;
   } catch (error) {
-    console.error('Failed to fetch model files:', error);
     throw error;
   }
 };
@@ -147,7 +145,6 @@ export const fetchGGUFSpecs = async (
     const data: GGUFSpecs = await response.json();
     return data;
   } catch (error) {
-    console.error('Failed to fetch GGUF specs:', error);
     throw error;
   }
 };
@@ -216,7 +213,6 @@ export async function fetchModelInfo({
 
     return modelData;
   } catch (error) {
-    console.error('Failed to fetch model info:', error);
     throw error;
   }
 }

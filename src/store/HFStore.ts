@@ -69,7 +69,7 @@ class HFStore {
         });
       }
     } catch (error) {
-      console.error('Failed to load token from secure storage:', error);
+
     }
   }
 
@@ -99,7 +99,7 @@ class HFStore {
       });
       return true;
     } catch (error) {
-      console.error('Failed to save HF token:', error);
+
       return false;
     }
   }
@@ -116,7 +116,7 @@ class HFStore {
       });
       return true;
     } catch (error) {
-      console.error('Failed to clear HF token:', error);
+
       return false;
     }
   }
@@ -172,7 +172,7 @@ class HFStore {
         });
       }
     } catch (error) {
-      console.error('Failed to fetch GGUF specs:', error);
+
       runInAction(() => {
         this.error = createErrorState(error, 'modelDetails', 'huggingface');
       });
@@ -210,7 +210,7 @@ class HFStore {
   // Fetch the details (sizes, oid, lfs, ...) of the model files
   async fetchModelFileDetails(modelId: string) {
     try {
-      console.log('Fetching model file details for', modelId);
+
       const authToken = this.shouldUseToken ? this.hfToken : null;
       const fileDetails = await fetchModelFilesDetails(modelId, authToken);
       const model = this.models.find(m => m.id === modelId);
@@ -243,7 +243,7 @@ class HFStore {
       await this.fetchAndSetGGUFSpecs(modelId);
       await this.fetchModelFileDetails(modelId);
     } catch (error) {
-      console.error('Error fetching model data:', error);
+
       runInAction(() => {
         this.error = createErrorState(error, 'modelDetails', 'huggingface');
       });
@@ -261,15 +261,13 @@ class HFStore {
 
     // If we have very few models and recent attempts, apply debouncing
     if (this.models.length < 5 && timeSinceLastAttempt < 2000) {
-      console.log('🔵 Preventing fetchMore: too few models and recent attempt');
+
       return true;
     }
 
     // If we've had multiple consecutive small results, be more cautious
     if (this.consecutiveSmallResults >= 3 && timeSinceLastAttempt < 5000) {
-      console.log(
-        '🔵 Preventing fetchMore: multiple small results, applying longer debounce',
-      );
+
       return true;
     }
 
@@ -347,7 +345,7 @@ class HFStore {
 
   // Fetch the next page of models
   async fetchMoreModels() {
-    console.log('fetchMoreModels called');
+
     if (!this.nextPageLink || this.isLoading) {
       return;
     }
@@ -359,10 +357,7 @@ class HFStore {
 
     // ⛔️ Don't refetch the same page over and over
     if (this.lastFetchedNextLink === this.nextPageLink) {
-      console.log(
-        '🔵 Skipping duplicate fetch for same nextPageLink:',
-        this.nextPageLink,
-      );
+
       return;
     }
     this.lastFetchedNextLink = this.nextPageLink;

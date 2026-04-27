@@ -47,13 +47,7 @@ export async function isRepackableQuantization(
           numericValue,
         );
         if (isRepackable) {
-          console.log(
-            'Detected repackable quantization:',
-            fileType,
-            '(enum value:',
-            numericValue,
-            ')',
-          );
+
         }
         return isRepackable;
       }
@@ -62,7 +56,7 @@ export async function isRepackableQuantization(
         fileType.toUpperCase().includes(quant.toUpperCase()),
       );
       if (isRepackable) {
-        console.log('Detected repackable quantization from string:', fileType);
+
       }
       return isRepackable;
     }
@@ -73,17 +67,14 @@ export async function isRepackableQuantization(
         fileType,
       );
       if (isRepackable) {
-        console.log('Detected repackable quantization from number:', fileType);
+
       }
       return isRepackable;
     }
 
     return false;
   } catch (error) {
-    console.warn(
-      'Failed to detect quantization type, defaulting to false:',
-      error,
-    );
+
     return false;
   }
 }

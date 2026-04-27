@@ -67,9 +67,6 @@ export const pickJsonFile = async (): Promise<string | null> => {
     if (isErrorWithCode(err)) {
       switch (err.code) {
         case errorCodes.IN_PROGRESS:
-          console.warn(
-            'user attempted to present a picker, but a previous one was already presented',
-          );
           break;
         case errorCodes.UNABLE_TO_OPEN_FILE_TYPE:
           throw new Error('unable to open file type');
@@ -77,7 +74,7 @@ export const pickJsonFile = async (): Promise<string | null> => {
           // ignore
           return null;
         default:
-          console.error(err);
+
           throw new Error('unknown error');
       }
     }
@@ -93,7 +90,7 @@ export const readJsonFile = async (fileUri: string): Promise<any> => {
     const fileContent = await RNFS.readFile(fileUri, 'utf8');
     return JSON.parse(fileContent);
   } catch (error) {
-    console.error('Error reading or parsing JSON file:', error);
+
     throw new Error('Failed to read or parse the selected file');
   }
 };
@@ -203,7 +200,7 @@ export const importChatSessions = async (): Promise<number> => {
       return 1;
     }
   } catch (error) {
-    console.error('Error importing chat sessions:', error);
+
     throw error;
   }
 };
@@ -236,7 +233,7 @@ const importSingleSession = async (
       session.activePalId,
     );
   } catch (error) {
-    console.error('Error importing single session:', error);
+
     throw error;
   }
 };
@@ -303,7 +300,7 @@ export const importPals = async (): Promise<number> => {
       return 1;
     }
   } catch (error) {
-    console.error('Error importing pals:', error);
+
     throw error;
   }
 };
@@ -413,7 +410,7 @@ const transformImportPal = async (
       const newPalId = uuidv4();
       thumbnailUrl = await saveBase64Image(pal.thumbnail_data, newPalId);
     } catch (error) {
-      console.warn('Failed to save imported thumbnail:', error);
+
       thumbnailUrl = undefined; // Fall back to no thumbnail
     }
   }
@@ -461,7 +458,7 @@ const importSinglePal = async (pal: ImportedPal): Promise<void> => {
 
     await palStore.createPal(palData);
   } catch (error) {
-    console.error('Error importing single pal:', error);
+
     throw error;
   }
 };

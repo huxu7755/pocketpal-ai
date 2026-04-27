@@ -171,18 +171,14 @@ class PalsHubApiService {
         try {
           errorData = await response.json();
         } catch (parseError) {
-          console.error('Failed to parse error response:', parseError);
+
         }
 
         const errorMessage =
           errorData.error ||
           errorData.message ||
           `HTTP ${response.status}: ${response.statusText}`;
-        console.error(
-          `API Error [${response.status}]:`,
-          errorMessage,
-          errorData,
-        );
+
 
         throw new PalsHubError(errorMessage, {
           status: response.status,
@@ -199,7 +195,7 @@ class PalsHubApiService {
 
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown network error';
-      console.error('Network error:', errorMessage, error);
+
 
       throw new PalsHubError(`Network error: ${errorMessage}`, error);
     }
@@ -312,7 +308,7 @@ class PalsHubApiService {
         has_more: response.pagination.has_more,
       };
     } catch (error) {
-      console.error('Failed to fetch pals:', error);
+
       if (error instanceof PalsHubError) {
         throw error;
       }

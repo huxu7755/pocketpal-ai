@@ -141,7 +141,7 @@ export class TTSStore {
     try {
       totalMemory = await DeviceInfo.getTotalMemory();
     } catch (err) {
-      console.warn('[TTSStore] getTotalMemory failed:', err);
+
       totalMemory = 0;
     }
 
@@ -161,7 +161,7 @@ export class TTSStore {
         try {
           return {id, installed: await getEngine(id).isInstalled()};
         } catch (err) {
-          console.warn(`[TTSStore] ${id} isInstalled check failed:`, err);
+
           return {id, installed: false};
         }
       }),
@@ -207,7 +207,7 @@ export class TTSStore {
       this.stop()
         .then(() => ttsRuntime.release())
         .catch(err => {
-          console.warn('[TTSStore] background release failed:', err);
+
         });
     }
   };
@@ -221,7 +221,7 @@ export class TTSStore {
       this.stop()
         .then(() => ttsRuntime.release())
         .catch(err => {
-          console.warn('[TTSStore] release on auto-speak off failed:', err);
+
         });
     }
   }
@@ -248,7 +248,7 @@ export class TTSStore {
         this.freeDiskBytes = bytes;
       });
     } catch (err) {
-      console.warn('[TTSStore] refreshFreeDisk failed:', err);
+
     }
   }
 
@@ -313,7 +313,7 @@ export class TTSStore {
       try {
         await state.handle.cancel();
       } catch (err) {
-        console.warn('[TTSStore] streaming cancel failed:', err);
+
       }
       return;
     }
@@ -321,7 +321,7 @@ export class TTSStore {
       try {
         await getEngine(voice.engine).stop();
       } catch (err) {
-        console.warn('[TTSStore] stop failed:', err);
+
       }
     }
   }
@@ -366,7 +366,7 @@ export class TTSStore {
         await engine.play(spokenText, voice);
       }
     } catch (err) {
-      console.warn('[TTSStore] play failed:', err);
+
     } finally {
       runInAction(() => {
         if (
@@ -409,7 +409,7 @@ export class TTSStore {
         await engine.play(TTS_PREVIEW_SAMPLE, voice);
       }
     } catch (err) {
-      console.warn('[TTSStore] preview failed:', err);
+
     } finally {
       runInAction(() => {
         if (
@@ -450,7 +450,7 @@ export class TTSStore {
     // `Speech.stop()` to complete before starting synthesis — prevents
     // the old stop flag from killing the new stream's first sentence.
     const stopDone = this.stop().catch(err => {
-      console.warn('[TTSStore] stop before new stream failed:', err);
+
     });
 
     const voice = this.currentVoice;
@@ -528,7 +528,7 @@ export class TTSStore {
       state.handle
         .finalize()
         .catch(err => {
-          console.warn('[TTSStore] finalize failed:', err);
+
         })
         .finally(() => {
           runInAction(() => {
@@ -598,7 +598,7 @@ export class TTSStore {
         return;
       }
     } catch (err) {
-      console.warn('[TTSStore] disk-space preflight failed:', err);
+
     }
 
     const engine = getEngine(id) as
@@ -622,7 +622,7 @@ export class TTSStore {
         }
       });
     } catch (err) {
-      console.warn(`[TTSStore] ${id} download failed:`, err);
+
       const message = err instanceof Error ? err.message : String(err);
       runInAction(() => {
         this.setDownloadState(id, 'error');
@@ -654,7 +654,7 @@ export class TTSStore {
     try {
       await engine.deleteModel();
     } catch (err) {
-      console.warn(`[TTSStore] ${id} delete failed:`, err);
+
     }
     runInAction(() => {
       this.setDownloadState(id, 'not_installed');

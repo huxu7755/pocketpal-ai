@@ -71,7 +71,7 @@ export function createEngineStreamingHandle(
       });
     })
     .catch(err => {
-      console.warn(`[${engine.id}] streaming acquire failed:`, err);
+
       throw err;
     });
 

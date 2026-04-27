@@ -244,7 +244,6 @@ export const ModelsScreen: React.FC = observer(() => {
                 } while (await RNFS.exists(permanentPath));
                 break;
               case 'cancel':
-                console.log('File copy cancelled by user');
                 return;
             }
           }
@@ -263,7 +262,7 @@ export const ModelsScreen: React.FC = observer(() => {
           }
         }
       })
-      .catch(e => console.log('No file picked, error: ', e.message));
+      .catch(e => {});
   };
 
   const activeModelId = modelStore.activeModel?.id;

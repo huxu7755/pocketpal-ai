@@ -41,7 +41,7 @@ function extractJsonSchema(
     const schemaJson = match[1].trim();
     return JSON.parse(schemaJson);
   } catch (error) {
-    console.warn('Failed to parse JSON schema from template:', error);
+
     return null;
   }
 }
@@ -195,7 +195,7 @@ export function generateFinalSystemPrompt(
       },
     );
   } catch (error) {
-    console.warn('Failed to render Mustache template:', error);
+
     return template;
   }
 }

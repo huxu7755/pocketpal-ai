@@ -33,7 +33,7 @@ export async function getAvailableDevices(): Promise<
     const devices = await getBackendDevicesInfo();
     return devices || [];
   } catch (error) {
-    console.warn('Failed to get backend devices info:', error);
+
     return [];
   }
 }

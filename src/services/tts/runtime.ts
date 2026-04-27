@@ -71,7 +71,7 @@ class TTSRuntime {
       try {
         await Speech.stop();
       } catch (err) {
-        console.warn('[ttsRuntime] stop failed:', err);
+
       }
     });
   }
@@ -101,7 +101,7 @@ class TTSRuntime {
       try {
         await Speech.release();
       } catch (err) {
-        console.warn(`[ttsRuntime] release failed for ${prev}:`, err);
+
       }
     }
     this.activeEngineId = null;

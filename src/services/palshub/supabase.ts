@@ -20,7 +20,7 @@ export const supabase = isSupabaseConfigured
 // Helper function to get auth headers for API requests
 export const getAuthHeaders = async () => {
   if (!supabase) {
-    console.warn('Supabase not configured - returning empty auth headers');
+
     return {};
   }
 
@@ -33,7 +33,7 @@ export const getAuthHeaders = async () => {
       ? {Authorization: `Bearer ${session.access_token}`}
       : {};
   } catch (error) {
-    console.warn('Failed to get auth headers:', error);
+
     return {};
   }
 };
@@ -50,7 +50,7 @@ export const isAuthenticated = async (): Promise<boolean> => {
     } = await supabase.auth.getSession();
     return !!session?.user;
   } catch (error) {
-    console.warn('Failed to check authentication:', error);
+
     return false;
   }
 };
@@ -67,7 +67,7 @@ export const getCurrentUser = async () => {
     } = await supabase.auth.getUser();
     return user;
   } catch (error) {
-    console.warn('Failed to get current user:', error);
+
     return null;
   }
 };

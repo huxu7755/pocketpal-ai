@@ -44,9 +44,6 @@ class DeepLinkService {
     // Cleanup existing subscription first to prevent duplicates
     // This can happen during hot reload or if initialize() is called multiple times
     if (this.subscription) {
-      console.log(
-        'DeepLinkService: Cleaning up existing subscription before re-initializing',
-      );
       this.subscription.remove();
       this.subscription = null;
     }
@@ -55,7 +52,6 @@ class DeepLinkService {
     this.subscription = this.eventEmitter.addListener(
       'onDeepLink',
       (params: DeepLinkParams) => {
-        console.log('Deep link received:', params);
         this.notifyListeners(params);
       },
     );
@@ -105,7 +101,6 @@ class DeepLinkService {
         }
       }
     } catch (error) {
-      console.error('Error getting initial URL:', error);
     }
   }
 
@@ -128,7 +123,6 @@ class DeepLinkService {
         queryParams,
       };
     } catch (error) {
-      console.error('Error parsing URL:', error);
       return null;
     }
   }
@@ -141,7 +135,6 @@ class DeepLinkService {
       try {
         handler(params);
       } catch (error) {
-        console.error('Error in deep link handler:', error);
       }
     });
   }

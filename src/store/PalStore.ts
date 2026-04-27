@@ -68,8 +68,7 @@ class PalStore {
   constructor() {
     makeAutoObservable(this);
     this.initialize();
-    console.log('Pal store initialized');
-    console.log('Pals number: ', this.pals.length);
+
   }
 
   async initialize() {
@@ -90,14 +89,14 @@ class PalStore {
       // Check storefront region for buy button gating
       this.checkRegion();
 
-      console.log('Pal store initialization completed');
+
 
       runInAction(() => {
         this.isMigrating = false;
         this.migrationComplete = true;
       });
     } catch (error) {
-      console.error('Failed to initialize pal store:', error);
+
       runInAction(() => {
         this.isMigrating = false;
         this.migrationComplete = false;
@@ -112,7 +111,7 @@ class PalStore {
         this.isUSRegion = isUS;
       });
     } catch (error) {
-      console.warn('Failed to check storefront region:', error);
+
     }
   }
 
@@ -126,7 +125,7 @@ class PalStore {
         this.pals = pals;
       });
     } catch (error) {
-      console.error('Error loading pals from database:', error);
+
     }
   }
 
@@ -174,7 +173,7 @@ class PalStore {
         throw new Error('Failed to update pal - no updated pal returned');
       }
     } catch (error) {
-      console.error('Error updating pal:', error);
+
       throw error; // Re-throw so calling code can handle it
     }
   };
@@ -196,7 +195,7 @@ class PalStore {
             // deletePalThumbnail now handles all path formats (relative, absolute, file://)
             await deletePalThumbnail(pal.thumbnail_url);
           } catch (imageError) {
-            console.warn('Failed to delete thumbnail image:', imageError);
+
             // Don't fail the entire deletion if image cleanup fails
           }
         }
@@ -208,7 +207,7 @@ class PalStore {
         });
       }
     } catch (error) {
-      console.error('Error deleting pal:', error);
+
     }
   };
 
@@ -249,7 +248,7 @@ class PalStore {
       // Download thumbnail image if available
       if (palsHubPal.thumbnail_url) {
         try {
-          console.log('Downloading thumbnail for pal:', pal.name);
+
           relativeThumbnailPath = await downloadPalThumbnail(
             pal.id,
             palsHubPal.thumbnail_url,
@@ -257,15 +256,9 @@ class PalStore {
 
           // Update the pal with the relative path (no file:// protocol)
           pal.thumbnail_url = relativeThumbnailPath;
-          console.log(
-            'Thumbnail downloaded successfully:',
-            relativeThumbnailPath,
-          );
+
         } catch (imageError) {
-          console.warn(
-            'Failed to download thumbnail, keeping remote URL:',
-            imageError,
-          );
+
           // Keep the original remote URL as fallback
           pal.thumbnail_url = palsHubPal.thumbnail_url;
         }
@@ -279,15 +272,9 @@ class PalStore {
         if (relativeThumbnailPath) {
           try {
             await deletePalThumbnail(relativeThumbnailPath);
-            console.log(
-              'Cleaned up thumbnail after database error:',
-              relativeThumbnailPath,
-            );
+
           } catch (cleanupError) {
-            console.warn(
-              'Failed to cleanup thumbnail after database error:',
-              cleanupError,
-            );
+
           }
         }
         throw dbError;
@@ -310,11 +297,11 @@ class PalStore {
           repoId: modelRef.repo_id,
           full: true,
         }).catch((error: any) => {
-          console.warn('Failed to fetch model info:', error);
+
           return null;
         }),
         fetchModelFilesDetails(modelRef.repo_id).catch((error: any) => {
-          console.warn('Failed to fetch file details:', error);
+
           return [];
         }),
       ]);
@@ -384,7 +371,7 @@ class PalStore {
       // Use the existing hfAsModel function to create a complete Model object
       return hfAsModel(hfModel, modelFile);
     } catch (error) {
-      console.error('Failed to fetch complete model data from HF API:', error);
+
 
       // Fallback: create basic model with available data
       return this.createBasicModelFromReference(modelRef);
@@ -518,10 +505,7 @@ class PalStore {
 
       return response;
     } catch (error) {
-      console.warn(
-        'PalsHub search failed (this is expected if not configured):',
-        error,
-      );
+
       runInAction(() => {
         this.cachedPalsHubPals = []; // Set empty array instead of failing
         this.isLoadingPalsHub = false;
@@ -556,10 +540,7 @@ class PalStore {
 
       return response;
     } catch (error) {
-      console.warn(
-        'User library load failed (this is expected if not configured):',
-        error,
-      );
+
       runInAction(() => {
         this.userLibrary = []; // Set empty array instead of failing
         this.isLoadingPalsHub = false;
@@ -594,10 +575,7 @@ class PalStore {
 
       return response;
     } catch (error) {
-      console.warn(
-        'User created pals load failed (this is expected if not configured):',
-        error,
-      );
+      
       runInAction(() => {
         this.userCreatedPals = []; // Set empty array instead of failing
         this.isLoadingPalsHub = false;
@@ -645,7 +623,7 @@ class PalStore {
     try {
       return await palsHubService.getCategories();
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+
       throw error;
     }
   };
@@ -657,7 +635,7 @@ class PalStore {
     try {
       return await palsHubService.getTags(query);
     } catch (error) {
-      console.error('Failed to fetch tags:', error);
+
       throw error;
     }
   };
@@ -669,7 +647,7 @@ class PalStore {
     try {
       return await palsHubService.getPal(id);
     } catch (error) {
-      console.error('Failed to fetch pal:', error);
+
       throw error;
     }
   };
@@ -681,7 +659,7 @@ class PalStore {
     try {
       return await palsHubService.checkPalOwnership(palId);
     } catch (error) {
-      console.error('Failed to check pal ownership:', error);
+
       throw error;
     }
   };
@@ -697,7 +675,7 @@ class PalStore {
       );
 
       if (!lookiePal) {
-        console.log('Creating default Lookie pal...');
+
 
         // Find the default SmolVLM model directly from defaultModels
         // This avoids timing issues with ModelStore initialization
@@ -736,10 +714,10 @@ class PalStore {
 
         await this.addPal(palData);
       } else {
-        console.log('Lookie pal already exists, skipping creation');
+
       }
     } catch (error) {
-      console.error('Error initializing Lookie pal:', error);
+
     }
   }
 }

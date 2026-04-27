@@ -362,17 +362,9 @@ export async function streamChatCompletion(
           const detail =
             errorBody?.error?.message || errorBody?.error || xhr.responseText;
           errorMessage = `Server error: ${xhr.status} — ${detail}`;
-          console.log(
-            '[OpenAI] Error:',
-            errorBody?.error?.message || errorBody?.error,
-          );
         } catch {
           if (xhr.responseText) {
             errorMessage = `Server error: ${xhr.status} — ${xhr.responseText.substring(0, 200)}`;
-            console.log(
-              '[OpenAI] Error (raw):',
-              xhr.responseText.substring(0, 200),
-            );
           }
         }
 
