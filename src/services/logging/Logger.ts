@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 
 export enum LogLevel {
   DEBUG = 'debug',
@@ -63,7 +63,12 @@ export class Logger {
     this.log(LogLevel.FATAL, message, context, data);
   }
 
-  private log(level: LogLevel, message: string, context?: string, data?: any): void {
+  private log(
+    level: LogLevel,
+    message: string,
+    context?: string,
+    data?: any,
+  ): void {
     if (!this.isEnabled || this.shouldSkipLog(level)) {
       return;
     }
@@ -80,26 +85,28 @@ export class Logger {
       },
     };
 
-    // Send to LogManager for storage
     this.sendToLogManager(logEntry);
 
-    // Also log to console for immediate debugging
     this.logToConsole(logEntry);
   }
 
   private shouldSkipLog(level: LogLevel): boolean {
-    const levelOrder = [LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR, LogLevel.FATAL];
+    const levelOrder = [
+      LogLevel.DEBUG,
+      LogLevel.INFO,
+      LogLevel.WARN,
+      LogLevel.ERROR,
+      LogLevel.FATAL,
+    ];
     return levelOrder.indexOf(level) < levelOrder.indexOf(this.minimumLevel);
   }
 
   private sendToLogManager(entry: LogEntry): void {
-    // This will be implemented when LogManager is created
     try {
-      // Check if logManager is available globally
       if (typeof global !== 'undefined' && (global as any).logManager) {
         (global as any).logManager.addLog(entry);
       }
-    } catch (error) {
+    } catch {
       // Failed to send log to LogManager
     }
   }

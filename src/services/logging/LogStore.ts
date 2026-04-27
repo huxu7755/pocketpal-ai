@@ -1,11 +1,11 @@
-import { makeAutoObservable } from 'mobx';
-import { LogLevel } from './Logger';
+import {makeAutoObservable} from 'mobx';
+import {LogLevel} from './Logger';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export class LogStore {
   private static instance: LogStore;
-  
-  isLoggingEnabled: boolean = true; // Default enabled
+
+  isLoggingEnabled: boolean = true;
   logLevel: LogLevel = LogLevel.DEBUG;
   private _isInitialized: boolean = false;
 
@@ -26,7 +26,6 @@ export class LogStore {
     }
 
     try {
-      // Load settings from AsyncStorage
       const enabled = await AsyncStorage.getItem('logging_enabled');
       const level = await AsyncStorage.getItem('logging_level');
 
@@ -34,7 +33,10 @@ export class LogStore {
         this.isLoggingEnabled = enabled === 'true';
       }
 
-      if (level !== null && Object.values(LogLevel).includes(level as LogLevel)) {
+      if (
+        level !== null &&
+        Object.values(LogLevel).includes(level as LogLevel)
+      ) {
         this.logLevel = level as LogLevel;
       }
 
@@ -56,7 +58,10 @@ export class LogStore {
 
   private async saveSettings(): Promise<void> {
     try {
-      await AsyncStorage.setItem('logging_enabled', String(this.isLoggingEnabled));
+      await AsyncStorage.setItem(
+        'logging_enabled',
+        String(this.isLoggingEnabled),
+      );
       await AsyncStorage.setItem('logging_level', this.logLevel);
     } catch {
       // Silent error handling
