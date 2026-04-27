@@ -526,7 +526,7 @@ class ModelStore {
         runInAction(() => {
           this.availableMemoryCeiling = availableBytes;
         });
-      } catch (error) {
+      } catch {
         // Fallback when native call fails
         const totalMemory = await DeviceInfo.getTotalMemory();
         // Use conservative heuristic: min(60% of RAM, RAM - 1.2GB)
