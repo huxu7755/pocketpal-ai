@@ -1,5 +1,5 @@
 import { Logger, LogLevel } from './Logger';
-import { LogManager } from './LogManager';
+import LogManager from './LogManager';
 import { LogExporter } from './LogExporter';
 import { LogStore } from './LogStore';
 
@@ -33,9 +33,9 @@ export const initializeLogging = async (): Promise<void> => {
     
     // Log initialization
     logger.info('Logging system initialized', 'Logging');
-  } catch (error) {
-    console.error('Failed to initialize logging system:', error);
-  }
+  } catch {
+      // Silent error handling
+    }
 };
 
 // Shutdown logging system
@@ -43,9 +43,9 @@ export const shutdownLogging = async (): Promise<void> => {
   try {
     await logManager.shutdown();
     logger.info('Logging system shutdown', 'Logging');
-  } catch (error) {
-    console.error('Failed to shutdown logging system:', error);
-  }
+  } catch {
+      // Silent error handling
+    }
 };
 
 // Reconfigure logger when settings change

@@ -240,7 +240,6 @@ class ModelStore {
         }
       },
       onError: (modelId, error) => {
-        console.error('Download error for model', modelId, error);
         const model = this.models.find(m => m.id === modelId);
         if (model) {
           runInAction(() => {
@@ -280,8 +279,7 @@ class ModelStore {
           };
         });
       }
-    } catch (error) {
-      console.error('Failed to initialize thread count:', error);
+    } catch {
       runInAction(() => {
         this.max_threads = 4;
       });
@@ -505,7 +503,6 @@ class ModelStore {
 
   initializeStore = async () => {
     const storedVersion = this.version || 0;
-    console.log('models: ', this.models);
 
     // Sync download manager with active downloads
     await downloadManager.syncWithActiveDownloads(this.models);
@@ -531,10 +528,6 @@ class ModelStore {
         });
       } catch (error) {
         // Fallback when native call fails
-        console.warn(
-          '[ModelStore] Native getAvailableMemory failed, using fallback:',
-          error,
-        );
         const totalMemory = await DeviceInfo.getTotalMemory();
         // Use conservative heuristic: min(60% of RAM, RAM - 1.2GB)
         const fallbackCeiling = Math.min(
@@ -646,9 +639,6 @@ class ModelStore {
           const inferredRepo = inferRepoFromModelId(model.id);
           if (inferredRepo) {
             model.repo = inferredRepo;
-            console.log(
-              `[ModelStore] Inferred repo "${inferredRepo}" from model.id: ${model.id}`,
-            );
           }
         }
       }
@@ -668,18 +658,10 @@ class ModelStore {
   // Auto-release management methods
   disableAutoRelease = (reason: string) => {
     this.autoReleaseDisabledReasons.add(reason);
-    console.log(
-      `Auto-release disabled: ${reason}`,
-      Array.from(this.autoReleaseDisabledReasons),
-    );
   };
 
   enableAutoRelease = (reason: string) => {
     this.autoReleaseDisabledReasons.delete(reason);
-    console.log(
-      `Auto-release enabled: ${reason}`,
-      Array.from(this.autoReleaseDisabledReasons),
-    );
   };
 
   get isAutoReleaseEnabled() {
@@ -692,7 +674,6 @@ class ModelStore {
     if (model?.origin === ModelOrigin.REMOTE) {
       return;
     }
-    console.log('Marking auto-released: ', modelId);
     runInAction(() => {
       this.wasAutoReleased = true;
       this.lastAutoReleasedModelId = modelId;
@@ -700,7 +681,6 @@ class ModelStore {
   };
 
   private clearAutoReleaseFlags = () => {
-    console.log('Clearing auto-release flags');
     runInAction(() => {
       this.wasAutoReleased = false;
       this.lastAutoReleasedModelId = undefined;
@@ -725,7 +705,6 @@ class ModelStore {
         m => m.id === this.lastAutoReleasedModelId && m.isDownloaded,
       );
       if (model) {
-        console.log('Reloading auto-released model:', model.id);
         await this.initContext(model);
       }
       this.clearAutoReleaseFlags();
@@ -733,7 +712,6 @@ class ModelStore {
   };
 
   handleAppStateChange = async (nextAppState: AppStateStatus) => {
-    console.log(`App state change: ${this.appState} → ${nextAppState}`);
 
     if (
       this.appState.match(/inactive|background/) &&
@@ -743,7 +721,6 @@ class ModelStore {
       await this.checkAndReloadAutoReleasedModel();
     } else if (this.appState === 'active' && nextAppState === 'inactive') {
       // active → inactive: NO action (per requirements)
-      console.log('Active → Inactive: No auto-release action');
     } else if (this.appState === 'inactive' && nextAppState === 'background') {
       // inactive → background: release if enabled
       // Skip for remote models — no native context to release, and
@@ -753,7 +730,6 @@ class ModelStore {
         this.activeModelId &&
         this.activeModel?.origin !== ModelOrigin.REMOTE
       ) {
-        console.log('Inactive → Background: Auto-releasing context');
         this.markAutoReleased(this.activeModelId);
         await this.releaseContext();
       }
@@ -765,7 +741,6 @@ class ModelStore {
         this.activeModelId &&
         this.activeModel?.origin !== ModelOrigin.REMOTE
       ) {
-        console.log('Active → Background: Auto-releasing context');
         this.markAutoReleased(this.activeModelId);
         await this.releaseContext();
       }
@@ -839,7 +814,7 @@ class ModelStore {
           return veryOldPath;
         }
       } catch (err) {
-        console.log('Error checking very old preset path:', err);
+        // Silent error handling
       }
 
       // Check if file exists at old path (for backwards compatibility)
@@ -848,7 +823,7 @@ class ModelStore {
           return oldPath;
         }
       } catch (err) {
-        console.log('Error checking old preset path:', err);
+        // Silent error handling
       }
 
       // Otherwise use new path
@@ -878,7 +853,7 @@ class ModelStore {
           return oldPath;
         }
       } catch (err) {
-        console.log('Error checking old HF model path:', err);
+        // Silent error handling
       }
 
       // Otherwise use new path
@@ -886,7 +861,6 @@ class ModelStore {
     }
 
     // Fallback (shouldn't reach here)
-    console.error('should not reach here. model: ', model);
     return `${RNFS.DocumentDirectoryPath}/${model.filename}`;
   };
 
@@ -897,10 +871,6 @@ class ModelStore {
     // Don't mark as downloaded if currently downloading
     if (exists && !downloadManager.isDownloading(model.id)) {
       if (!model.isDownloaded) {
-        console.log(
-          'checkFileExists: marking as downloaded - this should not happen:',
-          model.id,
-        );
         runInAction(() => {
           model.isDownloaded = true;
         });
@@ -951,10 +921,6 @@ class ModelStore {
 
     // Check if vision is enabled for this model (uses getModelVisionPreference for proper default handling)
     if (!this.getModelVisionPreference(model)) {
-      console.log(
-        'Vision disabled for model, skipping projection model download:',
-        model.id,
-      );
       return;
     }
 
@@ -966,16 +932,11 @@ class ModelStore {
       !projModel.isDownloaded &&
       !downloadManager.isDownloading(projModelId)
     ) {
-      console.log('Auto-downloading projection model for vision model:', {
-        llm: model.id,
-        projection: projModelId,
-      });
-
       try {
         // Download the projection model
         await this.checkSpaceAndDownload(projModelId);
-      } catch (error) {
-        console.error('Failed to auto-download projection model:', error);
+      } catch {
+        // Silent error handling
         // Don't re-throw - projection model download failure shouldn't fail the main model download
         // The user can manually download the projection model later if needed
       }
@@ -1004,7 +965,6 @@ class ModelStore {
       // For vision models, automatically download the projection model
       await this._downloadProjectionModelIfNeeded(model);
     } catch (err) {
-      console.error('Failed to start download:', err);
 
       // Create proper error state for the snackbar system
       const errorState = createErrorState(err, 'download', 'huggingface', {
@@ -1131,16 +1091,15 @@ class ModelStore {
       // Delete the file from internal storage
       try {
         await RNFS.unlink(filePath);
-      } catch (err) {
-        console.error('Failed to delete local model file:', err);
-      }
-    } else {
-      // Non-local models are not removed from the list, when the file is deleted.
-      console.log('deleting: ', filePath);
+      } catch {
+      // Silent error handling
+    }
+  } else {
+    // Non-local models are not removed from the list, when the file is deleted.
 
-      try {
-        if (filePath) {
-          await RNFS.unlink(filePath);
+    try {
+      if (filePath) {
+        await RNFS.unlink(filePath);
 
           // Check if we need to release context (if this model is currently active)
           const needsContextRelease = this.activeModelId === _model.id;
@@ -1156,13 +1115,13 @@ class ModelStore {
             await this.releaseContext(true); // Clear active model and all related state
           }
 
-          //console.log('models: ', this.models);
+
         } else {
-          console.error("Failed to delete, file doesn't exist: ", filePath);
+          // File doesn't exist, no action needed
         }
         this.refreshDownloadStatuses();
-      } catch (err) {
-        console.error('Failed to delete:', err);
+      } catch {
+        // Silent error handling
       }
     }
 
@@ -1183,15 +1142,11 @@ class ModelStore {
     try {
       const filePath = await this.getModelFullPath(model);
       if (!filePath) {
-        console.warn(
-          '[ModelStore] Cannot fetch GGUF metadata: model path is undefined',
-        );
         return;
       }
 
       const modelInfo = await loadLlamaModelInfo(filePath);
       if (!modelInfo || typeof modelInfo !== 'object') {
-        console.warn('[ModelStore] Invalid model info returned');
         return;
       }
 
@@ -1285,8 +1240,8 @@ class ModelStore {
           model.params = paramCount;
         }
       });
-    } catch (error) {
-      console.warn('[ModelStore] Failed to fetch GGUF metadata:', error);
+    } catch {
+      // Silent error handling
     }
   };
 
@@ -1311,13 +1266,8 @@ class ModelStore {
       for (const model of modelsNeedingMetadata) {
         try {
           await this.fetchAndPersistGGUFMetadata(model);
-        } catch (error) {
-          // Log but continue - not critical for startup
-          console.warn(
-            '[ModelStore] Failed to fetch metadata for',
-            model.name,
-            error,
-          );
+        } catch {
+          // Silent error handling - not critical for startup
         }
       }
     })();
@@ -1386,8 +1336,7 @@ class ModelStore {
     let hasMemory = true;
     try {
       hasMemory = await hasEnoughMemory(model, projectionModel);
-    } catch (error) {
-      console.error('Memory check failed:', error);
+    } catch {
       return false;
     }
 
@@ -1398,10 +1347,6 @@ class ModelStore {
     if (!hasMemoryIssue && !hasCapabilityIssue) {
       return true; // No warning needed
     }
-
-    console.warn(
-      `Device performance warning for model: ${model.name} - Memory: ${hasMemoryIssue}, Capability: ${hasCapabilityIssue}`,
-    );
 
     let title: string;
     let message: string;
@@ -1482,9 +1427,6 @@ class ModelStore {
       // After Alert (if shown), check if we're still the intended model
       // Another model request might have come in while user was deciding
       if (this.pendingModelId !== model.id) {
-        console.log(
-          `[ModelStore] Skipping "${model.name}" - user switched to "${this.pendingModelId}" during confirmation`,
-        );
         return null;
       }
 
@@ -1494,17 +1436,11 @@ class ModelStore {
         // Final check if this request is still current (last-one-wins)
         // This catches race conditions where another request queued while we waited
         if (this.pendingModelId !== model.id) {
-          console.log(
-            `[ModelStore] Skipping outdated load for "${model.name}" - user now wants model "${this.pendingModelId}"`,
-          );
           return null;
         }
 
         // Skip if already loaded
         if (this.activeModelId === model.id && this.context) {
-          console.log(
-            `[ModelStore] Model "${model.name}" is already loaded, skipping`,
-          );
           return this.context;
         }
 
@@ -1530,7 +1466,6 @@ class ModelStore {
 
       return await operationPromise;
     } catch (error) {
-      console.error(`Failed to initialize model "${model.name}":`, error);
       throw error;
     } finally {
       runInAction(() => {
@@ -1576,12 +1511,10 @@ class ModelStore {
           use_progress_callback: true,
         },
         (_progress: number) => {
-          //console.log('progress: ', _progress);
+          // Silent progress callback
         },
       );
-      const t1 = Date.now();
-      console.log('init time: ', t1 - t0);
-
+      
       await this.updateModelStopTokens(ctx, model);
 
       // Check and update thinking capabilities
@@ -1590,8 +1523,6 @@ class ModelStore {
       // Initialize multimodal support if mmproj path was provided
       if (isMultimodalInit && mmProjPath) {
         try {
-          console.log('Initializing multimodal support with path:', mmProjPath);
-
           // Initialize multimodal with the new API format
           // Apply effective value: clamp image_max_tokens to n_ctx
           const success = await ctx.initMultimodal({
@@ -1604,20 +1535,18 @@ class ModelStore {
           });
 
           if (!success) {
-            console.error('Failed to initialize multimodal support');
+            // Silent error handling
           } else {
-            console.log('Multimodal support initialized successfully');
             // Verify that multimodal is now enabled
             const isEnabled = await ctx.isMultimodalEnabled();
-            console.log('Multimodal enabled status:', isEnabled);
 
             // Update the multimodal active flag
             runInAction(() => {
               this.isMultimodalActive = isEnabled;
             });
           }
-        } catch (error) {
-          console.error('Error initializing multimodal support:', error);
+        } catch {
+          // Silent error handling
           runInAction(() => {
             this.isMultimodalActive = false;
             this.activeProjectionModelId = undefined;
@@ -1648,20 +1577,12 @@ class ModelStore {
             this.largestSuccessfulLoad = estimated;
           }
         });
-      } catch (error) {
-        console.warn(
-          '[ModelStore] Failed to update largestSuccessfulLoad:',
-          error,
-        );
+      } catch {
+        // Silent error handling
       }
 
       return ctx;
     } catch (error) {
-      console.error(
-        `Failed to initialize model context for "${model.name}" (${model.id}):`,
-        error,
-      );
-
       // Set error state for UI feedback - include model info and context params for error reporting
       const errorState = createErrorState(error, 'modelInit', undefined, {
         modelId: model.id,
@@ -1686,7 +1607,7 @@ class ModelStore {
   private _releaseContextInternal = async (
     clearActiveModel: boolean = false,
   ) => {
-    console.log('attempt to release');
+
     chatSessionStore.exitEditMode();
     if (!this.context) {
       // For remote models or deletion scenarios, clear engine and state
@@ -1723,20 +1644,20 @@ class ModelStore {
         this.isStreaming ||
         this.activeCompletionPromise
       ) {
-        console.log('Stopping active completion before context release');
+
 
         // Step 1: Signal the completion to stop
         try {
           await this.context.stopCompletion();
         } catch (stopError) {
-          console.warn('Error stopping completion:', stopError);
+
           // Continue with release even if stop fails
         }
 
         // Step 2: Wait for the completion promise to actually finish
         // This is critical - stopCompletion() only signals, it doesn't wait
         if (this.activeCompletionPromise) {
-          console.log('Waiting for completion promise to finish...');
+
           try {
             // Wait for promise to settle (ignore errors, just wait for it to complete)
             await this.activeCompletionPromise.catch(() => {});
@@ -1756,7 +1677,7 @@ class ModelStore {
       // Step 3: Now safe to release - First check if multimodal is enabled and release it if needed
       const isMultimodalEnabled = await this.isMultimodalEnabled();
       if (isMultimodalEnabled) {
-        console.log('Releasing multimodal context first');
+
         try {
           await this.context.releaseMultimodal();
           // Immediately clear multimodal state after successful release
@@ -1764,9 +1685,8 @@ class ModelStore {
             this.isMultimodalActive = false;
             this.activeProjectionModelId = undefined;
           });
-          console.log('Multimodal context released and state cleared');
-        } catch (error) {
-          console.error('Error releasing multimodal context:', error);
+
+        } catch {
           // Even if release fails, clear the state to prevent blocking deletion
           runInAction(() => {
             this.isMultimodalActive = false;
@@ -1777,9 +1697,9 @@ class ModelStore {
 
       // Then release the main context
       await this.context.release();
-      console.log('released');
-    } catch (error) {
-      console.error('Error during context release:', error);
+
+    } catch {
+      // Silent error handling
     } finally {
       runInAction(() => {
         this.context = undefined;
@@ -1821,7 +1741,6 @@ class ModelStore {
       try {
         return await this._releaseContextInternal(clearActiveModel);
       } catch (error) {
-        console.error('Error releasing context:', error);
         throw error;
       }
     });
@@ -1991,7 +1910,6 @@ class ModelStore {
       // The error handling is now done in the downloadManager callbacks
     } catch (error) {
       // Only handle errors related to the initial setup before the download starts
-      console.error('Failed to set up HF model download:', error);
       Alert.alert(
         uiStore.l10n.errors.downloadSetupFailedTitle,
         t(uiStore.l10n.errors.downloadSetupFailedMessage, {
@@ -2136,7 +2054,7 @@ class ModelStore {
       const stat = await RNFS.stat(localFilePath);
       fileSize = Number(stat.size) || 0;
     } catch (e) {
-      console.warn('[ModelStore] Failed to read file size:', e);
+
     }
 
     const defaultSettings = getLocalModelDefaultSettings();
@@ -2393,7 +2311,7 @@ class ModelStore {
       // Add relevant stop tokens from chat templates
       // First check model's custom chat template.
       const template = storeModel.chatTemplate?.chatTemplate;
-      console.log('template: ', template);
+
       if (template) {
         const templateStops = stops.filter(stop => template.includes(stop));
         stopTokens.push(...templateStops);
@@ -2408,7 +2326,7 @@ class ModelStore {
         stopTokens.push(...contextStops);
       }
 
-      console.log('stopTokens: ', stopTokens);
+
       // Only update if we found stop tokens
       if (stopTokens.length > 0) {
         runInAction(() => {
@@ -2427,9 +2345,9 @@ class ModelStore {
           storeModel.stopWords = updateStopTokens(storeModel.stopWords);
         });
       }
-    } catch (error) {
-      console.error('Error updating model stop tokens:', error);
-      // Continue execution - stop token update is not critical
+    } catch {
+      // Silent error handling
+    } // Continue execution - stop token update is not critical
     }
   }
 
@@ -2460,9 +2378,9 @@ class ModelStore {
           }
         });
       }
-    } catch (error) {
-      console.error('Error updating model thinking capabilities:', error);
-      // Continue execution - thinking capability detection is not critical
+    } catch {
+      // Silent error handling
+    } // Continue execution - thinking capability detection is not critical
     }
   }
 
@@ -2534,10 +2452,10 @@ class ModelStore {
       }
 
       return isEnabled;
-    } catch (error) {
-      console.error('Error checking multimodal capability:', error);
-      return false;
+    } catch {
+      // Silent error handling
     }
+    return false;
   };
 
   /**
@@ -2744,11 +2662,6 @@ class ModelStore {
       this.getDownloadedLLMsUsingProjectionModel(projectionModelId);
 
     if (dependentModels.length > 0) {
-      console.log(
-        'Projection model is used by downloaded LLM models:',
-        dependentModels.map(m => m.id),
-      );
-
       // Return true to allow manual deletion with warning
       // Automatic cleanup will check dependencies separately
       return {
@@ -2784,21 +2697,13 @@ class ModelStore {
       this.getDownloadedLLMsUsingProjectionModel(projectionModelId);
 
     if (dependentModels.length > 0) {
-      console.log(
-        'Skipping auto-cleanup of projection model - still used by downloaded LLMs:',
-        dependentModels.map(m => m.id),
-      );
       return;
     }
 
-    console.log(
-      'Auto-cleaning up orphaned projection model:',
-      projectionModelId,
-    );
     try {
       await this.deleteModel(projectionModel);
-    } catch (error) {
-      console.error('Failed to auto-cleanup orphaned projection model:', error);
+    } catch {
+      // Silent error handling
     }
   };
 
@@ -2807,8 +2712,6 @@ class ModelStore {
    * @param projectionModelIds Array of projection model IDs to check for cleanup
    */
   cleanupOrphanedProjectionModels = async (projectionModelIds: string[]) => {
-    console.log('Checking for orphaned projection models:', projectionModelIds);
-
     // Process each projection model for potential cleanup
     for (const projectionModelId of projectionModelIds) {
       await this.cleanupOrphanedProjectionModel(projectionModelId);
@@ -2854,11 +2757,6 @@ class ModelStore {
         // Reload the context with the new vision setting
         await this.initContext(model);
       } catch (error) {
-        console.error(
-          'Failed to reload context after vision state change:',
-          error,
-        );
-
         // Revert the vision setting if context reload failed
         runInAction(() => {
           model.visionEnabled = previousVisionEnabled;
@@ -3045,8 +2943,8 @@ class ModelStore {
           }
         });
       }
-    } catch (error) {
-      console.error('Failed to fetch model file details:', error);
+    } catch {
+      // Silent error handling
     }
   }
 
