@@ -1725,11 +1725,8 @@ class ModelStore {
             this.availableMemoryCeiling = availableBytes;
           }
         });
-      } catch (error) {
-        console.warn(
-          '[ModelStore] Failed to update availableMemoryCeiling:',
-          error,
-        );
+      } catch {
+        // Silent error handling
       }
     }
     return 'Context released successfully';
@@ -1894,9 +1891,7 @@ class ModelStore {
             newModel.defaultProjectionModel = options.projectionModelId;
           });
         } else {
-          console.warn(
-            'Selected projection model not found in repository, using auto-determined default',
-          );
+          // Silent error handling - projection model not found
         }
       }
 
@@ -2348,7 +2343,6 @@ class ModelStore {
     } catch {
       // Silent error handling
     } // Continue execution - stop token update is not critical
-    }
   }
 
   /**
@@ -2381,7 +2375,6 @@ class ModelStore {
     } catch {
       // Silent error handling
     } // Continue execution - thinking capability detection is not critical
-    }
   }
 
   /**
@@ -2645,10 +2638,7 @@ class ModelStore {
     if (this.activeProjectionModelId === projectionModelId) {
       // Double-check: if we don't have an active context, the projection model isn't really active
       if (!this.context) {
-        console.log(
-          'Projection model marked as active but no context exists, allowing deletion:',
-          projectionModelId,
-        );
+        // Projection model marked as active but no context exists, allowing deletion
       } else {
         return {
           canDelete: false,
@@ -2741,18 +2731,6 @@ class ModelStore {
     const visionStateChanged = previousVisionEnabled !== enabled;
 
     if (isActiveModel && visionStateChanged && this.context) {
-      console.log(
-        `Vision ${
-          enabled ? 'enabled' : 'disabled'
-        } for active model, reloading context`,
-        {
-          modelId,
-          previousState: previousVisionEnabled,
-          newState: enabled,
-          isMultimodalActive: this.isMultimodalActive,
-        },
-      );
-
       try {
         // Reload the context with the new vision setting
         await this.initContext(model);
@@ -2907,7 +2885,6 @@ class ModelStore {
     } catch (error) {
       // Clear the promise on error too
       this.clearCompletionPromise();
-      console.error('Error in multi-image completion:', error);
       params.onError?.(
         error instanceof Error ? error : new Error(String(error)),
       );
