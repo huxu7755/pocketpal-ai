@@ -16,14 +16,13 @@
     "clean:ios": "cd ios && xcodebuild clean -workspace PocketPal.xcworkspace -scheme PocketPal -configuration Debug && cd ..",
     "clean:android": "cd android && ./gradlew clean && cd ..",
     "clean": "yarn clean:ios && yarn clean:android",
-    "lint": "echo 'Linting skipped'",
-    "typecheck": "echo 'Type checking skipped'",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "l10n:validate": "echo 'L10n validation skipped'",
-    "lint:fix": "echo 'Linting fix skipped'",
+    "test": "jest",
     "format": "prettier --write \"**/*.{js,ts,tsx,json,md}\"",
     "start": "react-native start",
     "start:reset": "react-native start --reset-cache",
-    "test": "echo 'Testing skipped'"
   },
   "dependencies": {
     "@dr.pogodin/react-native-fs": "^2.36.0",
