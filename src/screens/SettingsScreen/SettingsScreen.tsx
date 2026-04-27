@@ -1028,7 +1028,9 @@ export const SettingsScreen: React.FC = observer(() => {
                       {t('API Sharing')}
                     </Text>
                     <Text variant="labelSmall" style={styles.textDescription}>
-                      {t('Enable API sharing to allow other applications to access the models')}
+                      {t(
+                        'Enable API sharing to allow other applications to access the models',
+                      )}
                     </Text>
                   </View>
                   <Switch
@@ -1065,7 +1067,9 @@ export const SettingsScreen: React.FC = observer(() => {
                     style={styles.textInput}
                     value={serverStore.apiSharingKey}
                     onChangeText={value => serverStore.setApiSharingKey(value)}
-                    placeholder={t('Enter API key (leave blank for no authentication)')}
+                    placeholder={t(
+                      'Enter API key (leave blank for no authentication)',
+                    )}
                     secureTextEntry
                     disabled={!serverStore.apiSharingEnabled}
                   />
@@ -1207,15 +1211,9 @@ export const SettingsScreen: React.FC = observer(() => {
                       try {
                         const filePath = await logExporter.exportLogs();
                         if (filePath) {
-                          Alert.alert(
-                            t('Log Export'),
-                            t(`Logs exported successfully to:\n${filePath}`),
-                          );
+                          Alert.alert(t('Log Export'), t(`Logs exported successfully to:\n${filePath}`));
                         } else {
-                          Alert.alert(
-                            t('Log Export'),
-                            t('No logs to export'),
-                          );
+                          Alert.alert(t('Log Export'), t('No logs to export'));
                         }
                       } catch {
                         Alert.alert(
