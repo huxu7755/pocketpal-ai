@@ -4,8 +4,8 @@ import {makePersistable} from 'mobx-persist-store';
 import * as Keychain from 'react-native-keychain';
 
 import {fetchGGUFSpecs, fetchModelFilesDetails, fetchModels} from '../api/hf';
-
 import {hasEnoughSpace, hfAsModel} from '../utils';
+import {ModelFile} from '../utils/types';
 import {processHFSearchResults} from '../utils/hf';
 import {ErrorState, createErrorState} from '../utils/errors';
 
@@ -182,17 +182,17 @@ class HFStore {
   private async updateSiblingsWithFileDetails(
     model: HuggingFaceModel,
     fileDetails: any[],
-  ) {
+  ): Promise<ModelFile[]> {
     return Promise.all(
       model.siblings.map(async file => {
         const details = fileDetails.find(
           detail => detail.path === file.rfilename,
         );
         if (!details) {
-          return {...file};
+          return {...file} as ModelFile;
         }
 
-        const enrichedFile = {
+        const enrichedFile: ModelFile = {
           ...file,
           size: details.size,
           oid: details.oid,
@@ -202,7 +202,7 @@ class HFStore {
         return {
           ...enrichedFile,
           canFitInStorage: await hasEnoughSpace(hfAsModel(model, enrichedFile)),
-        };
+        } as ModelFile;
       }),
     );
   }
@@ -228,7 +228,6 @@ class HFStore {
         model.siblings = updatedSiblings;
       });
     } catch (error) {
-      console.error('Error fetching model file sizes:', error);
       runInAction(() => {
         this.error = createErrorState(error, 'modelDetails', 'huggingface');
       });

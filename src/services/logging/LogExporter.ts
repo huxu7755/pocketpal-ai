@@ -2,7 +2,7 @@ import * as FileSystem from '@dr.pogodin/react-native-fs';
 import LogManager from './LogManager';
 import {LogEntry} from './Logger';
 
-type MkdirOptionsT = {intermediates?: boolean} | null | undefined;
+type MkdirOptionsT = {intermediates?: boolean};
 
 export default class LogExporter {
   private static instance: LogExporter;
