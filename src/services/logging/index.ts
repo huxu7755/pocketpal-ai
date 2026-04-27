@@ -1,7 +1,7 @@
-import { Logger, LogLevel } from './Logger';
+import {Logger, LogLevel} from './Logger';
 import LogManager from './LogManager';
 import LogExporter from './LogExporter';
-import { LogStore } from './LogStore';
+import {LogStore} from './LogStore';
 
 // Create instances
 const logger = Logger.getInstance();
@@ -23,19 +23,19 @@ export const initializeLogging = async (): Promise<void> => {
   try {
     // Initialize store first to get settings
     await logStore.initialize();
-    
+
     // Configure logger based on settings
     logger.setEnabled(logStore.isLoggingEnabled);
     logger.setMinimumLevel(logStore.logLevel);
-    
+
     // Initialize log manager
     await logManager.initialize();
-    
+
     // Log initialization
     logger.info('Logging system initialized', 'Logging');
   } catch {
-      // Silent error handling
-    }
+    // Silent error handling
+  }
 };
 
 // Shutdown logging system
@@ -44,8 +44,8 @@ export const shutdownLogging = async (): Promise<void> => {
     await logManager.shutdown();
     logger.info('Logging system shutdown', 'Logging');
   } catch {
-      // Silent error handling
-    }
+    // Silent error handling
+  }
 };
 
 // Reconfigure logger when settings change
@@ -55,10 +55,5 @@ export const reconfigureLogger = (): void => {
   logger.info('Logger reconfigured', 'Logging');
 };
 
-export {
-  logger,
-  logManager,
-  logStore,
-  LogLevel,
-};
+export {logger, logManager, logStore, LogLevel};
 export default logExporter;
