@@ -1211,7 +1211,10 @@ export const SettingsScreen: React.FC = observer(() => {
                       try {
                         const filePath = await logExporter.exportLogs();
                         if (filePath) {
-                          Alert.alert(t('Log Export'), t(`Logs exported successfully to:\n${filePath}`));
+                          Alert.alert(
+                            t('Log Export'),
+                            t(`Logs exported successfully to:\n${filePath}`),
+                          );
                         } else {
                           Alert.alert(t('Log Export'), t('No logs to export'));
                         }

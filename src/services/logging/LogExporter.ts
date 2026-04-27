@@ -58,7 +58,9 @@ export default class LogExporter {
       formatted += `=== Logs for ${date} ===\n`;
 
       const sortedLogs = logs[date].sort((a, b) => {
-        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        return (
+          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+        );
       });
 
       for (const log of sortedLogs) {

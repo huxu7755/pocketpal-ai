@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LogEntry } from './Logger';
+import {LogEntry} from './Logger';
 
 export default class LogManager {
   private static instance: LogManager;
   private isInitialized: boolean = false;
   private logBuffer: LogEntry[] = [];
   private flushInterval: NodeJS.Timeout | null = null;
-  private maxLogSizePerDay: number = 5 * 1024 * 1024; // 5MB per day
-  private maxDaysToKeep: number = 7; // Keep logs for 7 days
+  private maxLogSizePerDay: number = 5 * 1024 * 1024;
+  private maxDaysToKeep: number = 7;
 
   private constructor() {}
 
@@ -24,12 +24,10 @@ export default class LogManager {
     }
 
     try {
-      // Clean up old logs
       await this.cleanupOldLogs();
-      
-      // Start periodic flush
+
       this.startPeriodicFlush();
-      
+
       this.isInitialized = true;
     } catch {
       // Silent error handling
@@ -38,15 +36,13 @@ export default class LogManager {
 
   addLog(entry: LogEntry): void {
     this.logBuffer.push(entry);
-    
-    // Flush if buffer is large
+
     if (this.logBuffer.length >= 50) {
       this.flushLogs();
     }
   }
 
   private startPeriodicFlush(): void {
-    // Flush logs every 30 seconds
     this.flushInterval = setInterval(() => {
       if (this.logBuffer.length > 0) {
         this.flushLogs();
@@ -66,26 +62,25 @@ export default class LogManager {
       const today = this.getTodayString();
       const logKey = `logs_${today}`;
 
-      // Get existing logs for today
       const existingLogsJson = await AsyncStorage.getItem(logKey);
-      const existingLogs: LogEntry[] = existingLogsJson ? JSON.parse(existingLogsJson) : [];
+      const existingLogs: LogEntry[] = existingLogsJson
+        ? JSON.parse(existingLogsJson)
+        : [];
 
-      // Add new logs
       const updatedLogs = [...existingLogs, ...logsToFlush];
 
-      // Check log size
       const logsJson = JSON.stringify(updatedLogs);
       if (logsJson.length > this.maxLogSizePerDay) {
-        // If too large, keep only the most recent logs
-        const maxEntries = Math.floor((this.maxLogSizePerDay * 0.9) / (logsJson.length / updatedLogs.length));
+        const maxEntries = Math.floor(
+          (this.maxLogSizePerDay * 0.9) /
+            (logsJson.length / updatedLogs.length),
+        );
         const trimmedLogs = updatedLogs.slice(-maxEntries);
         await AsyncStorage.setItem(logKey, JSON.stringify(trimmedLogs));
       } else {
         await AsyncStorage.setItem(logKey, logsJson);
       }
     } catch {
-      // Silent error handling
-      // Put logs back in buffer if flush failed
       this.logBuffer.unshift(...logsToFlush);
     }
   }
@@ -99,7 +94,8 @@ export default class LogManager {
       for (const key of logKeys) {
         const dateStr = key.replace('logs_', '');
         const logDate = new Date(dateStr);
-        const daysDiff = (today.getTime() - logDate.getTime()) / (1000 * 60 * 60 * 24);
+        const daysDiff =
+          (today.getTime() - logDate.getTime()) / (1000 * 60 * 60 * 24);
 
         if (daysDiff > this.maxDaysToKeep) {
           await AsyncStorage.removeItem(key);
@@ -116,7 +112,6 @@ export default class LogManager {
       const logsJson = await AsyncStorage.getItem(logKey);
       return logsJson ? JSON.parse(logsJson) : [];
     } catch {
-      // Silent error handling
       return [];
     }
   }
@@ -135,7 +130,6 @@ export default class LogManager {
 
       return allLogs;
     } catch {
-      // Silent error handling
       return {};
     }
   }
@@ -156,12 +150,10 @@ export default class LogManager {
   }
 
   async shutdown(): Promise<void> {
-    // Flush any remaining logs
     if (this.logBuffer.length > 0) {
       await this.flushLogs();
     }
 
-    // Clear interval
     if (this.flushInterval) {
       clearInterval(this.flushInterval);
       this.flushInterval = null;
