@@ -821,7 +821,7 @@ class ModelStore {
         if (await RNFS.exists(oldPath)) {
           return oldPath;
         }
-      } catch (_err) {
+      } catch {
         // Silent error handling
       }
 
@@ -1499,7 +1499,7 @@ class ModelStore {
       // Create properly versioned ContextInitParams
       const contextInitParams = createContextInitParams(effectiveSettings);
 
-      const t0 = Date.now();
+      const _t0 = Date.now();
       const ctx = await initLlama(
         {
           model: filePath,
@@ -1642,7 +1642,7 @@ class ModelStore {
         // Step 1: Signal the completion to stop
         try {
           await this.context.stopCompletion();
-        } catch (stopError) {
+        } catch (_stopError) {
           // Continue with release even if stop fails
         }
 
@@ -2036,7 +2036,7 @@ class ModelStore {
     try {
       const stat = await RNFS.stat(localFilePath);
       fileSize = Number(stat.size) || 0;
-    } catch (e) {}
+    } catch (_e) {}
 
     const defaultSettings = getLocalModelDefaultSettings();
 

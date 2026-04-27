@@ -19,7 +19,7 @@ class ServerStore {
   isLoading = false;
   error: string | null = null;
   privacyNoticeAcknowledged = false;
-  
+
   // API Sharing functionality
   apiSharingEnabled = false;
   apiSharingUrl = '';

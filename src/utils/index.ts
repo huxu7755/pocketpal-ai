@@ -37,7 +37,8 @@ export const L10nContext = React.createContext<
 export const UserContext = React.createContext<User | undefined>(undefined);
 
 /** Returns size in bytes of the provided text */
-export const getTextSizeInBytes = (text: string) => new TextEncoder().encode(text).length;
+export const getTextSizeInBytes = (text: string) =>
+  new TextEncoder().encode(text).length;
 
 /** Returns theme colors as ColorValue array */
 export const getThemeColorsAsArray = (theme: MD3Theme): ColorValue[] => {
