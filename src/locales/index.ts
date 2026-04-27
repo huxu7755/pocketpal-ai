@@ -141,8 +141,11 @@ export const l10n = {
  */
 export function t(
   template: string,
-  params: Record<string, string | number>,
+  params?: Record<string, string | number>,
 ): string {
+  if (!params) {
+    return template;
+  }
   return template.replace(/\{\{(\w+)\}\}/g, (_match, key) =>
     String(params[key] ?? `{{${key}}}`),
   );
