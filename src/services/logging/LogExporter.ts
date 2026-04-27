@@ -45,8 +45,7 @@ export class LogExporter {
       await FileSystem.writeFile(filePath, formattedLogs, 'utf8');
 
       return filePath;
-    } catch (error) {
-      console.error('Failed to export logs:', error);
+    } catch {
       return null;
     }
   }
@@ -113,8 +112,7 @@ export class LogExporter {
       return files
         .filter(file => file.isFile() && file.name.endsWith('.txt'))
         .map(file => file.path);
-    } catch (error) {
-      console.error('Failed to get exported files:', error);
+    } catch {
       return [];
     }
   }
@@ -123,8 +121,7 @@ export class LogExporter {
     try {
       await FileSystem.unlink(filePath);
       return true;
-    } catch (error) {
-      console.error('Failed to delete exported file:', error);
+    } catch {
       return false;
     }
   }

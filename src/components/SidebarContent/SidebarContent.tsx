@@ -16,6 +16,8 @@ import {
   ModelIcon,
   PalIcon,
   SettingsIcon,
+  ShareIcon,
+  TrashIcon,
   AppInfoIcon,
 } from '../../assets/icons';
 import {L10nContext} from '../../utils';

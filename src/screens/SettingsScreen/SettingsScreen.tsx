@@ -1025,7 +1025,7 @@ export const SettingsScreen: React.FC = observer(() => {
                 <View style={styles.switchContainer}>
                   <View style={styles.textContainer}>
                     <Text variant="titleMedium" style={styles.textLabel}>
-                      API Sharing
+                      {t('API Sharing')}
                     </Text>
                     <Text variant="labelSmall" style={styles.textDescription}>
                       {t('Enable API sharing to allow other applications to access the models')}
@@ -1042,14 +1042,14 @@ export const SettingsScreen: React.FC = observer(() => {
                 <Divider style={styles.divider} />
                 <View style={styles.settingItemContainer}>
                   <Text variant="titleMedium" style={styles.textLabel}>
-                    API Sharing URL
+                    {t('API Sharing URL')}
                   </Text>
                   <TextInput
                     testID="api-sharing-url-input"
                     style={styles.textInput}
                     value={serverStore.apiSharingUrl}
                     onChangeText={value => serverStore.setApiSharingUrl(value)}
-                    placeholder="Enter API server URL"
+                    placeholder={t('Enter API server URL')}
                     disabled={!serverStore.apiSharingEnabled}
                   />
                 </View>
@@ -1058,14 +1058,14 @@ export const SettingsScreen: React.FC = observer(() => {
                 <Divider style={styles.divider} />
                 <View style={styles.settingItemContainer}>
                   <Text variant="titleMedium" style={styles.textLabel}>
-                    API Sharing Key (Optional)
+                    {t('API Sharing Key (Optional)')}
                   </Text>
                   <TextInput
                     testID="api-sharing-key-input"
                     style={styles.textInput}
                     value={serverStore.apiSharingKey}
                     onChangeText={value => serverStore.setApiSharingKey(value)}
-                    placeholder="Enter API key (leave blank for no authentication)"
+                    placeholder={t('Enter API key (leave blank for no authentication)')}
                     secureTextEntry
                     disabled={!serverStore.apiSharingEnabled}
                   />
