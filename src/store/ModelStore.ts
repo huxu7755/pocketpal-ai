@@ -715,6 +715,8 @@ class ModelStore {
           m => m.id === this.lastAutoReleasedModelId,
         );
         if (remoteModel) {
+          // For remote models, we need to reinitialize the engine
+          await this.setRemoteModel(remoteModel);
           this.clearAutoReleaseFlags();
           return;
         }
@@ -1527,6 +1529,9 @@ class ModelStore {
         .catch(() => {});
 
       return await operationPromise;
+    } catch (error) {
+      console.error(`Failed to initialize model "${model.name}":`, error);
+      throw error;
     } finally {
       runInAction(() => {
         this.isContextLoading = false;
@@ -1813,7 +1818,12 @@ class ModelStore {
   /** Acquires mutex before releasing context. */
   releaseContext = async (clearActiveModel: boolean = false) => {
     const operationPromise = this.contextOperationMutex.then(async () => {
-      return this._releaseContextInternal(clearActiveModel);
+      try {
+        return await this._releaseContextInternal(clearActiveModel);
+      } catch (error) {
+        console.error('Error releasing context:', error);
+        throw error;
+      }
     });
 
     // Swallow errors to keep mutex chain intact

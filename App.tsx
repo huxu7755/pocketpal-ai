@@ -13,7 +13,8 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 
-import {ttsStore, uiStore} from './src/store';
+import {ttsStore, uiStore, modelStore, serverStore} from './src/store';
+import {ApiSharingService, initializeLogging} from './src/services';
 import {useTheme} from './src/hooks';
 import {useDeepLinking} from './src/hooks/useDeepLinking';
 import {Theme} from './src/utils/types';
@@ -72,6 +73,32 @@ const App = observer(() => {
     ttsStore.init().catch(() => {
       // init() swallows its own errors; catch to satisfy no-floating-promises.
     });
+  }, []);
+
+  // Initialize logging system
+  React.useEffect(() => {
+    initializeLogging().catch(() => {
+      // initializeLogging swallows its own errors; catch to satisfy no-floating-promises.
+    });
+  }, []);
+
+  // Initialize API Sharing Service
+  React.useEffect(() => {
+    const apiSharingService = new ApiSharingService(modelStore);
+    apiSharingService.updateServerStatus();
+
+    // Update server status when API sharing enabled changes
+    const dispose = require('mobx').reaction(
+      () => serverStore.apiSharingEnabled,
+      () => {
+        apiSharingService.updateServerStatus();
+      }
+    );
+
+    return () => {
+      dispose();
+      apiSharingService.stopServer();
+    };
   }, []);
 
   return (

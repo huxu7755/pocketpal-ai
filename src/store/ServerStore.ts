@@ -19,6 +19,11 @@ class ServerStore {
   isLoading = false;
   error: string | null = null;
   privacyNoticeAcknowledged = false;
+  
+  // API Sharing functionality
+  apiSharingEnabled = false;
+  apiSharingUrl = '';
+  apiSharingKey = '';
 
   private lastFetchTime = 0;
   private appStateSubscription: any = null;
@@ -34,6 +39,9 @@ class ServerStore {
         'servers',
         'privacyNoticeAcknowledged',
         'userSelectedModels',
+        'apiSharingEnabled',
+        'apiSharingUrl',
+        'apiSharingKey',
       ],
       storage: AsyncStorage,
     }).then(() => {
@@ -209,6 +217,19 @@ class ServerStore {
 
   acknowledgePrivacyNotice(): void {
     this.privacyNoticeAcknowledged = true;
+  }
+
+  // API Sharing methods
+  setApiSharingEnabled(enabled: boolean): void {
+    this.apiSharingEnabled = enabled;
+  }
+
+  setApiSharingUrl(url: string): void {
+    this.apiSharingUrl = url;
+  }
+
+  setApiSharingKey(key: string): void {
+    this.apiSharingKey = key;
   }
 
   // Auto-fetch on foreground

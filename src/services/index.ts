@@ -9,6 +9,21 @@ export {
   getCurrentUser,
 } from './palshub';
 
+// API Sharing Service
+export {ApiSharingService} from './apiSharing';
+
+// Logging Service
+export {
+  logger,
+  logManager,
+  logExporter,
+  logStore,
+  LogLevel,
+  initializeLogging,
+  shutdownLogging,
+  reconfigureLogger,
+} from './logging';
+
 // Types
 export type {AuthState, Profile} from './palshub/AuthService';
 export type {ErrorInfo} from './palshub/ErrorHandler';

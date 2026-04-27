@@ -190,10 +190,41 @@ export const useChatSession = (
 
   const handleSendPress = async (message: MessageType.PartialText) => {
     // Guard on engine instead of context -- supports both local and remote models
-    const engine = modelStore.engine;
+    let engine = modelStore.engine;
     if (!engine) {
-      await addSystemMessage(l10n.chat.modelNotLoaded);
-      return;
+      // Try to reload the last used model
+      if (modelStore.lastUsedModelId) {
+        const model = modelStore.models.find(m => m.id === modelStore.lastUsedModelId && m.isDownloaded);
+        if (model) {
+          try {
+            await modelStore.initContext(model);
+            engine = modelStore.engine;
+          } catch (error) {
+            console.error('Failed to reload model:', error);
+            await addSystemMessage(l10n.chat.modelNotLoaded);
+            return;
+          }
+        } else {
+          // Check if last used model is a remote model
+          const remoteModel = modelStore.remoteModels.find(m => m.id === modelStore.lastUsedModelId);
+          if (remoteModel) {
+            try {
+              await modelStore.setRemoteModel(remoteModel);
+              engine = modelStore.engine;
+            } catch (error) {
+              console.error('Failed to reload remote model:', error);
+              await addSystemMessage(l10n.chat.modelNotLoaded);
+              return;
+            }
+          }
+        }
+      }
+      
+      // If engine is still undefined, show error
+      if (!engine) {
+        await addSystemMessage(l10n.chat.modelNotLoaded);
+        return;
+      }
     }
 
     const contextId = modelStore.contextId;

@@ -45,7 +45,8 @@ import {useTheme} from '../../hooks';
 
 import {createStyles} from './styles';
 
-import {modelStore, uiStore, hfStore} from '../../store';
+import {modelStore, uiStore, hfStore, serverStore} from '../../store';
+import {logStore, logExporter, LogLevel, reconfigureLogger} from '../../services';
 import {languageDisplayNames} from '../../locales';
 
 import {CacheType} from '../../utils/types';
@@ -1019,6 +1020,57 @@ export const SettingsScreen: React.FC = observer(() => {
                     onValueChange={value => hfStore.setUseHfToken(value)}
                   />
                 </View>
+
+                {/* API Sharing */}
+                <Divider style={styles.divider} />
+                <View style={styles.switchContainer}>
+                  <View style={styles.textContainer}>
+                    <Text variant="titleMedium" style={styles.textLabel}>
+                      API Sharing
+                    </Text>
+                    <Text variant="labelSmall" style={styles.textDescription}>
+                      Enable API sharing to allow other applications to access the models
+                    </Text>
+                  </View>
+                  <Switch
+                    testID="api-sharing-switch"
+                    value={serverStore.apiSharingEnabled}
+                    onValueChange={value => serverStore.setApiSharingEnabled(value)}
+                  />
+                </View>
+
+                {/* API Sharing URL */}
+                <Divider style={styles.divider} />
+                <View style={styles.settingItemContainer}>
+                  <Text variant="titleMedium" style={styles.textLabel}>
+                    API Sharing URL
+                  </Text>
+                  <TextInput
+                    testID="api-sharing-url-input"
+                    style={styles.textInput}
+                    value={serverStore.apiSharingUrl}
+                    onChangeText={value => serverStore.setApiSharingUrl(value)}
+                    placeholder="Enter API server URL"
+                    disabled={!serverStore.apiSharingEnabled}
+                  />
+                </View>
+
+                {/* API Sharing Key */}
+                <Divider style={styles.divider} />
+                <View style={styles.settingItemContainer}>
+                  <Text variant="titleMedium" style={styles.textLabel}>
+                    API Sharing Key (Optional)
+                  </Text>
+                  <TextInput
+                    testID="api-sharing-key-input"
+                    style={styles.textInput}
+                    value={serverStore.apiSharingKey}
+                    onChangeText={value => serverStore.setApiSharingKey(value)}
+                    placeholder="Enter API key (leave blank for no authentication)"
+                    secureTextEntry
+                    disabled={!serverStore.apiSharingEnabled}
+                  />
+                </View>
               </View>
             </Card.Content>
           </Card>
@@ -1119,6 +1171,73 @@ export const SettingsScreen: React.FC = observer(() => {
               </Card.Content>
             </Card>
           )}
+
+          {/* Logging Settings */}
+          <Card elevation={0} style={styles.card}>
+            <Card.Title title="Logging Settings" />
+            <Card.Content>
+              <View style={styles.settingItemContainer}>
+                {/* Logging Enabled */}
+                <View style={styles.switchContainer}>
+                  <View style={styles.textContainer}>
+                    <Text variant="titleMedium" style={styles.textLabel}>
+                      Enable Logging
+                    </Text>
+                    <Text variant="labelSmall" style={styles.textDescription}>
+                      Record app activity and errors for debugging purposes
+                    </Text>
+                  </View>
+                  <Switch
+                    testID="logging-enabled-switch"
+                    value={logStore.isLoggingEnabled}
+                    onValueChange={value => {
+                      logStore.setLoggingEnabled(value);
+                      reconfigureLogger();
+                    }}
+                  />
+                </View>
+                <Divider style={styles.divider} />
+                
+                {/* Log Export */}
+                <View style={styles.switchContainer}>
+                  <View style={styles.textContainer}>
+                    <Text variant="titleMedium" style={styles.textLabel}>
+                      Export Logs
+                    </Text>
+                    <Text variant="labelSmall" style={styles.textDescription}>
+                      Export app logs for troubleshooting
+                    </Text>
+                  </View>
+                  <Button
+                    mode="outlined"
+                    onPress={async () => {
+                      try {
+                        const filePath = await logExporter.exportLogs();
+                        if (filePath) {
+                          Alert.alert(
+                            'Log Export',
+                            `Logs exported successfully to:\n${filePath}`,
+                          );
+                        } else {
+                          Alert.alert(
+                            'Log Export',
+                            'No logs to export',
+                          );
+                        }
+                      } catch (error) {
+                        Alert.alert(
+                          'Export Error',
+                          'Failed to export logs',
+                        );
+                      }
+                    }}
+                    style={styles.menuButton}>
+                    Export
+                  </Button>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
 
           {/* Export Options */}
           <Card elevation={0} style={styles.card}>
