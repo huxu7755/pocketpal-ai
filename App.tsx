@@ -14,7 +14,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import {ttsStore, uiStore, modelStore, serverStore} from './src/store';
-import {ApiSharingService, initializeLogging} from './src/services';
+import {initializeLogging} from './src/services';
 import {useTheme} from './src/hooks';
 import {useDeepLinking} from './src/hooks/useDeepLinking';
 import {Theme} from './src/utils/types';
@@ -82,24 +82,8 @@ const App = observer(() => {
     });
   }, []);
 
-  // Initialize API Sharing Service
-  React.useEffect(() => {
-    const apiSharingService = new ApiSharingService(modelStore);
-    apiSharingService.updateServerStatus();
-
-    // Update server status when API sharing enabled changes
-    const dispose = require('mobx').reaction(
-      () => serverStore.apiSharingEnabled,
-      () => {
-        apiSharingService.updateServerStatus();
-      }
-    );
-
-    return () => {
-      dispose();
-      apiSharingService.stopServer();
-    };
-  }, []);
+  // API Sharing Service is currently disabled
+  // This functionality will be implemented using a different approach in the future
 
   return (
     <GestureHandlerRootView style={styles.root}>
