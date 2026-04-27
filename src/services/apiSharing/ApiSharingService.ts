@@ -1,7 +1,5 @@
-import {ModelStore} from '../../store/ModelStore';
-
 export class ApiSharingService {
-  constructor(private modelStore: ModelStore) {}
+  constructor() {}
 
   // API sharing functionality is currently disabled
   // This service will be implemented using a different approach in the future
