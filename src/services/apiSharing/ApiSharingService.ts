@@ -1,6 +1,5 @@
 import {serverStore} from '../../store';
 import {ModelStore} from '../../store/ModelStore';
-import {CompletionResult, CompletionStreamData} from '../../utils/completionTypes';
 
 class ApiSharingService {
   constructor(private modelStore: ModelStore) {}
