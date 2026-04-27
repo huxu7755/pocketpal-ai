@@ -1,7 +1,7 @@
 module.exports = {
+  root: true,
   extends: [
     '@react-native',
-    // put Prettier last so it can disable conflicting ESLint rules
     'plugin:prettier/recommended',
   ],
   ignorePatterns: [
@@ -15,5 +15,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
+    'no-console': 'error',
   },
 };
