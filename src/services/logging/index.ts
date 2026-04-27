@@ -58,7 +58,7 @@ export const reconfigureLogger = (): void => {
 export {
   logger,
   logManager,
-  logExporter,
   logStore,
   LogLevel,
 };
+export default logExporter;

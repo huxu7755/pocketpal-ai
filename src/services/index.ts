@@ -16,13 +16,13 @@ export {ApiSharingService} from './apiSharing';
 export {
   logger,
   logManager,
-  logExporter,
   logStore,
   LogLevel,
   initializeLogging,
   shutdownLogging,
   reconfigureLogger,
 } from './logging';
+export { default as logExporter } from './logging';
 
 // Types
 export type {AuthState, Profile} from './palshub/AuthService';
