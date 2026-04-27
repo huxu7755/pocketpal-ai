@@ -1,6 +1,6 @@
 import * as FileSystem from '@dr.pogodin/react-native-fs';
 import LogManager from './LogManager';
-import { LogEntry } from './Logger';
+import {LogEntry} from './Logger';
 
 export default class LogExporter {
   private static instance: LogExporter;
@@ -19,29 +19,24 @@ export default class LogExporter {
 
   async exportLogs(): Promise<string | null> {
     try {
-      // Get all logs
       const allLogs = await this.logManager.getAllLogs();
-      
+
       if (Object.keys(allLogs).length === 0) {
         return null;
       }
 
-      // Format logs
       const formattedLogs = this.formatLogs(allLogs);
 
-      // Create export directory if it doesn't exist
       const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
       const dirExists = await FileSystem.exists(exportDir);
       if (!dirExists) {
-        await FileSystem.mkdir(exportDir, { intermediates: true });
+        await FileSystem.mkdir(exportDir, {intermediates: true});
       }
 
-      // Create log file
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const fileName = `logs_${timestamp}.txt`;
       const filePath = `${exportDir}/${fileName}`;
 
-      // Write logs to file
       await FileSystem.writeFile(filePath, formattedLogs, 'utf8');
 
       return filePath;
@@ -55,15 +50,13 @@ export default class LogExporter {
     formatted += `Exported at: ${new Date().toISOString()}\n`;
     formatted += '============================\n\n';
 
-    // Sort dates in descending order
     const sortedDates = Object.keys(logs).sort((a, b) => {
       return new Date(b).getTime() - new Date(a).getTime();
     });
 
     for (const date of sortedDates) {
       formatted += `=== Logs for ${date} ===\n`;
-      
-      // Sort logs by timestamp
+
       const sortedLogs = logs[date].sort((a, b) => {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
@@ -74,7 +67,7 @@ export default class LogExporter {
           formatted += ` [${log.context}]`;
         }
         formatted += `: ${log.message}\n`;
-        
+
         if (log.data) {
           try {
             formatted += `  Data: ${JSON.stringify(log.data, null, 2)}\n`;
@@ -82,14 +75,14 @@ export default class LogExporter {
             formatted += `  Data: [Failed to stringify]\n`;
           }
         }
-        
+
         if (log.deviceInfo) {
           formatted += `  Device: ${log.deviceInfo.platform} ${log.deviceInfo.version}\n`;
         }
-        
+
         formatted += '\n';
       }
-      
+
       formatted += '\n';
     }
 
@@ -100,7 +93,7 @@ export default class LogExporter {
     const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
     const dirExists = await FileSystem.exists(exportDir);
     if (!dirExists) {
-      await FileSystem.mkdir(exportDir, { intermediates: true });
+      await FileSystem.mkdir(exportDir, {intermediates: true});
     }
     return exportDir;
   }
