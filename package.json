@@ -16,7 +16,7 @@
     "clean:ios": "cd ios && xcodebuild clean -workspace PocketPal.xcworkspace -scheme PocketPal -configuration Debug && cd ..",
     "clean:android": "cd android && ./gradlew clean && cd ..",
     "clean": "yarn clean:ios && yarn clean:android",
-    "lint": "yarn run eslint .",
+    "lint": "yarn run eslint src",
     "typecheck": "tsc --noEmit",
     "l10n:validate": "node scripts/validate-l10n.js",
     "lint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
