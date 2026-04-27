@@ -112,7 +112,7 @@ describe('DownloadErrorDialog', () => {
         modelId: 'test-model',
       },
     );
-    console.log(error);
+
 
     const {getByText} = render(
       <DownloadErrorDialog
