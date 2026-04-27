@@ -100,7 +100,7 @@ export class Logger {
         (global as any).logManager.addLog(entry);
       }
     } catch (error) {
-      console.error('Failed to send log to LogManager:', error);
+      // Failed to send log to LogManager
     }
   }
 
