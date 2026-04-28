@@ -1,4 +1,5 @@
 import * as FileSystem from '@dr.pogodin/react-native-fs';
+import {Platform} from 'react-native';
 import LogManager from './LogManager';
 import {LogEntry} from './Logger';
 
@@ -17,6 +18,13 @@ export default class LogExporter {
     return LogExporter.instance;
   }
 
+  private getExportDirectoryPath(): string {
+    if (Platform.OS === 'android') {
+      return `${FileSystem.DownloadDirectoryPath}/PocketPal/logs`;
+    }
+    return `${FileSystem.DocumentDirectoryPath}/logs`;
+  }
+
   async exportLogs(): Promise<string | null> {
     try {
       const allLogs = await this.logManager.getAllLogs();
@@ -27,10 +35,10 @@ export default class LogExporter {
 
       const formattedLogs = this.formatLogs(allLogs);
 
-      const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
+      const exportDir = this.getExportDirectoryPath();
       const dirExists = await FileSystem.exists(exportDir);
       if (!dirExists) {
-        await FileSystem.mkdir(exportDir);
+        await FileSystem.mkdir(exportDir, {NSURLIsExcludedFromBackupKey: true});
       }
 
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -92,7 +100,7 @@ export default class LogExporter {
   }
 
   async getExportDirectory(): Promise<string> {
-    const exportDir = `${FileSystem.DocumentDirectoryPath}/logs`;
+    const exportDir = this.getExportDirectoryPath();
     const dirExists = await FileSystem.exists(exportDir);
     if (!dirExists) {
       await FileSystem.mkdir(exportDir);

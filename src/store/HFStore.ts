@@ -17,6 +17,9 @@ const HF_TOKEN_SERVICE = 'hf_token_service';
 // Filter types for enhanced search
 export type SortOption = 'relevance' | 'downloads' | 'lastModified' | 'likes';
 
+// HF source types
+export type HFSourceType = 'official' | 'mirror';
+
 export interface SearchFilters {
   author: string;
   sortBy: SortOption;
@@ -36,6 +39,7 @@ class HFStore {
   queryConfig = true;
   hfToken: string | null = null;
   useHfToken: boolean = true; // Only applies when token is set
+  hfSource: HFSourceType = 'official'; // 'official' or 'mirror'
 
   // search filters
   searchFilters: SearchFilters = {
@@ -48,7 +52,7 @@ class HFStore {
 
     makePersistable(this, {
       name: 'HFStore',
-      properties: ['useHfToken'],
+      properties: ['useHfToken', 'hfSource'],
       storage: AsyncStorage,
     });
 
@@ -82,6 +86,12 @@ class HFStore {
   setUseHfToken(useToken: boolean) {
     runInAction(() => {
       this.useHfToken = useToken;
+    });
+  }
+
+  setHfSource(source: HFSourceType) {
+    runInAction(() => {
+      this.hfSource = source;
     });
   }
 
@@ -160,7 +170,7 @@ class HFStore {
   async fetchAndSetGGUFSpecs(modelId: string) {
     try {
       const authToken = this.shouldUseToken ? this.hfToken : null;
-      const specs = await fetchGGUFSpecs(modelId, authToken);
+      const specs = await fetchGGUFSpecs(modelId, authToken, this.hfSource);
       const model = this.models.find(m => m.id === modelId);
       if (model) {
         runInAction(() => {
@@ -206,7 +216,7 @@ class HFStore {
   async fetchModelFileDetails(modelId: string) {
     try {
       const authToken = this.shouldUseToken ? this.hfToken : null;
-      const fileDetails = await fetchModelFilesDetails(modelId, authToken);
+      const fileDetails = await fetchModelFilesDetails(modelId, authToken, this.hfSource);
       const model = this.models.find(m => m.id === modelId);
 
       if (!model) {
@@ -309,9 +319,10 @@ class HFStore {
         full: this.queryFull,
         config: this.queryConfig,
         authToken: authToken,
+        source: this.hfSource,
       });
 
-      let processedModels = processHFSearchResults(models);
+      let processedModels = processHFSearchResults(models, this.hfSource);
 
       runInAction(() => {
         this.models = processedModels;
@@ -362,7 +373,7 @@ class HFStore {
         authToken: authToken,
       });
 
-      let processedModels = processHFSearchResults(models);
+      let processedModels = processHFSearchResults(models, this.hfSource);
 
       runInAction(() => {
         // Track consecutive small results for pagination protection

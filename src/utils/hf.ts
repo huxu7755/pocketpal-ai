@@ -6,6 +6,8 @@
 import {urls} from '../config';
 import type {HuggingFaceModel, ModelFile} from './types';
 
+export type HFSourceType = 'official' | 'mirror';
+
 // Regex pattern for detecting sharded GGUF files
 const RE_GGUF_SHARD_FILE =
   /^(?<prefix>.*?)-(?<shard>\d{5})-of-(?<total>\d{5})\.gguf$/;
@@ -28,15 +30,21 @@ export function filterValidGGUFFiles(siblings: any[]): any[] {
  * Adds proper download URLs to model files based on modelId
  * @param modelId - The HuggingFace model ID (e.g., "microsoft/DialoGPT-medium")
  * @param siblings - Array of model files
+ * @param source - The source to use for download URLs ('official' for huggingface.co, 'mirror' for hf-mirror.com)
  * @returns Array of siblings with download URLs added
  */
 export function addModelFileDownloadUrls(
   modelId: string,
   siblings: any[],
+  source: HFSourceType = 'official',
 ): ModelFile[] {
+  const downloadUrlFn = source === 'mirror' 
+    ? urls.mirrorModelDownloadFile 
+    : urls.modelDownloadFile;
+    
   return siblings.map(sibling => ({
     ...sibling,
-    url: urls.modelDownloadFile(modelId, sibling.rfilename),
+    url: downloadUrlFn(modelId, sibling.rfilename),
   }));
 }
 
@@ -45,14 +53,16 @@ export function addModelFileDownloadUrls(
  * Filters GGUF files and adds download URLs
  * @param modelId - The HuggingFace model ID
  * @param siblings - Raw siblings array from HF API
+ * @param source - The source to use for download URLs ('official' for huggingface.co, 'mirror' for hf-mirror.com)
  * @returns Normalized siblings array with consistent format
  */
 export function normalizeModelSiblings(
   modelId: string,
   siblings: any[],
+  source: HFSourceType = 'official',
 ): ModelFile[] {
   const filteredSiblings = filterValidGGUFFiles(siblings);
-  return addModelFileDownloadUrls(modelId, filteredSiblings);
+  return addModelFileDownloadUrls(modelId, filteredSiblings, source);
 }
 
 /**
@@ -60,15 +70,21 @@ export function normalizeModelSiblings(
  * - Adds model web page URL
  * - Filters and normalizes siblings array
  * @param models - Array of HuggingFace models from search results
+ * @param source - The source to use for download URLs ('official' for huggingface.co, 'mirror' for hf-mirror.com)
  * @returns Processed models with normalized siblings
  */
 export function processHFSearchResults(
   models: HuggingFaceModel[],
+  source: HFSourceType = 'official',
 ): HuggingFaceModel[] {
+  const webPageUrlFn = source === 'mirror' 
+    ? urls.mirrorModelWebPage 
+    : urls.modelWebPage;
+    
   return models.map(model => ({
     ...model,
-    url: urls.modelWebPage(model.id),
-    siblings: normalizeModelSiblings(model.id, model.siblings || []),
+    url: webPageUrlFn(model.id),
+    siblings: normalizeModelSiblings(model.id, model.siblings || [], source),
   }));
 }
 

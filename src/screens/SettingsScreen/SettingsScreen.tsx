@@ -1020,6 +1020,35 @@ export const SettingsScreen: React.FC = observer(() => {
                   />
                 </View>
 
+                {/* HF Source Selection */}
+                <Divider style={styles.divider} />
+                <View style={styles.settingItemContainer}>
+                  <Text variant="titleMedium" style={styles.textLabel}>
+                    {t('Hugging Face Source')}
+                  </Text>
+                  <Text variant="labelSmall" style={styles.textDescription}>
+                    {t('Select the source for downloading models')}
+                  </Text>
+                  <SegmentedButtons
+                    value={hfStore.hfSource}
+                    onValueChange={value => hfStore.setHfSource(value as 'official' | 'mirror')}
+                    density="medium"
+                    buttons={[
+                      {
+                        value: 'official',
+                        label: t('Official'),
+                        testID: 'hf-source-official',
+                      },
+                      {
+                        value: 'mirror',
+                        label: t('hf-mirror.com'),
+                        testID: 'hf-source-mirror',
+                      },
+                    ]}
+                    style={styles.segmentedButtons}
+                  />
+                </View>
+
                 {/* API Sharing */}
                 <Divider style={styles.divider} />
                 <View style={styles.switchContainer}>

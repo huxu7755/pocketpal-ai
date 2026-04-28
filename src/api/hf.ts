@@ -9,6 +9,8 @@ import {
   ModelFileDetails,
 } from '../utils/types';
 
+export type HFSourceType = 'official' | 'mirror';
+
 /**
  * Get information from all models in the Hub.
  * The response is paginated, use the Link header to get the next pages.
@@ -21,6 +23,7 @@ import {
  * limit: Limit the number of models fetched.
  * full: Whether to fetch most model data, such as all tags, the files, etc.
  * config: Whether to also fetch the repo config.
+ * source: The source to fetch from ('official' for huggingface.co, 'mirror' for hf-mirror.com)
  *
  * @see https://huggingface.co/docs/api-reference/api-endpoints#get-models
  */
@@ -35,6 +38,7 @@ export async function fetchModels({
   config,
   nextPageUrl,
   authToken,
+  source = 'official',
 }: {
   search?: string;
   author?: string;
@@ -46,6 +50,7 @@ export async function fetchModels({
   config?: boolean;
   nextPageUrl?: string;
   authToken?: string | null;
+  source?: HFSourceType;
 }): Promise<HuggingFaceModelsResponse> {
   try {
     const headers: Record<string, string> = {};
@@ -54,7 +59,8 @@ export async function fetchModels({
       headers.Authorization = `Bearer ${authToken}`;
     }
 
-    const response = await axios.get(nextPageUrl || urls.modelsList(), {
+    const baseUrl = source === 'mirror' ? urls.mirrorModelsList() : urls.modelsList();
+    const response = await axios.get(nextPageUrl || baseUrl, {
       params: {
         search,
         author,
@@ -91,13 +97,17 @@ export async function fetchModels({
  * Fetches the details of the model's files. Mainly the size is used.
  * @param modelId - The ID of the model.
  * @param authToken - Optional authentication token for accessing private models
+ * @param source - The source to fetch from ('official' for huggingface.co, 'mirror' for hf-mirror.com)
  * @returns An array of ModelFileDetails.
  */
 export const fetchModelFilesDetails = async (
   modelId: string,
   authToken?: string | null,
+  source: HFSourceType = 'official',
 ): Promise<ModelFileDetails[]> => {
-  const url = `${urls.modelTree(modelId)}?recursive=true`;
+  const url = source === 'mirror' 
+    ? `${urls.mirrorModelTree(modelId)}?recursive=true`
+    : `${urls.modelTree(modelId)}?recursive=true`;
 
   try {
     const headers: Record<string, string> = {};
@@ -122,13 +132,17 @@ export const fetchModelFilesDetails = async (
  * Fetches the specs of the GGUF for a specific model.
  * @param modelId - The ID of the model.
  * @param authToken - Optional authentication token for accessing private models
+ * @param source - The source to fetch from ('official' for huggingface.co, 'mirror' for hf-mirror.com)
  * @returns The GGUF specs.
  */
 export const fetchGGUFSpecs = async (
   modelId: string,
   authToken?: string | null,
+  source: HFSourceType = 'official',
 ): Promise<GGUFSpecs> => {
-  const url = `${urls.modelSpecs(modelId)}?expand[]=gguf`;
+  const url = source === 'mirror' 
+    ? `${urls.mirrorModelSpecs(modelId)}?expand[]=gguf`
+    : `${urls.modelSpecs(modelId)}?expand[]=gguf`;
 
   try {
     const headers: Record<string, string> = {};
