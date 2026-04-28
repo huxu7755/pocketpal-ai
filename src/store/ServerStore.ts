@@ -6,6 +6,7 @@ import * as Keychain from 'react-native-keychain';
 
 import {fetchModels, testConnection, RemoteModelInfo} from '../api/openai';
 import {ServerConfig} from '../utils/types';
+import {ApiSharingService} from '../services/apiSharing/ApiSharingService';
 
 const KEYCHAIN_SERVICE_PREFIX = 'pocketpal-server-';
 
@@ -22,11 +23,15 @@ class ServerStore {
 
   // API Sharing functionality
   apiSharingEnabled = false;
-  apiSharingUrl = '';
+  apiSharingUrl = 'http://127.0.0.1:11434';
   apiSharingKey = '';
+  apiSharingAllowLocalNetwork = false;
+  apiSharingServerStatus: 'stopped' | 'running' | 'error' = 'stopped';
+  apiSharingErrorMessage = '';
 
   private lastFetchTime = 0;
   private appStateSubscription: any = null;
+  private apiSharingService: ApiSharingService = new ApiSharingService();
 
   constructor() {
     makeAutoObservable(this, {
@@ -42,6 +47,7 @@ class ServerStore {
         'apiSharingEnabled',
         'apiSharingUrl',
         'apiSharingKey',
+        'apiSharingAllowLocalNetwork',
       ],
       storage: AsyncStorage,
     }).then(() => {
@@ -220,8 +226,14 @@ class ServerStore {
   }
 
   // API Sharing methods
-  setApiSharingEnabled(enabled: boolean): void {
+  async setApiSharingEnabled(enabled: boolean): Promise<void> {
     this.apiSharingEnabled = enabled;
+
+    if (enabled) {
+      await this.startApiSharingServer();
+    } else {
+      this.stopApiSharingServer();
+    }
   }
 
   setApiSharingUrl(url: string): void {
@@ -230,6 +242,69 @@ class ServerStore {
 
   setApiSharingKey(key: string): void {
     this.apiSharingKey = key;
+    this.apiSharingService.setApiKey(key || null);
+  }
+
+  setApiSharingAllowLocalNetwork(allow: boolean): void {
+    this.apiSharingAllowLocalNetwork = allow;
+  }
+
+  private async startApiSharingServer(): Promise<void> {
+    try {
+      const urlParts = this.apiSharingUrl.match(/http:\/\/([^:]+):(\d+)/);
+      const host = urlParts ? urlParts[1] : '127.0.0.1';
+      const port = urlParts ? parseInt(urlParts[2], 10) : 11434;
+
+      const result = await this.apiSharingService.startServer(
+        host,
+        port,
+        this.apiSharingKey || null,
+        this.apiSharingAllowLocalNetwork,
+      );
+
+      runInAction(() => {
+        if (result.type === 'success') {
+          this.apiSharingServerStatus = 'running';
+          this.apiSharingErrorMessage = '';
+        } else if (result.type === 'port_conflict') {
+          this.apiSharingServerStatus = 'error';
+          this.apiSharingErrorMessage = `Port ${port} is in use. Try port ${result.suggestedPort}`;
+        } else if (result.type === 'already_running') {
+          this.apiSharingServerStatus = 'running';
+          this.apiSharingErrorMessage = '';
+        } else {
+          this.apiSharingServerStatus = 'error';
+          this.apiSharingErrorMessage = 'Failed to start server';
+        }
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.apiSharingServerStatus = 'error';
+        this.apiSharingErrorMessage = error instanceof Error ? error.message : 'Unknown error';
+      });
+    }
+  }
+
+  private stopApiSharingServer(): void {
+    this.apiSharingService.stopServer();
+    runInAction(() => {
+      this.apiSharingServerStatus = 'stopped';
+      this.apiSharingErrorMessage = '';
+    });
+  }
+
+  generateApiSharingKey(): string {
+    const key = this.apiSharingService.generateRandomKey();
+    this.setApiSharingKey(key);
+    return key;
+  }
+
+  clearApiSharingKey(): void {
+    this.setApiSharingKey('');
+  }
+
+  async testApiSharingConnection(): Promise<{ok: boolean; error?: string}> {
+    return this.apiSharingService.testConnection();
   }
 
   // Auto-fetch on foreground

@@ -1054,7 +1054,7 @@ export const SettingsScreen: React.FC = observer(() => {
                 <View style={styles.switchContainer}>
                   <View style={styles.textContainer}>
                     <Text variant="titleMedium" style={styles.textLabel}>
-                      {t('API Sharing')}
+                      {t('Enable Ollama API Service')}
                     </Text>
                     <Text variant="labelSmall" style={styles.textDescription}>
                       {t(
@@ -1065,9 +1065,45 @@ export const SettingsScreen: React.FC = observer(() => {
                   <Switch
                     testID="api-sharing-switch"
                     value={serverStore.apiSharingEnabled}
-                    onValueChange={serverStore.setApiSharingEnabled}
+                    onValueChange={async (value) => {
+                      await serverStore.setApiSharingEnabled(value);
+                    }}
                   />
                 </View>
+
+                {/* Server Status */}
+                {serverStore.apiSharingServerStatus !== 'stopped' && (
+                  <Divider style={styles.divider} />
+                  <View style={styles.settingItemContainer}>
+                    <Text variant="titleMedium" style={styles.textLabel}>
+                      {t('Server Status')}
+                    </Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <ActivityIndicator
+                        size="small"
+                        color={serverStore.apiSharingServerStatus === 'running' ? 'green' : 'red'}
+                        animating={serverStore.apiSharingServerStatus === 'running'}
+                      />
+                      <Text
+                        style={{
+                          marginLeft: 8,
+                          color:
+                            serverStore.apiSharingServerStatus === 'running'
+                              ? 'green'
+                              : 'red',
+                        }}>
+                        {serverStore.apiSharingServerStatus === 'running'
+                          ? t('Running')
+                          : t('Error')}
+                      </Text>
+                    </View>
+                    {serverStore.apiSharingErrorMessage && (
+                      <Text variant="labelSmall" style={{color: 'red', marginTop: 4}}>
+                        {serverStore.apiSharingErrorMessage}
+                      </Text>
+                    )}
+                  </View>
+                )}
 
                 {/* API Sharing URL */}
                 <Divider style={styles.divider} />
@@ -1080,8 +1116,8 @@ export const SettingsScreen: React.FC = observer(() => {
                     style={styles.textInput}
                     value={serverStore.apiSharingUrl}
                     onChangeText={value => serverStore.setApiSharingUrl(value)}
-                    placeholder={t('Enter API server URL')}
-                    disabled={!serverStore.apiSharingEnabled}
+                    placeholder="http://127.0.0.1:11434"
+                    disabled={serverStore.apiSharingEnabled}
                   />
                 </View>
 
@@ -1089,7 +1125,7 @@ export const SettingsScreen: React.FC = observer(() => {
                 <Divider style={styles.divider} />
                 <View style={styles.settingItemContainer}>
                   <Text variant="titleMedium" style={styles.textLabel}>
-                    {t('API Sharing Key (Optional)')}
+                    {t('API Key')}
                   </Text>
                   <TextInput
                     testID="api-sharing-key-input"
@@ -1100,8 +1136,70 @@ export const SettingsScreen: React.FC = observer(() => {
                       'Enter API key (leave blank for no authentication)',
                     )}
                     secureTextEntry
-                    disabled={!serverStore.apiSharingEnabled}
+                    disabled={serverStore.apiSharingEnabled}
                   />
+                  <View style={{flexDirection: 'row', gap: 8, marginTop: 8}}>
+                    <Button
+                      mode="outlined"
+                      onPress={() => serverStore.generateApiSharingKey()}
+                      disabled={serverStore.apiSharingEnabled}
+                    >
+                      {t('Generate Random Key')}
+                    </Button>
+                    <Button
+                      mode="outlined"
+                      onPress={() => serverStore.clearApiSharingKey()}
+                      disabled={serverStore.apiSharingEnabled || !serverStore.apiSharingKey}
+                    >
+                      {t('Clear')}
+                    </Button>
+                  </View>
+                  <Text variant="labelSmall" style={{color: '#666', marginTop: 4}}>
+                    {t('Tip: Leave blank for no API Key verification')}
+                  </Text>
+                </View>
+
+                {/* Allow Local Network Access */}
+                <Divider style={styles.divider} />
+                <View style={styles.switchContainer}>
+                  <View style={styles.textContainer}>
+                    <Text variant="titleMedium" style={styles.textLabel}>
+                      {t('Allow Local Network Access')}
+                    </Text>
+                    <Text variant="labelSmall" style={styles.textDescription}>
+                      {t(
+                        'Allow other devices on the same network to access this API',
+                      )}
+                    </Text>
+                  </View>
+                  <Switch
+                    testID="api-sharing-local-network"
+                    value={serverStore.apiSharingAllowLocalNetwork}
+                    onValueChange={value =>
+                      serverStore.setApiSharingAllowLocalNetwork(value)
+                    }
+                    disabled={serverStore.apiSharingEnabled}
+                  />
+                </View>
+
+                {/* Test Connection Button */}
+                <Divider style={styles.divider} />
+                <View style={styles.settingItemContainer}>
+                  <Button
+                    mode="contained"
+                    onPress={async () => {
+                      const result = await serverStore.testApiSharingConnection();
+                      if (result.ok) {
+                        Alert.alert(t('Success'), t('API connection test successful'));
+                      } else {
+                        Alert.alert(t('Error'), result.error || t('Connection failed'));
+                      }
+                    }}
+                    disabled={!serverStore.apiSharingEnabled}
+                    style={{width: '100%'}}
+                  >
+                    {t('Test API Connection')}
+                  </Button>
                 </View>
               </View>
             </Card.Content>
