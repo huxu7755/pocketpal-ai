@@ -1,5 +1,4 @@
-import * as TCP from 'react-native-tcp-socket';
-import type { Socket } from 'react-native-tcp-socket';
+const TCP = require('react-native-tcp-socket');
 
 interface RequestData {
   method: string;
@@ -9,11 +8,11 @@ interface RequestData {
 }
 
 export class ApiServer {
-  private server: TCP.Server | null = null;
+  private server: any = null;
   private port: number = 11434;
   private host: string = '127.0.0.1';
   private apiKey: string | null = null;
-  private isRunning = false;
+  private running = false;
 
   constructor(host: string = '127.0.0.1', port: number = 11434, apiKey: string | null = null) {
     this.host = host;
@@ -25,8 +24,8 @@ export class ApiServer {
     this.apiKey = apiKey;
   }
 
-  isRunning(): boolean {
-    return this.isRunning;
+  isServerRunning(): boolean {
+    return this.running;
   }
 
   getPort(): number {
@@ -39,7 +38,7 @@ export class ApiServer {
 
   start(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.server = TCP.createServer((socket: Socket) => {
+      this.server = TCP.createServer((socket: any) => {
         socket.on('data', (data: Buffer) => {
           this.handleRequest(socket, data);
         });
@@ -54,12 +53,12 @@ export class ApiServer {
       });
 
       this.server.listen(this.port, this.host, () => {
-        this.isRunning = true;
+        this.running = true;
         resolve();
       });
 
       this.server.on('error', (error: any) => {
-        this.isRunning = false;
+        this.running = false;
         reject(error);
       });
     });
@@ -69,7 +68,7 @@ export class ApiServer {
     if (this.server) {
       this.server.close();
       this.server = null;
-      this.isRunning = false;
+      this.running = false;
     }
   }
 
@@ -113,7 +112,7 @@ export class ApiServer {
     }
   }
 
-  private async handleRequest(socket: Socket, data: Buffer) {
+  private async handleRequest(socket: any, data: Buffer) {
     const request = this.parseRequest(data);
     if (!request) {
       this.sendResponse(socket, 400, 'Bad Request');
@@ -150,7 +149,7 @@ export class ApiServer {
     return true;
   }
 
-  private async routeRequest(socket: Socket, request: RequestData) {
+  private async routeRequest(socket: any, request: RequestData) {
     const { method, path } = request;
 
     if (method === 'GET' && path === '/v1/models') {
@@ -162,7 +161,7 @@ export class ApiServer {
     }
   }
 
-  private async handleGetModels(socket: Socket) {
+  private async handleGetModels(socket: any) {
     const response = JSON.stringify({
       object: 'list',
       data: [],
@@ -170,7 +169,7 @@ export class ApiServer {
     this.sendResponse(socket, 200, response, { 'Content-Type': 'application/json' });
   }
 
-  private async handleChatCompletions(socket: Socket, body: any) {
+  private async handleChatCompletions(socket: any, body: any) {
     const response = JSON.stringify({
       id: `chatcmpl-${Date.now()}`,
       object: 'chat.completion',
@@ -195,7 +194,7 @@ export class ApiServer {
     this.sendResponse(socket, 200, response, { 'Content-Type': 'application/json' });
   }
 
-  private sendResponse(socket: Socket, statusCode: number, body: string, headers: Record<string, string> = {}) {
+  private sendResponse(socket: any, statusCode: number, body: string, headers: Record<string, string> = {}) {
     const statusText = this.getStatusText(statusCode);
     let response = `HTTP/1.1 ${statusCode} ${statusText}\r\n`;
     

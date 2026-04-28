@@ -16,7 +16,7 @@ export class ApiSharingService {
   constructor() {}
 
   isRunning(): boolean {
-    return this.server?.isRunning() ?? false;
+    return this.server?.isServerRunning() ?? false;
   }
 
   getPort(): number {

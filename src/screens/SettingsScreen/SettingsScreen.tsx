@@ -23,6 +23,7 @@ import {
   Icon,
   List,
   SegmentedButtons,
+  ActivityIndicator,
 } from 'react-native-paper';
 
 import {
@@ -1073,8 +1074,9 @@ export const SettingsScreen: React.FC = observer(() => {
 
                 {/* Server Status */}
                 {serverStore.apiSharingServerStatus !== 'stopped' && (
-                  <Divider style={styles.divider} />
-                  <View style={styles.settingItemContainer}>
+                  <View>
+                    <Divider style={styles.divider} />
+                    <View style={styles.settingItemContainer}>
                     <Text variant="titleMedium" style={styles.textLabel}>
                       {t('Server Status')}
                     </Text>
@@ -1102,6 +1104,7 @@ export const SettingsScreen: React.FC = observer(() => {
                         {serverStore.apiSharingErrorMessage}
                       </Text>
                     )}
+                    </View>
                   </View>
                 )}
 
