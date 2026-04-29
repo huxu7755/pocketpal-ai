@@ -28,7 +28,7 @@ import {
   isVisionRepo,
 } from '../../../../utils';
 
-import {HFSourceType} from '../../../../store/hfStore';
+import {HFSourceType} from '../../../../store/HFStore';
 
 interface SearchViewProps {
   testID?: string;
