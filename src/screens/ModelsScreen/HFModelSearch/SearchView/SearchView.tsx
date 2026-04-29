@@ -2,7 +2,7 @@ import React, {useState, useContext, useCallback, useRef} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 
 import {observer} from 'mobx-react';
-import {Text, Chip, Button} from 'react-native-paper';
+import {Text, Chip, Button, SegmentedButtons} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
@@ -27,6 +27,8 @@ import {
   L10nContext,
   isVisionRepo,
 } from '../../../../utils';
+
+import {HFSourceType} from '../../../../store/hfStore';
 
 interface SearchViewProps {
   testID?: string;
@@ -195,6 +197,20 @@ export const SearchView = observer(
           }}
           testID="enhanced-search-bar"
         />
+        <View style={styles.sourceSelectorContainer}>
+          <SegmentedButtons
+            value={hfStore.hfSource}
+            onValueChange={(value) => {
+              hfStore.setHfSource(value as HFSourceType);
+              hfStore.fetchModels();
+            }}
+            buttons={[
+              {value: 'official', label: 'Official'},
+              {value: 'mirror', label: 'hf-mirror.com'},
+            ]}
+            style={styles.sourceSelector}
+          />
+        </View>
         <BottomSheetFlatList
           data={hfStore.models}
           keyExtractor={(item: HuggingFaceModel) => item.id}

@@ -152,13 +152,19 @@ export class ApiServer {
   private async routeRequest(socket: any, request: RequestData) {
     const { method, path } = request;
 
-    if (method === 'GET' && path === '/v1/models') {
+    if (method === 'OPTIONS') {
+      this.handleOptions(socket);
+    } else if (method === 'GET' && path === '/v1/models') {
       await this.handleGetModels(socket);
     } else if (method === 'POST' && path === '/v1/chat/completions') {
       await this.handleChatCompletions(socket, request.body);
     } else {
       this.sendResponse(socket, 404, JSON.stringify({ error: { message: 'Not Found' } }));
     }
+  }
+
+  private handleOptions(socket: any) {
+    this.sendResponse(socket, 200, '', { 'Content-Type': 'text/plain' });
   }
 
   private async handleGetModels(socket: any) {

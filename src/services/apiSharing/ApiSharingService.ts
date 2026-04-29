@@ -37,7 +37,7 @@ export class ApiSharingService {
       return {type: 'already_running', port: this.getPort()};
     }
 
-    if (!PortUtils.isPortAvailable(port)) {
+    if (!(await PortUtils.isPortAvailable(port))) {
       try {
         const availablePort = await PortUtils.findAvailablePort(port);
         return {type: 'port_conflict', suggestedPort: availablePort};
@@ -82,11 +82,10 @@ export class ApiSharingService {
       return {ok: false, error: 'Server is not running'};
     }
 
-    const host = this.getHost();
     const port = this.getPort();
 
     try {
-      const response = await fetch(`http://${host}:${port}/v1/models`);
+      const response = await fetch(`http://127.0.0.1:${port}/v1/models`);
       return {ok: response.ok};
     } catch (error) {
       return {ok: false, error: error instanceof Error ? error.message : 'Unknown error'};
