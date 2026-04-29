@@ -7,6 +7,13 @@ export const createStyles = (theme: Theme) =>
       flex: 1,
       justifyContent: 'space-between',
     },
+    sourceSelectorContainer: {
+      paddingHorizontal: 16,
+      marginBottom: 8,
+    },
+    sourceSelector: {
+      height: 32,
+    },
     list: {
       padding: 16,
       paddingBottom: 100,
